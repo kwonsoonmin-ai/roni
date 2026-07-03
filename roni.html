@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LG RONi 로봇청소기 세일즈 상담 툴 (LG 스마트체 적용)</title>
+    <style>
+        /* LG 스마트체 로컬 폰트 매핑 */
+        @font-face {
+            font-family: 'LG Smart';
+            src: local('LG Smart'), local('LG스마트체'), local('LG Smart UI');
+        }
+
+        :root {
+            --lg-red: #a50034;
+            --lg-dark-grey: #222222;
+            --lg-mid-grey: #555555;
+            --lg-light-grey: #f4f4f4;
+            --lg-border-color: #dddddd;
+            --shadow: 0 4px 15px rgba(0,0,0,0.08);
+            --border-radius: 12px;
+            --comp-blue: #1428A0; /* S사 상징 컬러 모티브 */
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            /* LG전자 전용 폰트 우선 적용 */
+            font-family: 'LG Smart', 'LG Smart UI', 'LG스마트', 'LG스마트체', 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            color: var(--lg-dark-grey);
+            line-height: 1.6;
+            padding-bottom: 60px;
+        }
+
+        header {
+            background-color: var(--lg-dark-grey);
+            color: #ffffff;
+            padding: 20px;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header .logo-area {
+            font-size: 1.2rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        header .logo-area span {
+            color: var(--lg-red);
+        }
+
+        header h1 {
+            font-size: 1.4rem;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+        }
+
+        .container {
+            max-width: 1024px;
+            margin: 20px auto;
+            padding: 0 15px;
+        }
+
+        /* Navigation Tabs */
+        .nav-tabs {
+            display: flex;
+            background-color: #ffffff;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 25px;
+            overflow: hidden;
+            border: 1px solid var(--lg-border-color);
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            flex: 1 1 20%;
+            min-width: 120px;
+            padding: 12px 8px;
+            text-align: center;
+            background: none;
+            border: none;
+            font-size: 0.95rem;
+            font-weight: bold;
+            color: var(--lg-mid-grey);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            outline: none;
+            border-right: 1px solid #eee;
+            border-bottom: 1px solid transparent;
+        }
+        
+        @media (max-width: 768px) {
+            .tab-btn { flex: 1 1 33.33%; border-bottom: 1px solid #eee; }
+        }
+
+        .tab-btn.active {
+            background-color: var(--lg-red);
+            color: #ffffff;
+            border-bottom-color: var(--lg-red);
+        }
+
+        .tab-btn:not(.active):hover {
+            background-color: #f0f0f0;
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card {
+            background-color: #ffffff;
+            border-radius: var(--border-radius);
+            padding: 25px;
+            box-shadow: var(--shadow);
+            margin-bottom: 25px;
+            border: 1px solid rgba(0,0,0,0.03);
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            color: var(--lg-dark-grey);
+            margin-bottom: 20px;
+            font-weight: bold;
+            border-left: 5px solid var(--lg-red);
+            padding-left: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Section 1: Checklist Styling */
+        .checklist-item {
+            display: flex;
+            align-items: flex-start;
+            padding: 15px;
+            border: 1px solid var(--lg-border-color);
+            border-radius: 8px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            background-color: #ffffff;
+        }
+
+        .checklist-item:hover {
+            border-color: var(--lg-red);
+            background-color: rgba(165, 0, 52, 0.02);
+        }
+
+        .checklist-item input[type="checkbox"] {
+            width: 22px;
+            height: 22px;
+            margin-right: 15px;
+            accent-color: var(--lg-red);
+            cursor: pointer;
+            margin-top: 2px;
+        }
+
+        .checklist-text h4 {
+            font-size: 1.1rem;
+            margin-bottom: 4px;
+            color: #333;
+            font-weight: 600;
+        }
+
+        .checklist-text p {
+            font-size: 0.95rem;
+            color: var(--lg-mid-grey);
+        }
+
+        .solution-box {
+            background-color: #fff9fa;
+            border: 1px dashed var(--lg-red);
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .solution-box h4 {
+            color: var(--lg-red);
+            font-size: 1.15rem;
+            margin-bottom: 10px;
+        }
+
+        /* Section 2: Station Toggle */
+        .station-toggle {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .toggle-card {
+            flex: 1;
+            border: 2px solid var(--lg-border-color);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background-color: #fff;
+        }
+
+        .toggle-card.active {
+            border-color: var(--lg-red);
+            background-color: rgba(165, 0, 52, 0.03);
+        }
+        
+        .toggle-card h3 {
+            font-weight: bold;
+        }
+
+        .station-detail-view {
+            display: none;
+            padding: 15px 0;
+        }
+
+        .station-detail-view.active {
+            display: block;
+        }
+
+        .pitch-banner {
+            background-color: #333;
+            color: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-left: 5px solid var(--lg-red);
+        }
+
+        /* Feature Grid */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+
+        @media(min-width: 768px) {
+            .feature-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        .feature-item {
+            background: var(--lg-light-grey);
+            padding: 20px;
+            border-radius: 8px;
+            border-top: 4px solid var(--lg-mid-grey);
+        }
+
+        .feature-item.highlight {
+            border-top-color: var(--lg-red);
+            background-color: #fffefe;
+        }
+
+        .feature-item h5 {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            color: #111;
+            font-weight: 600;
+        }
+
+        .feature-item ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .feature-item ul li {
+            font-size: 0.95rem;
+            margin-bottom: 6px;
+            position: relative;
+            padding-left: 14px;
+        }
+
+        .feature-item ul li::before {
+            content: "•";
+            color: var(--lg-red);
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+        }
+
+        /* Competitor Comparison Section (Step 5) */
+        .vs-box {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 30px 0;
+            gap: 20px;
+        }
+        
+        .vs-card {
+            flex: 1;
+            padding: 25px;
+            border-radius: 12px;
+            text-align: center;
+            color: white;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        .vs-lg {
+            background: linear-gradient(135deg, #c5003e 0%, #8c002c 100%);
+            border: 2px solid #a50034;
+            transform: scale(1.05);
+            z-index: 2;
+        }
+        
+        .vs-s {
+            background: linear-gradient(135deg, #4b6cb7 0%, #182848 100%);
+            opacity: 0.9;
+        }
+
+        .vs-icon {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: #333;
+            background: #fff;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            z-index: 3;
+        }
+
+        .vs-talk {
+            background-color: #f0f4ff;
+            border-left: 5px solid #4a90e2;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+        }
+
+        .vs-talk-title {
+            font-weight: bold;
+            color: #1a4980;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* Table Design */
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            font-size: 0.95rem;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: center;
+            border: 1px solid var(--lg-border-color);
+        }
+
+        th {
+            background-color: var(--lg-light-grey);
+            font-weight: bold;
+        }
+
+        .highlight-cell {
+            background-color: rgba(165, 0, 52, 0.05) !important;
+            font-weight: bold;
+            color: var(--lg-red);
+        }
+        
+        .comp-cell {
+            background-color: rgba(20, 40, 160, 0.03) !important;
+            color: var(--lg-mid-grey);
+        }
+
+        .bottom-action {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .btn-quote {
+            background-color: var(--lg-red);
+            color: #fff;
+            border: none;
+            padding: 12px 30px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(165,0,52,0.3);
+            transition: all 0.2s;
+        }
+
+        .btn-quote:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(165,0,52,0.4);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-area">LG <span>Objet Collection</span></div>
+        <h1>RONi 로봇청소기 세일즈 상담 지원 프로그램</h1>
+        <div style="width: 120px;"></div>
+    </header>
+
+    <div class="container">
+        <!-- 네비게이션 탭 -->
+        <div class="nav-tabs">
+            <button class="tab-btn active" onclick="openTab('step1', this)">1. 니즈 진단</button>
+            <button class="tab-btn" onclick="openTab('step2', this)">2. 스테이션 제안</button>
+            <button class="tab-btn" onclick="openTab('step3', this)">3. 혁신 기술</button>
+            <button class="tab-btn" onclick="openTab('step5', this)">4. 타사(S사) 비교 💡</button>
+            <button class="tab-btn" onclick="openTab('step4', this)">5. 스펙/견적</button>
+        </div>
+
+        <!-- STEP 1: 고객 니즈 진단 -->
+        <div id="step1" class="tab-content active">
+            <div class="card">
+                <div class="card-title">고객의 페인 포인트(Pain Point) 확인</div>
+                
+                <div class="checklist-item" onclick="toggleCheck('pain1')">
+                    <input type="checkbox" id="pain1" onchange="updateSolutions()">
+                    <div class="checklist-text">
+                        <h4>"거실에 커다란 로봇청소기 타워가 튀어나와 있는 게 인테리어상 보기 싫어요."</h4>
+                    </div>
+                </div>
+                <div class="checklist-item" onclick="toggleCheck('pain2')">
+                    <input type="checkbox" id="pain2" onchange="updateSolutions()">
+                    <div class="checklist-text">
+                        <h4>"물걸레 청소기 쓰고 나면 걸레 냄새나거나 배수통 매번 씻기 너무 힘들던데요."</h4>
+                    </div>
+                </div>
+                <div class="checklist-item" onclick="toggleCheck('pain3')">
+                    <input type="checkbox" id="pain3" onchange="updateSolutions()">
+                    <div class="checklist-text">
+                        <h4>"로봇청소기 카메라가 온 집안을 돌아다니며 찍는데 해킹되거나 노출될까 봐 무서워요."</h4>
+                    </div>
+                </div>
+                
+                <div id="sol_box_1" class="solution-box">
+                    <h4>💡 [인테리어 안성맞춤] </h4>
+                    <p>"로니는 완전히 숨길 수 있는 <strong>'히든 스테이션'</strong>과 가구 디자인의 <strong>'오브제 스테이션'</strong>을 제공하여 인테리어를 해치지 않습니다."</p>
+                </div>
+                <div id="sol_box_2" class="solution-box">
+                    <h4>💡 [위생·케어 끝판왕] </h4>
+                    <p>"<strong>세계 최초 100°C 투웨이 스팀</strong>으로 바닥 기름때를 지우고, 스테이션에서 100°C 살균 스팀 및 40°C 온풍 건조를 진행해 냄새를 원천 차단합니다."</p>
+                </div>
+                <div id="sol_box_3" class="solution-box">
+                    <h4>💡 [철저한 프라이버시] </h4>
+                    <p>"청소를 마치고 복귀하면 문이 꽉 닫히는 <strong>'하드웨어 물리적 도어 닫힘'</strong> 기능으로 사생활 노출 우려가 제로입니다."</p>
+                </div>
+            </div>
+            <div class="bottom-action">
+                <button class="btn-quote" onclick="goToStep(1)">다음 단계로 ➡️</button>
+            </div>
+        </div>
+
+        <!-- STEP 2: 스테이션 선택 가이드 -->
+        <div id="step2" class="tab-content">
+            <div class="card">
+                <div class="card-title">공간 맞춤 솔루션 라인업 제안</div>
+                <div class="station-toggle">
+                    <div class="toggle-card active" id="btn_hidden" onclick="selectStation('hidden')">
+                        <span class="badge">싱크대 하단 빌트인</span>
+                        <h3>히든 스테이션 타입</h3>
+                    </div>
+                    <div class="toggle-card" id="btn_objet" onclick="selectStation('objet')">
+                        <span class="badge">프리스탠딩 가구형</span>
+                        <h3>오브제 스테이션 타입</h3>
+                    </div>
+                </div>
+                <div id="view_hidden" class="station-detail-view active">
+                    <div class="pitch-banner">초슬림 15cm 매립! 보이지 않는 완벽한 빌트인</div>
+                </div>
+                <div id="view_objet" class="station-detail-view">
+                    <div class="pitch-banner">소파 옆 프리미엄 가구! 인테리어 오브제</div>
+                </div>
+            </div>
+            <div class="bottom-action">
+                <button class="btn-quote" onclick="goToStep(2)">다음 단계로 ➡️</button>
+            </div>
+        </div>
+
+        <!-- STEP 3: 혁신 기술 -->
+        <div id="step3" class="tab-content">
+            <div class="card">
+                <div class="card-title">세계 최초 & LG 독점 혁신 신제품 특장점 요약</div>
+                <ul>
+                    <li><strong>100 ℃ 무빙 스팀:</strong> 바닥 찌든 때 청소 + 스테이션 100℃ 스팀 살균</li>
+                    <li><strong>엣지 확장형 구조:</strong> 벽면 모서리 완벽 청소</li>
+                    <li><strong>물리적 보안 도어:</strong> 복귀 후 도어 닫힘으로 카메라 일상 노출 100% 차단</li>
+                </ul>
+            </div>
+            <div class="bottom-action">
+                <button class="btn-quote" onclick="goToStep(3)">다음 단계로 ➡️</button>
+            </div>
+        </div>
+
+        <!-- STEP 5: 경쟁사(S사) 비교 -->
+        <div id="step5" class="tab-content">
+            <div class="card">
+                <div class="card-title">현장 대응 치트키: 삼성(S사) AI 스팀 대비 압도적 우위 포인트</div>
+                <p style="color: var(--lg-mid-grey); margin-bottom: 20px;">고객이 "삼성 비스포크 AI 스팀이랑 뭐가 달라요?"라고 물어볼 때 즉각적으로 대응할 수 있는 셀링 포인트입니다.</p>
+                
+                <div class="vs-box">
+                    <div class="vs-card vs-lg">
+                        <h2 style="font-size: 1.5rem; margin-bottom: 10px;">LG RONi</h2>
+                        <p style="font-size: 0.95rem; opacity: 0.9;">"공간, 위생, 보안의 완벽한 진화"</p>
+                    </div>
+                    <div class="vs-icon">VS</div>
+                    <div class="vs-card vs-s">
+                        <h2 style="font-size: 1.5rem; margin-bottom: 10px;">S사 AI 스팀</h2>
+                        <p style="font-size: 0.95rem; opacity: 0.9;">"기존 타워형 로봇청소기"</p>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="width: 20%;">비교 포인트</th>
+                                <th style="width: 40%; background-color: rgba(165,0,52,0.1); color: var(--lg-red);">LG RONi (로니)</th>
+                                <th style="width: 40%;">삼성(S사) AI 스팀</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="font-weight: bold;">공간 점유 및 디자인</td>
+                                <td class="highlight-cell">
+                                    <div style="font-weight: 800; margin-bottom: 4px;">공간 맞춤형 (히든 / 오브제)</div>
+                                    싱크대 하단(15cm) 완전 매립 또는<br>소파 옆 사이드 테이블 형태
+                                </td>
+                                <td class="comp-cell">
+                                    <div style="font-weight: bold; margin-bottom: 4px;">거실 노출 타워형</div>
+                                    부피가 커서 거실이나 주방 한편에<br>별도의 전용 공간 차지
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold;">스팀 및 살균 방식</td>
+                                <td class="highlight-cell">
+                                    <div style="font-weight: 800; margin-bottom: 4px;">세계 최초 100℃ 투웨이 스팀</div>
+                                    바닥 무빙 스팀 청소 +<br>스테이션 100℃ 스팀 살균
+                                </td>
+                                <td class="comp-cell">
+                                    <div style="font-weight: bold; margin-bottom: 4px;">스테이션 고온 스팀</div>
+                                    스테이션 복귀 시 물걸레 스팀 살균<br>(바닥 청소 시 스팀 방식 차이)
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold;">안심 보안 (카메라)</td>
+                                <td class="highlight-cell">
+                                    <div style="font-weight: 800; margin-bottom: 4px;">하드웨어 물리적 차단</div>
+                                    스테이션 복귀 후 '도어 닫힘'<br>카메라가 밖을 절대 볼 수 없음
+                                </td>
+                                <td class="comp-cell">
+                                    <div style="font-weight: bold; margin-bottom: 4px;">소프트웨어 보안</div>
+                                    Knox 보안 적용 (카메라 렌즈 자체는<br>외부에 상시 노출된 상태)
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold;">사각지대 청소</td>
+                                <td class="highlight-cell">
+                                    <div style="font-weight: 800; margin-bottom: 4px;">엣지 확장형 브러시/물걸레</div>
+                                    모서리 감지 시 브러시가 밖으로 확장
+                                </td>
+                                <td class="comp-cell">
+                                    일반 사이드 브러시 및 확장 제어
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div style="margin-top: 30px;">
+                    <h4 style="margin-bottom: 15px; border-bottom: 2px solid #333; padding-bottom: 8px;">🎤 실전 매니저 셀링 화법 (고객 응대 스크립트)</h4>
+                    
+                    <div class="vs-talk">
+                        <div class="vs-talk-title">💬 고객: "삼성 AI 스팀이랑 LG 로니 중에 뭐가 더 나아요? 가격은 비슷한 거 같은데..."</div>
+                        <p style="margin-top: 5px; font-size: 0.95rem; color: #333;"><strong>▶ 매니저:</strong> "고객님, 두 제품 모두 뛰어난 제품입니다만, <strong>'내 집 거실에 두었을 때의 스트레스'</strong>를 생각해 보시면 답이 확실해집니다. <br><br>
+                        삼성 제품은 성능은 좋지만 커다란 기둥(타워)이 거실 한가운데 공간을 차지합니다. 반면 LG 로니는 싱크대 아래로 완전히 숨기는 <strong>'히든 스테이션'</strong>이나 가구처럼 쓰는 <strong>'오브제 스테이션'</strong>으로 거실을 넓고 예쁘게 유지할 수 있습니다.<br><br>
+                        또한 카메라 보안에서도 차이가 큽니다. S사는 소프트웨어로만 차단하지만, LG 로니는 로봇이 집에 들어가면 <strong>문이 물리적으로 '찰칵' 닫혀버립니다.</strong> 카메라가 물리적으로 가려지니 댁에서 편하게 옷을 입고 계셔도 절대 안심하실 수 있습니다. 이 두 가지 혁신만으로도 로니를 선택하실 이유는 충분합니다!"</p>
+                    </div>
+                </div>
+
+            </div>
+            <div class="bottom-action">
+                <button class="btn-quote" onclick="goToStep(4)">스펙 비교 및 즉시 견적 확인 ➡️</button>
+            </div>
+        </div>
+
+        <!-- STEP 4: 상세 스펙 및 견적 -->
+        <div id="step4" class="tab-content">
+            <div class="card">
+                <div class="card-title">제품 세부 스펙 및 실시간 세일즈 견적서</div>
+                <div style="margin-bottom: 15px;">
+                    <label style="font-weight: bold; display: block; margin-bottom: 5px;">1. 선호 모델 선택:</label>
+                    <select id="select_model" onchange="calculatePrice()" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--lg-border-color); font-size: 1rem;">
+                        <option value="2190000">LG RONi 로봇청소기 (히든/오브제 공통 - 2,190,000원)</option>
+                    </select>
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <label style="font-weight: bold; display: block; margin-bottom: 5px;">2. 할인 혜택 적용:</label>
+                    <select id="select_discount" onchange="calculatePrice()" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--lg-border-color); font-size: 1rem;">
+                        <option value="0">적용 할인 없음</option>
+                        <option value="150000">제휴카드 결제 할인 (-150,000원)</option>
+                        <option value="250000">동시 구매 제휴 혜택 최대 적용 (-250,000원)</option>
+                    </select>
+                </div>
+                <button class="btn-quote" onclick="showQuote()" style="width: 100%;">최종 제안 견적서 발행하기</button>
+
+                <div id="quote_box" class="quote-result" style="display:none; margin-top:20px; padding:20px; background-color:#f0f8ff; border-radius:8px;">
+                    <h3>📊 고객 맞춤 최종 혜택가</h3>
+                    <p>• 권장 소비자 금액: 2,190,000 원</p>
+                    <p>• 할인 적용 금액: -<span id="txt_discount">0</span> 원</p>
+                    <h2 style="color: var(--lg-red); margin-top:10px;">최종가: <span id="txt_final_price">2,190,000</span> 원</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openTab(tabId, element) {
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(content => content.classList.remove('active'));
+            const buttons = document.querySelectorAll('.tab-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            element.classList.add('active');
+            window.scrollTo(0, 0);
+        }
+
+        function goToStep(currentIndex) {
+            const buttons = document.querySelectorAll('.tab-btn');
+            buttons[currentIndex].click();
+        }
+
+        function toggleCheck(id) {
+            const checkbox = document.getElementById(id);
+            if(event.target.tagName !== 'INPUT') {
+                checkbox.checked = !checkbox.checked;
+                updateSolutions();
+            }
+        }
+
+        function updateSolutions() {
+            document.getElementById('sol_box_1').style.display = document.getElementById('pain1').checked ? 'block' : 'none';
+            document.getElementById('sol_box_2').style.display = document.getElementById('pain2').checked ? 'block' : 'none';
+            document.getElementById('sol_box_3').style.display = document.getElementById('pain3').checked ? 'block' : 'none';
+        }
+
+        function selectStation(type) {
+            document.getElementById('btn_hidden').classList.remove('active');
+            document.getElementById('btn_objet').classList.remove('active');
+            document.getElementById('view_hidden').classList.remove('active');
+            document.getElementById('view_objet').classList.remove('active');
+            if(type === 'hidden') {
+                document.getElementById('btn_hidden').classList.add('active');
+                document.getElementById('view_hidden').classList.add('active');
+            } else {
+                document.getElementById('btn_objet').classList.add('active');
+                document.getElementById('view_objet').classList.add('active');
+            }
+        }
+
+        function calculatePrice() {
+            const basePrice = parseInt(document.getElementById('select_model').value);
+            const discount = parseInt(document.getElementById('select_discount').value);
+            document.getElementById('txt_discount').innerText = discount.toLocaleString();
+            document.getElementById('txt_final_price').innerText = (basePrice - discount).toLocaleString();
+        }
+
+        function showQuote() {
+            calculatePrice();
+            const quoteBox = document.getElementById('quote_box');
+            quoteBox.style.display = 'block';
+            quoteBox.scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
