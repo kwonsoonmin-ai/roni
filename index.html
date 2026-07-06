@@ -391,6 +391,45 @@
         /* 새로 추가된 RONi 버튼 스타일 */
         .btn-roni { background-color: #a50034; }
         .btn-roni:hover { background-color: #8c002c; }
+
+        /* 새로 추가된 컨테스트 버튼 및 모달 스타일 */
+        .btn-contest { background-color: #d97706; }
+        .btn-contest:hover { background-color: #b45309; }
+
+        .contest-card {
+            width: 100%;
+            max-width: 550px;
+            background: #fff;
+            border-radius: 10px;
+            padding: 24px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+        .contest-section {
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
+            background: #f8fafc;
+            text-align: left;
+        }
+        .contest-section h4 {
+            margin: 0 0 10px 0;
+            color: #0f172a;
+            font-size: 15px;
+            border-bottom: 2px solid #cbd5e1;
+            padding-bottom: 6px;
+        }
+        .contest-list {
+            margin: 0;
+            padding-left: 20px;
+            font-size: 13px;
+            color: #334155;
+            line-height: 1.6;
+        }
+        .contest-list li { margin-bottom: 4px; }
+        .highlight-text { color: #dc2626; font-weight: bold; }
         
         .app-meta {
             margin-top: 10px;
@@ -820,6 +859,9 @@
             <button type="button" class="btn-print btn-planner" onclick="window.open('https://akohw1003.github.io/kangnam/kyowon3', '_blank')">교원 플래너</button>
             <!-- 새로 추가된 버튼 -->
             <button type="button" class="btn-print btn-roni" onclick="window.open('roni.html', '_blank')">RONi 상담 툴</button>
+            <!-- 새로 추가된 버튼 -->
+            <button type="button" class="btn-print btn-roni" onclick="window.open('roni.html', '_blank')">RONi 상담 툴</button>
+            <button type="button" class="btn-print btn-contest" onclick="openContestModal()">🎁 7월 컨테스트</button>
         </div>
 
         <div class="gap-toolbar">
@@ -2577,7 +2619,62 @@
         modelRowVisible = !modelRowVisible;
         applyModelRowVisibility();
     }
+<div class="security-overlay" id="contestOverlay" style="display:none;" onclick="closeContestModal(event)">
+    <div class="contest-card" onclick="event.stopPropagation()">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+            <h3 style="margin: 0; font-size: 18px; color: #1e293b;">🏆 7월 경남담당 컨테스트 현황</h3>
+            <button type="button" onclick="closeContestModal()" style="background: none; border: none; font-size: 20px; cursor: pointer; color: #64748b;">✖</button>
+        </div>
 
+        <!-- 컨테스트 1 -->
+        <div class="contest-section">
+            <h4>1. 선납 구독 / 바스에어 Contest</h4>
+            <ul class="contest-list">
+                <li><strong>기간:</strong> '26. 7. 1(수) ~ 7. 12(일), 12일 간</li>
+                <li><strong>조건:</strong> 동일 고객 선납금액 합산 500만원 이상</li>
+                <li><strong>시상:</strong> 선납구독 판매 시 건당 <span class="highlight-text">2만원</span></li>
+                <li><strong>추가 혜택:</strong> 위 조건 달성 + 바스에어 구독 시 <span class="highlight-text">+2만원 추가 시상</span></li>
+            </ul>
+        </div>
+
+        <!-- 컨테스트 2 -->
+        <div class="contest-section">
+            <h4>2. 총판 판매활성화 컨테스트</h4>
+            <ul class="contest-list">
+                <li><strong>기간:</strong> '26. 7. 1(수) ~ 7. 12(일), 12일 간</li>
+                <li><strong>목표:</strong> 7월 12일까지 200억↑ 달성</li>
+                <li><strong>시상 (리그별 상위점 판촉비):</strong>
+                    <ul>
+                        <li>G/P리그: 1위 117만 ~ 4위 60만</li>
+                        <li>S/A리그: 1위 87만 ~ 5위 40만</li>
+                        <li>B/C리그: 1위 67만 ~ 3위 40만</li>
+                    </ul>
+                </li>
+                <li><strong>추가 혜택:</strong> 상위점 중 구독 비중 70% 이상 시 <span class="highlight-text">+70만원 추가 지급</span></li>
+            </ul>
+        </div>
+
+        <!-- 컨테스트 3 -->
+        <div class="contest-section">
+            <h4>3. 에어컨 판매 활성화 (권역별 대전)</h4>
+            <ul class="contest-list">
+                <li><strong>기간:</strong> '26. 7. 1(수) ~ 7. 12(일), 12일 간</li>
+                <li><strong>시상:</strong> 권역별 달성률 상위 1~3등 스퀘어가든 써큘레이터 시상</li>
+                <li><strong>점수 기준 (에어컨 스탠드 구독 기준):</strong>
+                    <ul>
+                        <li>에어컨(스탠드) 1대 = 1점</li>
+                        <li>에어컨(스탠드) + 타제품 1대 = 2점</li>
+                        <li>에어컨(스탠드) + <span class="highlight-text">바스에어</span> = <span class="highlight-text">5점</span></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+        <div class="security-actions" style="margin-top:20px;">
+            <button type="button" class="btn-security btn-security-primary" onclick="closeContestModal()">확인</button>
+        </div>
+    </div>
+</div>
 </script>
 </body>
 </html>
