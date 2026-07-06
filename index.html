@@ -1011,9 +1011,9 @@
 <div class="security-overlay" id="securityOverlay">
     <div class="security-card">
         <h3>프로그램 인증</h3>
-        <p id="securityGuide">사번과 생년월일 6자리를 입력해 주세요.</p>
+        <p id="securityGuide">사번과 비밀번호(이름 영문타자)를 입력해 주세요.</p>
         <input type="text" id="empIdInput" class="security-input" placeholder="사번 입력" />
-        <input type="password" id="empBirthInput" class="security-input" placeholder="생년월일 6자리 (예: 850101)" maxlength="6" />
+        <input type="password" id="empBirthInput" class="security-input" placeholder="이름 영문타자 (예: 홍길동 -> ghdrilfehd)" />
         <div class="security-error" id="securityError"></div>
         <div class="security-actions">
             <button type="button" class="btn-security btn-security-primary" onclick="validateAccess()">확인</button>
