@@ -2676,5 +2676,16 @@
     </div>
 </div>
 </script>
+    // 컨테스트 모달 열기/닫기 함수
+    function openContestModal() {
+        document.getElementById('contestOverlay').style.display = 'flex';
+    }
+
+    function closeContestModal(event) {
+        if (event && event.target !== document.getElementById('contestOverlay') && event.target.tagName !== 'BUTTON' && event.type !== 'click') {
+            return;
+        }
+        document.getElementById('contestOverlay').style.display = 'none';
+    }
 </body>
 </html>
