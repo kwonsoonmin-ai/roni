@@ -859,6 +859,7 @@
             <button type="button" class="btn-print btn-planner" onclick="window.open('https://akohw1003.github.io/kangnam/kyowon3', '_blank')">교원 플래너</button>
             <button type="button" class="btn-print btn-roni" onclick="window.open('roni.html', '_blank')">RONi 상담 툴</button>
             <button type="button" class="btn-print btn-contest" onclick="openContestModal()">🎁 7월 컨테스트</button>
+            <button type="button" class="btn-print btn-roni" onclick="toggleRoniTool()">RONi 상담 툴(내부)</button>
         </div>
 
         <div class="gap-toolbar">
@@ -896,6 +897,10 @@
                 <tbody id="quoteTbody"></tbody>
             </table>
         </div>
+        <div id="roniToolPanel" class="panel" style="display:none; margin-top: 20px;">
+    <h2>🤖 RONi 상담 툴</h2>
+    <iframe src="roni.html" style="width:100%; height: 700px; border:none;"></iframe>
+</div>
     </div>
 
     <div class="right-column">
@@ -2627,6 +2632,15 @@
             return;
         }
         document.getElementById('contestOverlay').style.display = 'none';
+    }
+    // 🔍 상담 툴을 켰다 껐다 하는 기능입니다
+    function toggleRoniTool() {
+        const panel = document.getElementById('roniToolPanel');
+        if (panel.style.display === 'none') {
+            panel.style.display = 'block';
+        } else {
+            panel.style.display = 'none';
+        }
     }
 </script>
 
