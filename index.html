@@ -2242,3 +2242,440 @@
         induction: [
             { id: 'e1', name: '전용 클리너 제공', period: '12개월 / 6회', price: 32700, desc: '전용클리너 6EA' },
             { id: 'e2', name: '상판 클리닝, 하부 이물제거', period: '12개월 / 6회', price: 153096, desc: '최저시급 + 출장비 x 6회' },
+            { id: 'e3', name: '상판 교체 서비스', period: '36~48개월 1회', price: 245000, desc: '상판 교체 서비스 요금' },
+            { id: 'e4', name: '설치/철거 무상 제공', period: '계약기간 內 1회', price: 50000, desc: '판토스 무상 재설치 요금' },
+            { id: 'e5', name: '무상 A/S 제공', period: '계약기간', price: 70000, desc: '전기레인지 평균 수리 비용 기준' },
+            { id: 'ex', name: '위생 관리, 시간 절약 등', period: '-', price: 0, desc: '기회비용 (최저시급 x 케어 시간)' }
+        ],
+        dishwasher: [
+            { id: 'd1', name: '음식물 거름망 교체', period: '12개월 / 6회', price: 102000, desc: '거름필터 12EA' },
+            { id: 'd2', name: '내/외부 세척 및 통살균', period: '12개월 / 6회', price: 360000, desc: '클리닝(1만) + 출장비(2만) x 12회' },
+            { id: 'd3', name: '전용 소금 충전', period: '12개월 / 6회', price: 114000, desc: '정제소금 12EA' },
+            { id: 'd4', name: '연수장치 점검/수질 측정', period: '12개월 / 6회', price: 22800, desc: '경도 키트 12EA' },
+            { id: 'd5', name: '에어필터 교체', period: '12개월 / 6회', price: 75000, desc: '에어필터 6EA' },
+            { id: 'd6', name: '설치/철거 무상 제공', period: '계약기간 內 1회', price: 130000, desc: '판토스 무상 재설치 요금' },
+            { id: 'd7', name: '무상 A/S 제공', period: '계약기간', price: 70000, desc: '식기세척기 평균 수리 비용 기준' },
+            { id: 'dx', name: '위생 관리, 시간 절약 등', period: '-', price: 0, desc: '기회비용 (최저시급 x 케어 시간)' }
+        ],
+        stickVacuum: [
+            { id: 'v1', name: '분해세척 서비스 (에어/초음파 세척)', period: '12개월 / 6회', price: 396000, desc: '회당 66,000원 x 6회' },
+            { id: 'v2', name: '성능 점검 & 스팀 케어', period: '12개월 / 6회', price: 124000, desc: '최저시급 + 성능/스팀케어 출장비' },
+            { id: 'v3', name: '소모품 배송 (배터리 36개월 1회)', period: '12개월 / 6회', price: 912000, desc: '필터류, 배터리, 올인원타워 소모품 총합' },
+            { id: 'v4', name: '무상 A/S 제공', period: '계약 기간', price: 91300, desc: '청소기 평균 수리 비용 기준' },
+            { id: 'vx', name: '위생 관리, 시간 절약 등', period: '-', price: 0, desc: '기회비용 (최저시급 x 케어 시간)' }
+        ],
+        robotVacuum: [
+            { id: 'r1', name: '7종 소모품 교체 서비스', period: '12개월 / 6회', price: 1287300, desc: '6년 소모품 비용 합계 + 출장 서비스' },
+            { id: 'r2', name: '로봇/스테이션/스팀 클리닝', period: '12개월 / 6회', price: 134000, desc: '회당 22,340원 x 6회' },
+            { id: 'r3', name: '무상 A/S 제공', period: '계약 기간', price: 91300, desc: '청소기 평균 수리 비용 기준' },
+            { id: 'rx', name: '위생 관리, 시간 절약 등', period: '-', price: 0, desc: '기회비용 (최저시급 x 케어 시간)' }
+        ],
+        airConditioner: [
+            { id: 'a1', name: '완전분해 케어 서비스(프리미엄)', period: '36개월 / 2회', price: 610000, desc: '회당 305,000원 x 2회' },
+            { id: 'a1_2', name: '부분분해 케어 서비스(라이트)', period: '36개월 / 2회', price: 80000, desc: '회당 40,000원 x 2회, 타 가전 부분분해세척 비용기준 참고 추정비용' },
+            { id: 'a2', name: '공기청정 필터 교체', period: '12개월 / 6회', price: 600000, desc: '뷰 집진필터 100,000원 x 6회' },
+            { id: 'a3', name: '성능점검 & 내/외부 토탈클리닝', period: '12개월 / 6회', price: 510000, desc: '회당 85,000원 x 6회' },
+            { id: 'a4', name: '무상 철거&재설치 서비스', period: '계약기간 內 1회', price: 388000, desc: '2in1 재설치 기준 388,000원' },
+            { id: 'a5', name: '무상 A/S 제공', period: '계약기간', price: 266000, desc: '에어컨 평균 수리 비용 기준' },
+            { id: 'ax', name: '위생 관리, 시간 절약 등', period: '-', price: 0, desc: '기회비용 (최저시급 x 케어 시간)' }
+        ],
+        airPurifier: [
+            { id: 'p1', name: '복합 필터 교체', period: '12개월 / 6회', price: 1548000, desc: '회당 258,000원 x 6회' },
+            { id: 'p2', name: '극세 필터 교체', period: '6개월 / 12회', price: 128000, desc: '회당 10,666원 x 12회' },
+            { id: 'p3', name: '클린부스터 분해/클리닝', period: '6개월 / 12회', price: 480000, desc: '회당 40,000원 x 12회' },
+            { id: 'p4', name: '분해 / 스팀 케어', period: '30개월 / 2회', price: 210000, desc: '기계실 분해세척 서비스 총합' },
+            { id: 'p5', name: '무상 A/S 제공', period: '계약기간', price: 91000, desc: '공기청정기 평균 수리 비용' },
+            { id: 'px', name: '위생 관리, 시간 절약 등', period: '-', price: 0, desc: '기회비용 (최저시급 x 케어 시간)' }
+        ],
+        bathAir: [
+            { id: 'b1', name: '극세필터/팬/위생(UV/피톤치드) 케어', period: '12개월 / 6회', price: 858000, desc: '회당 143,000원 x 6회' },
+            { id: 'b2', name: '극세 필터 교체 서비스', period: '24개월 / 3회', price: 60000, desc: '세트당 20,000원 x 3회' },
+            { id: 'b3', name: '무상 A/S 제공', period: '계약기간', price: 174000, desc: '평균 수리비용 기준' },
+            { id: 'bx', name: '위생 관리, 시간 절약 등', period: '-', price: 0, desc: '기회비용 (최저시급 x 케어 시간)' }
+        ],
+        styler: [
+            { id: 'st1', name: '클리닝 & 스팀케어 & 센서점검', period: '12개월 / 6회', price: 510000, desc: '회당 85,000원 x 6회' },
+            { id: 'st2', name: '인산염 키트 / 향기 시트 제공', period: '12개월 / 6회', price: 83500, desc: '회당 13,917원 x 6회' },
+            { id: 'st3', name: '급 / 배수통 교체 서비스', period: '36개월 / 1회', price: 39900, desc: '스타일러 통 가격 총합' },
+            { id: 'st4', name: '무상 A/S 제공', period: '계약기간', price: 110000, desc: '평균 수리비용 기준' },
+            { id: 'stx', name: '위생 관리, 시간 절약 등', period: '-', price: 0, desc: '기회비용 (최저시급 x 케어 시간)' }
+        ],
+        washTower: [
+            { id: 'wt1', name: '센서/패킹/필터 세척 & 드럼/스팀케어', period: '6개월 / 12회', price: 630000, desc: '[세탁부] 회당 6.5만x6회 + [건조부] 회당 4만x6회' },
+            { id: 'wt2', name: '배수필터 교체 서비스', period: '24개월 / 3회', price: 15600, desc: '회당 5,200원 x 3회' },
+            { id: 'wt3', name: '2중 안심필터 무상교체', period: '최초 방문 시 1회', price: 36500, desc: '2중 안심필터 가격' },
+            { id: 'wt4', name: '설치/철거 무상 제공', period: '계약기간 內 1회', price: 220000, desc: '무상 철거 및 재설치 총합' },
+            { id: 'wt5', name: '무상 A/S 제공', period: '계약기간', price: 110000, desc: '세탁기 평균 수리비용 기준' },
+            { id: 'wtx', name: '위생 관리, 시간 절약 등', period: '-', price: 0, desc: '기회비용 (최저시급 x 케어 시간)' }
+        ],
+        washCombo: [
+            { id: 'wc1', name: '센서/패킹/필터 세척 & 드럼/스팀케어', period: '6개월 / 12회', price: 390000, desc: '회당 65,000원 x 6회' },
+            { id: 'wc2', name: '배수필터 교체 서비스', period: '24개월 / 3회', price: 15600, desc: '회당 5,200원 x 3회' },
+            { id: 'wc3', name: '건조필터 무상교체', period: '최초 방문 시 1회', price: 44500, desc: '건조필터 가격' },
+            { id: 'wc4', name: '무상 A/S 제공', period: '계약기간', price: 110000, desc: '세탁기 평균 수리비용 기준' },
+            { id: 'wcx', name: '위생 관리, 시간 절약 등', period: '-', price: 0, desc: '기회비용 (최저시급 x 케어 시간)' }
+        ],
+        trommStandard: [
+            { id: 'ts1', name: '배수필터/고무패킹/내외부 클리닝/성능 작동 점검/수평 확인', period: '24개월 / 3회', price: 120000, desc: '세척 소모품 및 인건비' },
+            { id: 'ts2', name: '배수필터/고무패킹 교체', period: '48개월 / 1회', price: 64500, desc: '배수필터 + 고무패킹 가격' },
+            { id: 'ts3', name: '세척조 클리너 제공', period: '48개월 / 1회', price: 7000, desc: '클리너 가격' },
+            { id: 'ts4', name: '분해 세척(스팀 및 UV 관리)', period: '48개월 / 1회', price: 195000, desc: '서비스 비용' },
+            { id: 'ts5', name: '무상 A/S 제공', period: '계약기간', price: 110000, desc: '세탁기 평균 수리비용 기준' },
+            { id: 'tsx', name: '위생 관리, 시간 절약 등', period: '-', price: 0, desc: '기회비용(최저시급 x 셀프케어 시간)' }
+        ],
+        trommLight: [
+            { id: 'tl1', name: '배수필터/고무패킹/내외부 클리닝/스팀 관리/', period: '6개월 / 12회', price: 480000, desc: '세척 소모품 및 인건비' },
+            { id: 'tl2', name: '배수필터/고무패킹/내외부 클리닝/스팀 관리/', period: '12개월 / 6회', price: 240000, desc: '세척 소모품 및 인건비' },
+            { id: 'tl3', name: '배수필터교체', period: '24개월 / 1회', price: 15000, desc: '배수필터 가격' },
+            { id: 'tl4', name: '무상 A/S 제공', period: '계약기간', price: 110000, desc: '세탁기 평균 수리비용 기준' },
+            { id: 'tlx', name: '위생 관리, 시간 절약 등', period: '-', price: 0, desc: '기회비용(최저시급 x 셀프케어 시간)' }
+        ],
+        dryer: [
+            { id: 'dr1', name: '먼지/배수물통 세척 & 내외부 클리닝', period: '6개월 / 12회', price: 240000, desc: '세척 소모품 및 인건비' },
+            { id: 'dr2', name: '2중 안심필터 제공', period: '최초 방문 1회', price: 36500, desc: '2중 안심필터 가격' },
+            { id: 'dr3', name: '무상 A/S 제공', period: '계약기간', price: 110000, desc: '세탁기 평균 수리비용 기준' },
+            { id: 'drx', name: '위생 관리, 시간 절약 등', period: '-', price: 0, desc: '기회비용 (최저시급 x 케어 시간)' }
+        ],
+        tvCare: [
+            { id: 'tv1', name: 'QNED 86형/85시리즈(패널 고장 무상A/S)', period: '계약기간 내 고장시', price: 2060000, desc: '패널 교체 기준가 약 206만원' },
+            { id: 'tv2', name: 'OLED 83형/G시리즈(패널 고장 무상A/S)', period: '계약기간 내 고장시', price: 3770000, desc: '패널 교체 기준가 약 377만원' },
+            { id: 'tv3', name: 'OLED 77형/G시리즈(패널 고장 무상A/S)', period: '계약기간 내 고장시', price: 2990000, desc: '패널 교체 기준가 약 299만원' },
+            { id: 'tv4', name: 'OLED 77형/B시리즈(패널 고장 무상A/S)', period: '계약기간 내 고장시', price: 2300000, desc: '패널 교체 기준가 약 230만원' },
+            { id: 'tv5', name: 'OLED 65형(패널 고장 무상A/S)', period: '계약기간 내 고장시', price: 1500000, desc: '패널 교체 기준가 약 150만원' },
+            { id: 'tv6', name: 'OLED 55형(패널 고장 무상A/S)', period: '계약기간 내 고장시', price: 1200000, desc: '패널 교체 기준가 약 120만원' },
+            { id: 'tv7', name: '70인치 이상 무상 설치지원', period: '계약기간 內 1회', price: 128000, desc: '70형대 벽걸이 설치 기준 (철거비/운송비 제외)' },
+            { id: 'tv8', name: '80인치 이상 무상 설치지원', period: '계약기간 內 1회', price: 204000, desc: '80형대 벽걸이 설치 기준 (철거비/운송비 제외)' }
+        ],
+        massageChair: [
+            { id: 'mc1', name: '가죽 교체 서비스', period: '12개월 / 6회', price: 278500, desc: '발 가죽 교체(30,000원) x 3회 + 베개, 등, 엉덩이 가죽교체(188,500원) x 1회' },
+            { id: 'mc2', name: '제품 토탈 클리닝 / 동작 및 제품 성능점검', period: '12개월 / 6회', price: 345600, desc: '케어십 요금 4,800원 x 72개월' },
+            { id: 'mc3', name: '무상 A/S 제공', period: '계약기간', price: 250000, desc: '안마의자 1회 평균 수리 비용 기준' },
+            { id: 'mcx', name: '위생 관리, 시간 절약 등', period: '-', price: 0, desc: '기회비용 (최저시급 x 케어 시간)' }
+        ]
+    };
+
+    let checkedState = {};
+    let currentCareTitle = '';
+
+    function renderPrintSelectedCareTable() {
+        const tbody = document.getElementById('printSelectedCareBody');
+        const selectedItems = [];
+
+        for (const key in checkedState) {
+            const item = checkedState[key];
+            if (item && item.checked) selectedItems.push(item);
+        }
+
+        if (!selectedItems.length) {
+            tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;">선택된 항목 없음</td></tr>';
+            return;
+        }
+
+        tbody.innerHTML = selectedItems.map(item => `
+            <tr>
+                <td class="text-left">${item.category ? item.category + ' : ' : ''}${item.name}</td>
+                <td>${item.period || '-'}</td>
+                <td class="text-right">${item.price === 0 ? '별도 산정' : fn(item.price) + '원'}</td>
+                <td class="text-left">${item.desc || '-'}</td>
+            </tr>
+        `).join('');
+    }
+
+    function calculateCareTotal() {
+        let totalVal = 0;
+        const selectedLines = [];
+
+        for (const key in checkedState) {
+            const item = checkedState[key];
+            if (item && item.checked) {
+                totalVal += item.price;
+                const prefix = item.category ? `${item.category} : ` : '';
+                selectedLines.push(`• ${prefix}${item.name} ${item.price === 0 ? '(별도 산정)' : '(' + fn(item.price) + '원)'}`);
+            }
+        }
+
+        document.getElementById('selectedItemsList').innerText = selectedLines.length ? selectedLines.join('\n') : '선택된 항목 없음';
+        document.getElementById('totalValue').innerText = fn(totalVal);
+        renderPrintSelectedCareTable();
+    }
+
+    function toggleCheck(id, price, name, category, period, desc, cb, row) {
+        checkedState[id] = cb.checked ? { checked: true, price: price, name: name, category: category, period: period, desc: desc } : false;
+        if (cb.checked) row.classList.remove('disabled-row');
+        else row.classList.add('disabled-row');
+        calculateCareTotal();
+    }
+
+    function clearSelectedItems() {
+        checkedState = {};
+        document.querySelectorAll('#careTableBody input[type="checkbox"]').forEach(cb => {
+            cb.checked = false;
+            const row = cb.closest('tr');
+            if (row) row.classList.add('disabled-row');
+        });
+        calculateCareTotal();
+    }
+
+    function changeTab(category, titleName, btn) {
+        document.querySelectorAll('.tab-btn:not(.video-btn)').forEach(b => b.classList.remove('active'));
+        if (btn) btn.classList.add('active');
+
+        currentCareTitle = titleName;
+        document.getElementById('dashboardTitle').innerText = '✨ 구독 Care 비용';
+
+        const tbody = document.getElementById('careTableBody');
+        tbody.innerHTML = '';
+
+        careData[category].forEach(item => {
+            const isChecked = !!(checkedState[item.id] && checkedState[item.id].checked);
+            const tr = document.createElement('tr');
+            if (!isChecked) tr.classList.add('disabled-row');
+
+            const safeName = String(item.name).replace(/'/g, "\'");
+            const safeTitle = String(titleName).replace(/'/g, "\'");
+            const safePeriod = String(item.period).replace(/'/g, "\\'");
+            const safeDesc = String(item.desc).replace(/'/g, "\\'");
+            tr.innerHTML = `<td class="checkbox-cell"><input type="checkbox" style="width:18px;height:18px; cursor:pointer;" onchange="toggleCheck('${item.id}', ${item.price}, '${safeName}', '${safeTitle}', '${safePeriod}', '${safeDesc}', this, this.parentElement.parentElement)" ${isChecked ? 'checked' : ''}></td>
+                <td class="text-left" style="color:#0056b3; font-weight:bold;">${item.name}</td><td>${item.period}</td>
+                <td class="text-right" style="font-weight:bold;">${item.price === 0 ? "별도 산정" : fn(item.price) + "원"}</td><td class="text-left" style="font-size:11px; color:#555;">${item.desc}</td>`;
+            tbody.appendChild(tr);
+        });
+    }
+
+    function resetPrintModes() {
+        document.body.classList.remove('print-estimate');
+        document.body.classList.remove('print-care');
+        document.body.classList.remove('print-all');
+    }
+
+    function applyAutoFitZoom() {
+        const panel = document.getElementById('estimatePanel');
+        const table = document.getElementById('quoteTable');
+        if (!panel || !table) return;
+
+        panel.style.zoom = '1'; 
+
+        const A4_MAX_HEIGHT = 980;
+        const printContentHeight = table.offsetHeight + 150;
+
+        if (printContentHeight > A4_MAX_HEIGHT) {
+            const zoomRatio = (A4_MAX_HEIGHT / printContentHeight) * 0.98;
+            panel.style.zoom = zoomRatio;
+        }
+    }
+
+    function removeAutoFitZoom() {
+        const panel = document.getElementById('estimatePanel');
+        if (panel) panel.style.zoom = '1'; 
+    }
+
+    function printEstimate() {
+        updateAppMeta();
+        resetPrintModes();
+        document.body.classList.add('print-estimate');
+        
+        applyAutoFitZoom(); 
+
+        setTimeout(() => {
+            window.print();
+            setTimeout(() => {
+                resetPrintModes();
+                removeAutoFitZoom(); 
+            }, 300);
+        }, 50);
+    }
+
+    function printCare() {
+        updateAppMeta();
+        resetPrintModes();
+        document.body.classList.add('print-care');
+        window.print();
+        setTimeout(() => resetPrintModes(), 300);
+    }
+
+    function printAllPage() {
+        updateAppMeta();
+        resetPrintModes();
+        document.body.classList.add('print-all');
+        
+        applyAutoFitZoom(); 
+
+        setTimeout(() => {
+            window.print();
+            setTimeout(() => {
+                resetPrintModes();
+                removeAutoFitZoom(); 
+            }, 300);
+        }, 50);
+    }
+
+    const cardData = {
+        'shinhan': { 
+            title: '[신한] 더구독케어', 
+            phone: '080-850-0117', 
+            url: 'https://www.shinhancard.com/pconts/html/card/apply/credit/1234346_2207.html?EntryLoc2=4441&btnApp=dp1',
+            benefits: '30만 ↑ 1.7만<br>70만 ↑ 2.7만<br>130만 ↑ 3.0만<br><span style="font-size:11px; color:#888;">*70만/130만 혜택은 7만원 이상 자동이체시 적용</span>'
+        },
+        'woori_plat': { 
+            title: '[우리] 플래티넘', 
+            phone: '1800-0864', 
+            url: 'https://m.wooricard.com/dcmw/yh1/crd/crd01/M1CRD101S02.do?recomNo=104169',
+            benefits: '100만 ↑ 3.5만<br>150만 ↑ 3.9만<br>200만 ↑ 4.2만'
+        },
+        'woori': { 
+            title: '[우리] LG전자', 
+            phone: '1800-4137', 
+            url: 'https://m.wooricard.com/dcmw/yh1/crd/crd01/M1CRD101S02.do?recomNo=102535',
+            benefits: '30만 ↑ 1.8만<br>70만 ↑ 2.2만<br>120만 ↑ 2.4만'
+        },
+        'lotte': { 
+            title: '[롯데] 구독엔로카', 
+            phone: '1577-9469', 
+            url: 'https://m.lottecard.co.kr/spa/card/booth?bId=96417&vtCdKndC=P15666-A15666',
+            benefits: '40만 ↑ 2.0만<br>80만 ↑ 2.3만<br>160만 ↑ 2.6만'
+        },
+        'kb': { 
+            title: '[KB국민] LG전자 KB국민', 
+            phone: '1644-8639', 
+            url: 'https://m.kbcard.com/CRD/DVIEW/MCAMCXHIACRC0002?mainCC=b&allianceCode=04425',
+            benefits: '<b>[프로모션 운영 / 36개월간]</b><br>30만 ↑ 2.0만<br>80만 ↑ 2.5만<br><span style="font-size:11px; color:#888;">* 37회차부터는 기본 혜택(1.0만/1.5만)만 적용</span>'
+        },
+        'hyundai': { 
+            title: '[현대] LG전자 현대', 
+            phone: '1670-0442', 
+            url: 'https://www.hyundaicard.com/cpc/cr/CPCCR0201_01.hc?cardWcd=LGEHC&eventCode=LGR03#cardDetailHash',
+            benefits: '<b>[프로모션 운영 / 60개월간]</b><br>40만 ↑ 0.8만<br>80만 ↑ 1.2만<br>120만 ↑ 1.6만'
+        },
+        'hana': { 
+            title: '[하나] LG전자', 
+            phone: '1800-1264', 
+            url: 'https://m.hanacard.co.kr/MKCDCM1010M.web?CD_PD_SEQ=16959',
+            benefits: '30만 ↑ 1.3만<br>70만 ↑ 1.7만<br>100만 ↑ 2.0만'
+        }
+    };
+
+    function openCardQrModal(cardKey) {
+        const data = cardData[cardKey];
+        if(!data) return;
+        
+        document.getElementById('cardQrModalTitle').innerText = data.title;
+        document.getElementById('cardQrModalPhone').innerText = '발급 ARS: ' + data.phone;
+        document.getElementById('cardQrModalBenefits').innerHTML = data.benefits;
+        
+        const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=160x160&margin=0&data=${encodeURIComponent(data.url)}`;
+        document.getElementById('cardQrImage').src = qrUrl;
+        
+        document.getElementById('cardQrModalOverlay').style.display = 'flex';
+    }
+
+    function closeCardQrModal(event) {
+        if (event && event.target !== document.getElementById('cardQrModalOverlay') && event.target.tagName !== 'BUTTON') {
+            return;
+        }
+        document.getElementById('cardQrModalOverlay').style.display = 'none';
+        document.getElementById('cardQrImage').src = ''; 
+    }
+
+    window.onload = function() {
+        const firstBtn = document.querySelector('.tab-btn');
+        changeTab('tvCare', 'TV 케어', firstBtn);
+        initSecurity();
+
+        const idInput = document.getElementById('empIdInput');
+        const birthInput = document.getElementById('empBirthInput');
+        
+        if (idInput) {
+            idInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') birthInput.focus();
+            });
+        }
+        if (birthInput) {
+            birthInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') validateAccess();
+            });
+        }
+    };
+
+    let modelRowVisible = true;
+
+    function applyModelRowVisibility() {
+        const table = document.getElementById('quoteTable');
+        const btn = document.getElementById('toggleModelBtn');
+        if (!table || !btn) return;
+
+        if (modelRowVisible) {
+            table.classList.remove('hide-model-row');
+            btn.textContent = '모델명 숨기기';
+        } else {
+            table.classList.add('hide-model-row');
+            btn.textContent = '모델명 보이기';
+        }
+    }
+
+    function toggleModelRowVisibility() {
+        modelRowVisible = !modelRowVisible;
+        applyModelRowVisibility();
+    }
+
+    // 컨테스트 모달 열기/닫기 함수
+    function openContestModal() {
+        document.getElementById('contestOverlay').style.display = 'flex';
+    }
+
+    function closeContestModal(event) {
+        if (event && event.target !== document.getElementById('contestOverlay') && event.target.tagName !== 'BUTTON' && event.type !== 'click') {
+            return;
+        }
+        document.getElementById('contestOverlay').style.display = 'none';
+    }
+</script>
+
+<div class="security-overlay" id="contestOverlay" style="display:none;" onclick="closeContestModal(event)">
+    <div class="contest-card" onclick="event.stopPropagation()">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+            <h3 style="margin: 0; font-size: 18px; color: #1e293b;">🏆 7월 경남담당 컨테스트 현황</h3>
+            <button type="button" onclick="closeContestModal()" style="background: none; border: none; font-size: 20px; cursor: pointer; color: #64748b;">✖</button>
+        </div>
+
+        <div class="contest-section">
+            <h4>1. 선납 구독 / 바스에어 Contest</h4>
+            <ul class="contest-list">
+                <li><strong>기간:</strong> '26. 7. 1(수) ~ 7. 12(일), 12일 간</li>
+                <li><strong>조건:</strong> 동일 고객 선납금액 합산 500만원 이상</li>
+                <li><strong>시상:</strong> 선납구독 판매 시 건당 <span class="highlight-text">2만원</span></li>
+                <li><strong>추가 혜택:</strong> 위 조건 달성 + 바스에어 구독 시 <span class="highlight-text">+2만원 추가 시상</span></li>
+            </ul>
+        </div>
+
+        <div class="contest-section">
+            <h4>2. 총판 판매활성화 컨테스트</h4>
+            <ul class="contest-list">
+                <li><strong>기간:</strong> '26. 7. 1(수) ~ 7. 12(일), 12일 간</li>
+                <li><strong>목표:</strong> 7월 12일까지 200억↑ 달성</li>
+                <li><strong>시상 (리그별 상위점 판촉비):</strong>
+                    <ul>
+                        <li>G/P리그: 1위 117만 ~ 4위 60만</li>
+                        <li>S/A리그: 1위 87만 ~ 5위 40만</li>
+                        <li>B/C리그: 1위 67만 ~ 3위 40만</li>
+                    </ul>
+                </li>
+                <li><strong>추가 혜택:</strong> 상위점 중 구독 비중 70% 이상 시 <span class="highlight-text">+70만원 추가 지급</span></li>
+            </ul>
+        </div>
+
+        <div class="contest-section">
+            <h4>3. 에어컨 판매 활성화 (권역별 대전)</h4>
+            <ul class="contest-list">
+                <li><strong>기간:</strong> '26. 7. 1(수) ~ 7. 12(일), 12일 간</li>
+                <li><strong>시상:</strong> 권역별 달성률 상위 1~3등 스퀘어가든 써큘레이터 시상</li>
+                <li><strong>점수 기준:</strong> 에어컨(스탠드) 1대=1점 / 타제품+1대=2점 / 바스에어+5점</li>
+            </ul>
+        </div>
+
+        <div class="security-actions" style="margin-top:20px;">
+            <button type="button" class="btn-security btn-security-primary" onclick="closeContestModal()">확인</button>
+        </div>
+    </div>
+</div>
+</body>
+</html>
