@@ -858,6 +858,7 @@
             <button type="button" class="btn-print btn-proposal" onclick="window.open('https://akohw1003.github.io/kangnam/gudok.html', '_blank')">구독 특화 제안서</button>
             <button type="button" class="btn-print btn-planner" onclick="window.open('https://akohw1003.github.io/kangnam/kyowon3', '_blank')">교원 플래너</button>
             <button type="button" class="btn-print btn-contest" onclick="openContestModal()">🎁 7월 컨테스트</button>
+            <button type="button" class="btn-print btn-roni" style="background-color:#4338ca;" onclick="openRoniFeatureModal()">✨ 신모델 RONi 특장점</button>
             <button type="button" class="btn-print btn-roni" onclick="toggleRoniTool()">신제품 RONi</button>
         </div>
 
@@ -2690,5 +2691,67 @@
         </div>
     </div>
 </div>
+    <div class="security-overlay" id="roniFeatureOverlay" style="display:none;" onclick="closeRoniFeatureModal(event)">
+    <div class="contest-card" style="max-width: 700px;" onclick="event.stopPropagation()">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+            <h3 style="margin: 0; font-size: 18px; color: #1e293b;">🤖 신모델 RONi (LG HOM-BOT) 상담 포인트</h3>
+            <button type="button" onclick="closeRoniFeatureModal()" style="background: none; border: none; font-size: 20px; cursor: pointer; color: #64748b;">✖</button>
+        </div>
+
+        <div class="contest-section" style="border-left: 4px solid #4338ca;">
+            <h4 style="color: #4338ca;">💰 라인업 및 요금 (일시불 219만 / 구독 59,900원)</h4>
+            <ul class="contest-list">
+                <li><strong>오브제 스테이션 (프리스탠딩):</strong> 화이트 <br><span style="color:#555; font-size:12px;">👉 로봇청소기를 드러내고 자랑하고 싶은 고객님께 제안! (협탁형 디자인)</span></li>
+                <li style="margin-top:5px;"><strong>히든 스테이션 (자동급배수):</strong> 화이트 / 베이지 <br><span style="color:#555; font-size:12px;">👉 노출 없이 깔끔하게 숨겨서 사용하고 싶은 고객님께 제안! (초슬림 15cm 높이로 싱크대 밑 설치 가능)</span></li>
+            </ul>
+        </div>
+
+        <div style="display:flex; gap:10px;">
+            <div class="contest-section" style="flex:1;">
+                <h4>🔥 100℃ 무빙 스팀 (청소성능)</h4>
+                <ul class="contest-list">
+                    <li><strong>세계최초 실시간 100℃ 스팀:</strong> 찌든 때와 기름때까지 말끔하게!</li>
+                    <li><strong>초고속 예열:</strong> 단 30초 소요 (주행하면서 예열)</li>
+                    <li><strong>강력한 30W 흡입력:</strong> 카펫 속 먼지까지 흡입</li>
+                    <li><strong>AI 맞춤 청소:</strong> 사물 인식 및 최대 2cm 문턱 등반</li>
+                </ul>
+            </div>
+            <div class="contest-section" style="flex:1;">
+                <h4>✨ 위생 & 케어 솔루션</h4>
+                <ul class="contest-list">
+                    <li><strong>100℃ 살균 스팀:</strong> 스테이션 내 살균 스팀으로 유해균 <span class="highlight-text">99.99% 제거 및 탈취</span></li>
+                    <li><strong>온풍 건조:</strong> 약 40℃로 물걸레 건조</li>
+                    <li><strong>스테이션 컨디셔닝:</strong> 내부 상부 배기팬으로 습기를 외부로 배출해 쾌적함 유지</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="contest-section" style="margin-bottom: 0;">
+            <h4>🔒 LG만의 철저한 보안 솔루션 (안심 세일즈)</h4>
+            <ul class="contest-list">
+                <li><strong>물리적 보안:</strong> 청소 완료 후 스테이션에 복귀하면 <span class="highlight-text">도어가 닫혀 카메라 일상 노출 원천 차단!</span></li>
+                <li><strong>시스템 보안:</strong> 국가 공인 인증(PbD) 획득 및 LG Shield 적용으로 소중한 개인정보 철통 보호</li>
+            </ul>
+        </div>
+
+        <div class="security-actions" style="margin-top:20px;">
+            <button type="button" class="btn-security btn-security-primary" style="background:#4338ca;" onclick="closeRoniFeatureModal()">확인 (닫기)</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // RONi 특장점 모달 열기/닫기 함수
+    function openRoniFeatureModal() {
+        document.getElementById('roniFeatureOverlay').style.display = 'flex';
+    }
+
+    function closeRoniFeatureModal(event) {
+        if (event && event.target !== document.getElementById('roniFeatureOverlay') && event.target.tagName !== 'BUTTON' && event.type !== 'click') {
+            return;
+        }
+        document.getElementById('roniFeatureOverlay').style.display = 'none';
+    }
+</script>
 </body>
 </html>
