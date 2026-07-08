@@ -2601,12 +2601,10 @@
     };
 
     let modelRowVisible = true;
-
     function applyModelRowVisibility() {
         const table = document.getElementById('quoteTable');
         const btn = document.getElementById('toggleModelBtn');
         if (!table || !btn) return;
-
         if (modelRowVisible) {
             table.classList.remove('hide-model-row');
             btn.textContent = '모델명 숨기기';
@@ -2615,32 +2613,42 @@
             btn.textContent = '모델명 보이기';
         }
     }
-
     function toggleModelRowVisibility() {
         modelRowVisible = !modelRowVisible;
         applyModelRowVisibility();
     }
 
-    // 컨테스트 모달 열기/닫기 함수
+    // [컨테스트 모달]
     function openContestModal() {
         document.getElementById('contestOverlay').style.display = 'flex';
     }
-
     function closeContestModal(event) {
-        if (event && event.target !== document.getElementById('contestOverlay') && event.target.tagName !== 'BUTTON' && event.type !== 'click') {
-            return;
-        }
+        if (event && event.target !== document.getElementById('contestOverlay') && event.target.tagName !== 'BUTTON' && event.type !== 'click') return;
         document.getElementById('contestOverlay').style.display = 'none';
     }
-    // 🔍 상담 툴을 켰다 껐다 하는 기능입니다
+
+    // [RONi 상담 툴 내부 표시]
     function toggleRoniTool() {
         const panel = document.getElementById('roniToolPanel');
-        if (panel.style.display === 'none') {
-            panel.style.display = 'block';
-        } else {
-            panel.style.display = 'none';
-        }
+        panel.style.display = (panel.style.display === 'none') ? 'block' : 'none';
     }
+
+    // [RONi 특장점 팝업]
+    function openRoniFeatureModal() {
+        document.getElementById('roniFeatureOverlay').style.display = 'flex';
+    }
+    function closeRoniFeatureModal(event) {
+        if (event && event.target !== document.getElementById('roniFeatureOverlay') && event.target.tagName !== 'BUTTON' && event.type !== 'click') return;
+        document.getElementById('roniFeatureOverlay').style.display = 'none';
+    }
+
+    // 페이지 로드 시 초기화
+    window.onload = function() {
+        const firstBtn = document.querySelector('.tab-btn');
+        changeTab('tvCare', 'TV 케어', firstBtn);
+        initSecurity();
+        // ... (기존 입력창 이벤트 리스너 등)
+    };
 </script>
 
 <div class="security-overlay" id="contestOverlay" style="display:none;" onclick="closeContestModal(event)">
