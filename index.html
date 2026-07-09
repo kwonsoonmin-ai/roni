@@ -857,8 +857,8 @@
             <button type="button" class="btn-print btn-print-secondary" onclick="printAllPage()">전체 출력</button>
             <button type="button" class="btn-print btn-proposal" onclick="window.open('https://akohw1003.github.io/kangnam/gudok.html', '_blank')">구독 특화 제안서</button>
             <button type="button" class="btn-print btn-planner" onclick="window.open('https://akohw1003.github.io/kangnam/kyowon3', '_blank')">교원 플래너</button>
-            <button type="button" class="btn-print btn-contest" onclick="openContestModal()">🎁 7월 컨테스트</button>
-            <button type="button" class="btn-print btn-roni" style="background-color:#4338ca;" onclick="openRoniFeatureModal()">✨ 신모델 RONi 특장점</button>
+            <button type="button" class="btn-print btn-contest" onclick="openModal('contestOverlay')">🎁 7월 컨테스트</button>
+            <button type="button" class="btn-print btn-roni" style="background-color:#4338ca;" onclick="openModal('roniFeatureOverlay')">✨ 신모델 RONi 특장점</button>
         </div>
 
         <div class="gap-toolbar">
@@ -1036,7 +1036,7 @@
 <div class="app-meta" id="appMeta"></div>
 <div class="print-footer" id="printFooter"></div>
 
-<div class="security-overlay" id="cardQrModalOverlay" style="display:none;" onclick="closeCardQrModal(event)">
+<div class="security-overlay" id="cardQrModalOverlay" style="display:none;" onclick="closeModal('cardQrModalOverlay', event)">
     <div class="security-card" style="text-align: center; max-width: 320px;" onclick="event.stopPropagation()">
         <h3 id="cardQrModalTitle" style="margin-bottom: 5px; color: #2c3e50;">카드 발급</h3>
         <p id="cardQrModalPhone" style="font-weight: bold; font-size: 18px; color: #0056b3; margin-top: 0;"></p>
@@ -1046,7 +1046,7 @@
         
         <p style="font-size: 13px; color: #555; margin-bottom: 5px;">스마트폰 카메라로 스캔하세요.</p>
         <div class="security-actions" style="margin-top:20px;">
-            <button type="button" class="btn-security btn-security-secondary" onclick="closeCardQrModal()">닫기</button>
+            <button type="button" class="btn-security btn-security-secondary" onclick="closeModal('cardQrModalOverlay')">닫기</button>
         </div>
     </div>
 </div>
@@ -1337,6 +1337,26 @@
         notice: '내부전용 / 지점배포용'
     };
 
+    // 통합 팝업(모달) 열기 함수
+    function openModal(modalId) {
+        document.getElementById(modalId).style.display = 'flex';
+    }
+
+    // 통합 팝업(모달) 닫기 함수
+    function closeModal(modalId, event) {
+        // 배경을 클릭했을 때만 닫히도록 예외 처리
+        if (event && event.target !== document.getElementById(modalId) && event.target.tagName !== 'BUTTON' && event.type !== 'click') {
+            return;
+        }
+        document.getElementById(modalId).style.display = 'none';
+        
+        // 제휴카드 모달 닫을 때 QR 이미지 초기화
+        if (modalId === 'cardQrModalOverlay') {
+            const qrImage = document.getElementById('cardQrImage');
+            if (qrImage) qrImage.src = '';
+        }
+    }
+
     function getTodayYmd() {
         const now = new Date();
         const y = now.getFullYear();
@@ -1507,7 +1527,7 @@
         if (!htmlString) return '';
         let processedHtml = String(htmlString)
             .replace(/<br\s*[\/]?>/gi, '\n')                  
-            .replace(/<\/p>/gi, '\n')                      
+            .replace(/<\/p>/gi, '\n')                       
             .replace(/<\/div>/gi, '\n')
             .replace(/<\/li>/gi, '\n')
             .replace(/<li[^>]*>/gi, '\n');                 
@@ -2313,470 +2333,4 @@
             { id: 'wtx', name: '위생 관리, 시간 절약 등', period: '-', price: 0, desc: '기회비용 (최저시급 x 케어 시간)' }
         ],
         washCombo: [
-            { id: 'wc1', name: '센서/패킹/필터 세척 & 드럼/스팀케어', period: '6개월 / 12회', price: 390000, desc: '회당 65,000원 x 6회' },
-            { id: 'wc2', name: '배수필터 교체 서비스', period: '24개월 / 3회', price: 15600, desc: '회당 5,200원 x 3회' },
-            { id: 'wc3', name: '건조필터 무상교체', period: '최초 방문 시 1회', price: 44500, desc: '건조필터 가격' },
-            { id: 'wc4', name: '무상 A/S 제공', period: '계약기간', price: 110000, desc: '세탁기 평균 수리비용 기준' },
-            { id: 'wcx', name: '위생 관리, 시간 절약 등', period: '-', price: 0, desc: '기회비용 (최저시급 x 케어 시간)' }
-        ],
-        trommStandard: [
-            { id: 'ts1', name: '배수필터/고무패킹/내외부 클리닝/성능 작동 점검/수평 확인', period: '24개월 / 3회', price: 120000, desc: '세척 소모품 및 인건비' },
-            { id: 'ts2', name: '배수필터/고무패킹 교체', period: '48개월 / 1회', price: 64500, desc: '배수필터 + 고무패킹 가격' },
-            { id: 'ts3', name: '세척조 클리너 제공', period: '48개월 / 1회', price: 7000, desc: '클리너 가격' },
-            { id: 'ts4', name: '분해 세척(스팀 및 UV 관리)', period: '48개월 / 1회', price: 195000, desc: '서비스 비용' },
-            { id: 'ts5', name: '무상 A/S 제공', period: '계약기간', price: 110000, desc: '세탁기 평균 수리비용 기준' },
-            { id: 'tsx', name: '위생 관리, 시간 절약 등', period: '-', price: 0, desc: '기회비용(최저시급 x 셀프케어 시간)' }
-        ],
-        trommLight: [
-            { id: 'tl1', name: '배수필터/고무패킹/내외부 클리닝/스팀 관리/', period: '6개월 / 12회', price: 480000, desc: '세척 소모품 및 인건비' },
-            { id: 'tl2', name: '배수필터/고무패킹/내외부 클리닝/스팀 관리/', period: '12개월 / 6회', price: 240000, desc: '세척 소모품 및 인건비' },
-            { id: 'tl3', name: '배수필터교체', period: '24개월 / 1회', price: 15000, desc: '배수필터 가격' },
-            { id: 'tl4', name: '무상 A/S 제공', period: '계약기간', price: 110000, desc: '세탁기 평균 수리비용 기준' },
-            { id: 'tlx', name: '위생 관리, 시간 절약 등', period: '-', price: 0, desc: '기회비용(최저시급 x 셀프케어 시간)' }
-        ],
-        dryer: [
-            { id: 'dr1', name: '먼지/배수물통 세척 & 내외부 클리닝', period: '6개월 / 12회', price: 240000, desc: '세척 소모품 및 인건비' },
-            { id: 'dr2', name: '2중 안심필터 제공', period: '최초 방문 1회', price: 36500, desc: '2중 안심필터 가격' },
-            { id: 'dr3', name: '무상 A/S 제공', period: '계약기간', price: 110000, desc: '세탁기 평균 수리비용 기준' },
-            { id: 'drx', name: '위생 관리, 시간 절약 등', period: '-', price: 0, desc: '기회비용 (최저시급 x 케어 시간)' }
-        ],
-        tvCare: [
-            { id: 'tv1', name: 'QNED 86형/85시리즈(패널 고장 무상A/S)', period: '계약기간 내 고장시', price: 2060000, desc: '패널 교체 기준가 약 206만원' },
-            { id: 'tv2', name: 'OLED 83형/G시리즈(패널 고장 무상A/S)', period: '계약기간 내 고장시', price: 3770000, desc: '패널 교체 기준가 약 377만원' },
-            { id: 'tv3', name: 'OLED 77형/G시리즈(패널 고장 무상A/S)', period: '계약기간 내 고장시', price: 2990000, desc: '패널 교체 기준가 약 299만원' },
-            { id: 'tv4', name: 'OLED 77형/B시리즈(패널 고장 무상A/S)', period: '계약기간 내 고장시', price: 2300000, desc: '패널 교체 기준가 약 230만원' },
-            { id: 'tv5', name: 'OLED 65형(패널 고장 무상A/S)', period: '계약기간 내 고장시', price: 1500000, desc: '패널 교체 기준가 약 150만원' },
-            { id: 'tv6', name: 'OLED 55형(패널 고장 무상A/S)', period: '계약기간 내 고장시', price: 1200000, desc: '패널 교체 기준가 약 120만원' },
-            { id: 'tv7', name: '70인치 이상 무상 설치지원', period: '계약기간 內 1회', price: 128000, desc: '70형대 벽걸이 설치 기준 (철거비/운송비 제외)' },
-            { id: 'tv8', name: '80인치 이상 무상 설치지원', period: '계약기간 內 1회', price: 204000, desc: '80형대 벽걸이 설치 기준 (철거비/운송비 제외)' }
-        ],
-        massageChair: [
-            { id: 'mc1', name: '가죽 교체 서비스', period: '12개월 / 6회', price: 278500, desc: '발 가죽 교체(30,000원) x 3회 + 베개, 등, 엉덩이 가죽교체(188,500원) x 1회' },
-            { id: 'mc2', name: '제품 토탈 클리닝 / 동작 및 제품 성능점검', period: '12개월 / 6회', price: 345600, desc: '케어십 요금 4,800원 x 72개월' },
-            { id: 'mc3', name: '무상 A/S 제공', period: '계약기간', price: 250000, desc: '안마의자 1회 평균 수리 비용 기준' },
-            { id: 'mcx', name: '위생 관리, 시간 절약 등', period: '-', price: 0, desc: '기회비용 (최저시급 x 케어 시간)' }
-        ]
-    };
-
-    let checkedState = {};
-    let currentCareTitle = '';
-
-    function renderPrintSelectedCareTable() {
-        const tbody = document.getElementById('printSelectedCareBody');
-        const selectedItems = [];
-
-        for (const key in checkedState) {
-            const item = checkedState[key];
-            if (item && item.checked) selectedItems.push(item);
-        }
-
-        if (!selectedItems.length) {
-            tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;">선택된 항목 없음</td></tr>';
-            return;
-        }
-
-        tbody.innerHTML = selectedItems.map(item => `
-            <tr>
-                <td class="text-left">${item.category ? item.category + ' : ' : ''}${item.name}</td>
-                <td>${item.period || '-'}</td>
-                <td class="text-right">${item.price === 0 ? '별도 산정' : fn(item.price) + '원'}</td>
-                <td class="text-left">${item.desc || '-'}</td>
-            </tr>
-        `).join('');
-    }
-
-    function calculateCareTotal() {
-        let totalVal = 0;
-        const selectedLines = [];
-
-        for (const key in checkedState) {
-            const item = checkedState[key];
-            if (item && item.checked) {
-                totalVal += item.price;
-                const prefix = item.category ? `${item.category} : ` : '';
-                selectedLines.push(`• ${prefix}${item.name} ${item.price === 0 ? '(별도 산정)' : '(' + fn(item.price) + '원)'}`);
-            }
-        }
-
-        document.getElementById('selectedItemsList').innerText = selectedLines.length ? selectedLines.join('\n') : '선택된 항목 없음';
-        document.getElementById('totalValue').innerText = fn(totalVal);
-        renderPrintSelectedCareTable();
-    }
-
-    function toggleCheck(id, price, name, category, period, desc, cb, row) {
-        checkedState[id] = cb.checked ? { checked: true, price: price, name: name, category: category, period: period, desc: desc } : false;
-        if (cb.checked) row.classList.remove('disabled-row');
-        else row.classList.add('disabled-row');
-        calculateCareTotal();
-    }
-
-    function clearSelectedItems() {
-        checkedState = {};
-        document.querySelectorAll('#careTableBody input[type="checkbox"]').forEach(cb => {
-            cb.checked = false;
-            const row = cb.closest('tr');
-            if (row) row.classList.add('disabled-row');
-        });
-        calculateCareTotal();
-    }
-
-    function changeTab(category, titleName, btn) {
-        document.querySelectorAll('.tab-btn:not(.video-btn)').forEach(b => b.classList.remove('active'));
-        if (btn) btn.classList.add('active');
-
-        currentCareTitle = titleName;
-        document.getElementById('dashboardTitle').innerText = '✨ 구독 Care 비용';
-
-        const tbody = document.getElementById('careTableBody');
-        tbody.innerHTML = '';
-
-        careData[category].forEach(item => {
-            const isChecked = !!(checkedState[item.id] && checkedState[item.id].checked);
-            const tr = document.createElement('tr');
-            if (!isChecked) tr.classList.add('disabled-row');
-
-            const safeName = String(item.name).replace(/'/g, "\'");
-            const safeTitle = String(titleName).replace(/'/g, "\'");
-            const safePeriod = String(item.period).replace(/'/g, "\\'");
-            const safeDesc = String(item.desc).replace(/'/g, "\\'");
-            tr.innerHTML = `<td class="checkbox-cell"><input type="checkbox" style="width:18px;height:18px; cursor:pointer;" onchange="toggleCheck('${item.id}', ${item.price}, '${safeName}', '${safeTitle}', '${safePeriod}', '${safeDesc}', this, this.parentElement.parentElement)" ${isChecked ? 'checked' : ''}></td>
-                <td class="text-left" style="color:#0056b3; font-weight:bold;">${item.name}</td><td>${item.period}</td>
-                <td class="text-right" style="font-weight:bold;">${item.price === 0 ? "별도 산정" : fn(item.price) + "원"}</td><td class="text-left" style="font-size:11px; color:#555;">${item.desc}</td>`;
-            tbody.appendChild(tr);
-        });
-    }
-
-    function resetPrintModes() {
-        document.body.classList.remove('print-estimate');
-        document.body.classList.remove('print-care');
-        document.body.classList.remove('print-all');
-    }
-
-    function applyAutoFitZoom() {
-        const panel = document.getElementById('estimatePanel');
-        const table = document.getElementById('quoteTable');
-        if (!panel || !table) return;
-
-        panel.style.zoom = '1'; 
-
-        const A4_MAX_HEIGHT = 980;
-        const printContentHeight = table.offsetHeight + 150;
-
-        if (printContentHeight > A4_MAX_HEIGHT) {
-            const zoomRatio = (A4_MAX_HEIGHT / printContentHeight) * 0.98;
-            panel.style.zoom = zoomRatio;
-        }
-    }
-
-    function removeAutoFitZoom() {
-        const panel = document.getElementById('estimatePanel');
-        if (panel) panel.style.zoom = '1'; 
-    }
-
-    function printEstimate() {
-        updateAppMeta();
-        resetPrintModes();
-        document.body.classList.add('print-estimate');
-        
-        applyAutoFitZoom(); 
-
-        setTimeout(() => {
-            window.print();
-            setTimeout(() => {
-                resetPrintModes();
-                removeAutoFitZoom(); 
-            }, 300);
-        }, 50);
-    }
-
-    function printCare() {
-        updateAppMeta();
-        resetPrintModes();
-        document.body.classList.add('print-care');
-        window.print();
-        setTimeout(() => resetPrintModes(), 300);
-    }
-
-    function printAllPage() {
-        updateAppMeta();
-        resetPrintModes();
-        document.body.classList.add('print-all');
-        
-        applyAutoFitZoom(); 
-
-        setTimeout(() => {
-            window.print();
-            setTimeout(() => {
-                resetPrintModes();
-                removeAutoFitZoom(); 
-            }, 300);
-        }, 50);
-    }
-
-    const cardData = {
-        'shinhan': { 
-            title: '[신한] 더구독케어', 
-            phone: '080-850-0117', 
-            url: 'https://www.shinhancard.com/pconts/html/card/apply/credit/1234346_2207.html?EntryLoc2=4441&btnApp=dp1',
-            benefits: '30만 ↑ 1.7만<br>70만 ↑ 2.7만<br>130만 ↑ 3.0만<br><span style="font-size:11px; color:#888;">*70만/130만 혜택은 7만원 이상 자동이체시 적용</span>'
-        },
-        'woori_plat': { 
-            title: '[우리] 플래티넘', 
-            phone: '1800-0864', 
-            url: 'https://m.wooricard.com/dcmw/yh1/crd/crd01/M1CRD101S02.do?recomNo=104169',
-            benefits: '100만 ↑ 3.5만<br>150만 ↑ 3.9만<br>200만 ↑ 4.2만'
-        },
-        'woori': { 
-            title: '[우리] LG전자', 
-            phone: '1800-4137', 
-            url: 'https://m.wooricard.com/dcmw/yh1/crd/crd01/M1CRD101S02.do?recomNo=102535',
-            benefits: '30만 ↑ 1.8만<br>70만 ↑ 2.2만<br>120만 ↑ 2.4만'
-        },
-        'lotte': { 
-            title: '[롯데] 구독엔로카', 
-            phone: '1577-9469', 
-            url: 'https://m.lottecard.co.kr/spa/card/booth?bId=96417&vtCdKndC=P15666-A15666',
-            benefits: '40만 ↑ 2.0만<br>80만 ↑ 2.3만<br>160만 ↑ 2.6만'
-        },
-        'kb': { 
-            title: '[KB국민] LG전자 KB국민', 
-            phone: '1644-8639', 
-            url: 'https://m.kbcard.com/CRD/DVIEW/MCAMCXHIACRC0002?mainCC=b&allianceCode=04425',
-            benefits: '<b>[프로모션 운영 / 36개월간]</b><br>30만 ↑ 2.0만<br>80만 ↑ 2.5만<br><span style="font-size:11px; color:#888;">* 37회차부터는 기본 혜택(1.0만/1.5만)만 적용</span>'
-        },
-        'hyundai': { 
-            title: '[현대] LG전자 현대', 
-            phone: '1670-0442', 
-            url: 'https://www.hyundaicard.com/cpc/cr/CPCCR0201_01.hc?cardWcd=LGEHC&eventCode=LGR03#cardDetailHash',
-            benefits: '<b>[프로모션 운영 / 60개월간]</b><br>40만 ↑ 0.8만<br>80만 ↑ 1.2만<br>120만 ↑ 1.6만'
-        },
-        'hana': { 
-            title: '[하나] LG전자', 
-            phone: '1800-1264', 
-            url: 'https://m.hanacard.co.kr/MKCDCM1010M.web?CD_PD_SEQ=16959',
-            benefits: '30만 ↑ 1.3만<br>70만 ↑ 1.7만<br>100만 ↑ 2.0만'
-        }
-    };
-
-    function openCardQrModal(cardKey) {
-        const data = cardData[cardKey];
-        if(!data) return;
-        
-        document.getElementById('cardQrModalTitle').innerText = data.title;
-        document.getElementById('cardQrModalPhone').innerText = '발급 ARS: ' + data.phone;
-        document.getElementById('cardQrModalBenefits').innerHTML = data.benefits;
-        
-        const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=160x160&margin=0&data=${encodeURIComponent(data.url)}`;
-        document.getElementById('cardQrImage').src = qrUrl;
-        
-        document.getElementById('cardQrModalOverlay').style.display = 'flex';
-    }
-
-    function closeCardQrModal(event) {
-        if (event && event.target !== document.getElementById('cardQrModalOverlay') && event.target.tagName !== 'BUTTON') {
-            return;
-        }
-        document.getElementById('cardQrModalOverlay').style.display = 'none';
-        document.getElementById('cardQrImage').src = ''; 
-    }
-
-    window.onload = function() {
-        const firstBtn = document.querySelector('.tab-btn');
-        changeTab('tvCare', 'TV 케어', firstBtn);
-        initSecurity();
-
-        const idInput = document.getElementById('empIdInput');
-        const birthInput = document.getElementById('empBirthInput');
-        
-        if (idInput) {
-            idInput.addEventListener('keydown', function(e) {
-                if (e.key === 'Enter') birthInput.focus();
-            });
-        }
-        if (birthInput) {
-            birthInput.addEventListener('keydown', function(e) {
-                if (e.key === 'Enter') validateAccess();
-            });
-        }
-    };
-
-    let modelRowVisible = true;
-    function applyModelRowVisibility() {
-        const table = document.getElementById('quoteTable');
-        const btn = document.getElementById('toggleModelBtn');
-        if (!table || !btn) return;
-        if (modelRowVisible) {
-            table.classList.remove('hide-model-row');
-            btn.textContent = '모델명 숨기기';
-        } else {
-            table.classList.add('hide-model-row');
-            btn.textContent = '모델명 보이기';
-        }
-    }
-    function toggleModelRowVisibility() {
-        modelRowVisible = !modelRowVisible;
-        applyModelRowVisibility();
-    }
-
-    // [컨테스트 모달]
-    function openContestModal() {
-        document.getElementById('contestOverlay').style.display = 'flex';
-    }
-    function closeContestModal(event) {
-        if (event && event.target !== document.getElementById('contestOverlay') && event.target.tagName !== 'BUTTON' && event.type !== 'click') return;
-        document.getElementById('contestOverlay').style.display = 'none';
-    }
-
-    // [RONi 상담 툴 내부 표시]
-    function toggleRoniTool() {
-        const panel = document.getElementById('roniToolPanel');
-        panel.style.display = (panel.style.display === 'none') ? 'block' : 'none';
-    }
-
-    // [RONi 특장점 팝업]
-    function openRoniFeatureModal() {
-        document.getElementById('roniFeatureOverlay').style.display = 'flex';
-    }
-    function closeRoniFeatureModal(event) {
-        if (event && event.target !== document.getElementById('roniFeatureOverlay') && event.target.tagName !== 'BUTTON' && event.type !== 'click') return;
-        document.getElementById('roniFeatureOverlay').style.display = 'none';
-    }
-
-    // 페이지 로드 시 초기화
-    window.onload = function() {
-        const firstBtn = document.querySelector('.tab-btn');
-        changeTab('tvCare', 'TV 케어', firstBtn);
-        initSecurity();
-        // ... (기존 입력창 이벤트 리스너 등)
-    };
-</script>
-
-<div class="security-overlay" id="contestOverlay" style="display:none;" onclick="closeContestModal(event)">
-    <div class="contest-card" onclick="event.stopPropagation()">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-            <h3 style="margin: 0; font-size: 18px; color: #1e293b;">🏆 7월 경남담당 컨테스트 현황</h3>
-            <button type="button" onclick="closeContestModal()" style="background: none; border: none; font-size: 20px; cursor: pointer; color: #64748b;">✖</button>
-        </div>
-
-        <div class="contest-section">
-            <h4>1. 선납 구독 / 바스에어 Contest</h4>
-            <ul class="contest-list">
-                <li><strong>기간:</strong> '26. 7. 1(수) ~ 7. 12(일), 12일 간</li>
-                <li><strong>조건:</strong> 동일 고객 선납금액 합산 500만원 이상</li>
-                <li><strong>시상:</strong> 선납구독 판매 시 건당 <span class="highlight-text">2만원</span></li>
-                <li><strong>추가 혜택:</strong> 위 조건 달성 + 바스에어 구독 시 <span class="highlight-text">+2만원 추가 시상</span></li>
-            </ul>
-        </div>
-
-        <div class="contest-section">
-            <h4>2. 총판 판매활성화 컨테스트</h4>
-            <ul class="contest-list">
-                <li><strong>기간:</strong> '26. 7. 1(수) ~ 7. 12(일), 12일 간</li>
-                <li><strong>목표:</strong> 7월 12일까지 200억↑ 달성</li>
-                <li><strong>시상 (리그별 상위점 판촉비):</strong>
-                    <ul>
-                        <li>G/P리그: 1위 117만 ~ 4위 60만</li>
-                        <li>S/A리그: 1위 87만 ~ 5위 40만</li>
-                        <li>B/C리그: 1위 67만 ~ 3위 40만</li>
-                    </ul>
-                </li>
-                <li><strong>추가 혜택:</strong> 상위점 중 구독 비중 70% 이상 시 <span class="highlight-text">+70만원 추가 지급</span></li>
-            </ul>
-        </div>
-
-        <div class="contest-section">
-            <h4>3. 에어컨 판매 활성화 (권역별 대전)</h4>
-            <ul class="contest-list">
-                <li><strong>기간:</strong> '26. 7. 1(수) ~ 7. 12(일), 12일 간</li>
-                <li><strong>시상:</strong> 권역별 달성률 상위 1~3등 스퀘어가든 써큘레이터 시상</li>
-                <li><strong>점수 기준:</strong> 에어컨(스탠드) 1대=1점 / 타제품+1대=2점 / 바스에어+5점</li>
-            </ul>
-        </div>
-       
-        <div class="contest-section" style="border-left: 4px solid #d97706;">
-            <h4 style="color: #d97706;">4. 에어컨 + 바스에어 / RONi 구독 Contest</h4>
-            <ul class="contest-list">
-                <li><strong>기간:</strong> '26. 7. 8(수) ~ 7. 31(금), 24일 간</li>
-                <li><strong>조건:</strong> 에어컨 + 바스에어 또는 에어컨 + RONi 구독 판매 시</li>
-                <li><strong>시상:</strong> 건당 <span class="highlight-text">2만원</span> 개인 시상</li>
-                <li><strong>비고:</strong> 동일고객에게 에어컨+바스에어+RONi 모두 구독 판매 시 <span class="highlight-text">4만원</span> 지급</li>
-            </ul>
-        </div>
-
-                <div class="contest-section" style="border-left: 4px solid #059669;">
-            <h4 style="color: #059669;">5. 바스에어 / RONi 픽업 판매 활성화</h4>
-            <ul class="contest-list">
-                <li><strong>기간:</strong> '26. 7. 8(수) ~ 7. 31(금), 22일 간</li>
-                <li><strong>조건:</strong> 동일 고객 바스에어 / RONi 픽업 시 (M메신저 공유 필수)</li>
-                <li><strong>시상:</strong> Best Point <span class="highlight-text">30,000원</span> 지원 (선착순)</li>
-            </ul>
-
-        <div class="security-actions" style="margin-top:20px;">
-            <button type="button" class="btn-security btn-security-primary" onclick="closeContestModal()">확인</button>
-        </div>
-    </div>
-</div>
-    <div class="security-overlay" id="roniFeatureOverlay" style="display:none;" onclick="closeRoniFeatureModal(event)">
-    <div class="contest-card" style="max-width: 700px;" onclick="event.stopPropagation()">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-            <h3 style="margin: 0; font-size: 18px; color: #1e293b;">🤖 신모델 RONi (LG HOM-BOT) 상담 포인트</h3>
-            <button type="button" onclick="closeRoniFeatureModal()" style="background: none; border: none; font-size: 20px; cursor: pointer; color: #64748b;">✖</button>
-        </div>
-
-        <div class="contest-section" style="border-left: 4px solid #4338ca;">
-            <h4 style="color: #4338ca;">💰 라인업 및 요금 (일시불 219만 / 구독 59,900원)</h4>
-            <ul class="contest-list">
-                <li><strong>오브제 스테이션 (프리스탠딩):</strong> 화이트 <br><span style="color:#555; font-size:12px;">👉 로봇청소기를 드러내고 자랑하고 싶은 고객님께 제안! (협탁형 디자인)</span></li>
-                <li style="margin-top:5px;"><strong>히든 스테이션 (자동급배수):</strong> 화이트 / 베이지 <br><span style="color:#555; font-size:12px;">👉 노출 없이 깔끔하게 숨겨서 사용하고 싶은 고객님께 제안! (초슬림 15cm 높이로 싱크대 밑 설치 가능)</span></li>
-            </ul>
-        </div>
-
-        <div style="display:flex; gap:10px;">
-            <div class="contest-section" style="flex:1;">
-                <h4>🔥 100℃ 무빙 스팀 (청소성능)</h4>
-                <ul class="contest-list">
-                    <li><strong>세계최초 실시간 100℃ 스팀:</strong> 찌든 때와 기름때까지 말끔하게!</li>
-                    <li><strong>초고속 예열:</strong> 단 30초 소요 (주행하면서 예열)</li>
-                    <li><strong>강력한 30W 흡입력:</strong> 카펫 속 먼지까지 흡입</li>
-                    <li><strong>AI 맞춤 청소:</strong> 사물 인식 및 최대 2cm 문턱 등반</li>
-                </ul>
-            </div>
-            <div class="contest-section" style="flex:1;">
-                <h4>✨ 위생 & 케어 솔루션</h4>
-                <ul class="contest-list">
-                    <li><strong>100℃ 살균 스팀:</strong> 스테이션 내 살균 스팀으로 유해균 <span class="highlight-text">99.99% 제거 및 탈취</span></li>
-                    <li><strong>온풍 건조:</strong> 약 40℃로 물걸레 건조</li>
-                    <li><strong>스테이션 컨디셔닝:</strong> 내부 상부 배기팬으로 습기를 외부로 배출해 쾌적함 유지</li>
-                </ul>
-            </div>
-        </div>
-
-        <div class="contest-section" style="margin-bottom: 0;">
-            <h4>🔒 LG만의 철저한 보안 솔루션 (안심 세일즈)</h4>
-            <ul class="contest-list">
-                <li><strong>물리적 보안:</strong> 청소 완료 후 스테이션에 복귀하면 <span class="highlight-text">도어가 닫혀 카메라 일상 노출 원천 차단!</span></li>
-                <li><strong>시스템 보안:</strong> 국가 공인 인증(PbD) 획득 및 LG Shield 적용으로 소중한 개인정보 철통 보호</li>
-            </ul>
-        </div>
-
-        <div class="security-actions" style="margin-top:20px;">
-            <button type="button" class="btn-security btn-security-primary" style="background:#4338ca;" onclick="closeRoniFeatureModal()">확인 (닫기)</button>
-        </div>
-    </div>
-</div>
-
-<script>
-    // RONi 특장점 모달 열기/닫기 함수
-    function openRoniFeatureModal() {
-        document.getElementById('roniFeatureOverlay').style.display = 'flex';
-    }
-
-    function closeRoniFeatureModal(event) {
-        if (event && event.target !== document.getElementById('roniFeatureOverlay') && event.target.tagName !== 'BUTTON' && event.type !== 'click') {
-            return;
-        }
-        document.getElementById('roniFeatureOverlay').style.display = 'none';
-    }
-</script>
-</body>
-</html>
+            { id: 'wc1', name: '센서/
