@@ -723,7 +723,7 @@
 
             .warning-red-header {
                 background-color: #f8f9fa !important;
-                color: #333 !important;             
+                color: #333 !important;              
                 border: 1px solid #ddd !important;  
             }
 
@@ -792,7 +792,7 @@
                 margin-bottom: 0;
             }
         }
-    
+        
         .result-toolbar {
             display: flex;
             justify-content: flex-end;
@@ -857,11 +857,8 @@
             <button type="button" class="btn-print btn-print-secondary" onclick="printAllPage()">전체 출력</button>
             <button type="button" class="btn-print btn-proposal" onclick="window.open('https://akohw1003.github.io/kangnam/gudok.html', '_blank')">구독 특화 제안서</button>
             <button type="button" class="btn-print btn-planner" onclick="window.open('https://akohw1003.github.io/kangnam/kyowon3', '_blank')">교원 플래너</button>
-            <!-- 새로 추가된 버튼 -->
-            <button type="button" class="btn-print btn-roni" onclick="window.open('roni.html', '_blank')">RONi 상담 툴</button>
-            <!-- 새로 추가된 버튼 -->
-            <button type="button" class="btn-print btn-roni" onclick="window.open('roni.html', '_blank')">RONi 상담 툴</button>
-            <button type="button" class="btn-print btn-contest" onclick="openContestModal()">🎁 7월 컨테스트</button>
+            <button type="button" class="btn-print btn-contest" onclick="openModal('contestOverlay')">🎁 7월 컨테스트</button>
+            <button type="button" class="btn-print btn-roni" style="background-color:#4338ca;" onclick="openModal('roniFeatureOverlay')">✨ 신모델 RONi 특장점</button>
         </div>
 
         <div class="gap-toolbar">
@@ -899,6 +896,10 @@
                 <tbody id="quoteTbody"></tbody>
             </table>
         </div>
+        <div id="roniToolPanel" class="panel" style="display:none; margin-top: 20px;">
+    <h2>🤖 RONi 상담 툴</h2>
+    <iframe src="roni.html" style="width:100%; height: 700px; border:none;"></iframe>
+</div>
     </div>
 
     <div class="right-column">
@@ -1035,7 +1036,7 @@
 <div class="app-meta" id="appMeta"></div>
 <div class="print-footer" id="printFooter"></div>
 
-<div class="security-overlay" id="cardQrModalOverlay" style="display:none;" onclick="closeCardQrModal(event)">
+<div class="security-overlay" id="cardQrModalOverlay" style="display:none;" onclick="closeModal('cardQrModalOverlay', event)">
     <div class="security-card" style="text-align: center; max-width: 320px;" onclick="event.stopPropagation()">
         <h3 id="cardQrModalTitle" style="margin-bottom: 5px; color: #2c3e50;">카드 발급</h3>
         <p id="cardQrModalPhone" style="font-weight: bold; font-size: 18px; color: #0056b3; margin-top: 0;"></p>
@@ -1045,7 +1046,7 @@
         
         <p style="font-size: 13px; color: #555; margin-bottom: 5px;">스마트폰 카메라로 스캔하세요.</p>
         <div class="security-actions" style="margin-top:20px;">
-            <button type="button" class="btn-security btn-security-secondary" onclick="closeCardQrModal()">닫기</button>
+            <button type="button" class="btn-security btn-security-secondary" onclick="closeModal('cardQrModalOverlay')">닫기</button>
         </div>
     </div>
 </div>
@@ -1069,7 +1070,7 @@
     // 🚨 사번 및 생년월일 데이터 (인원 현황 전체 업데이트 완료)
     // =========================================================
     const MANAGER_DATA = {
-         "17703": { birth: "coalstlr", name: "채민식", branch: "경남담당" },
+        "17703": { birth: "coalstlr", name: "채민식", branch: "경남담당" },
         "52240": { birth: "dldudwls", name: "이영진", branch: "경남담당" },
         "17352": { birth: "whtjdgns", name: "조성훈", branch: "경남담당" },
         "18288": { birth: "rhkrwkdtjq", name: "곽장섭", branch: "경남담당" },
@@ -1336,6 +1337,26 @@
         notice: '내부전용 / 지점배포용'
     };
 
+    // 통합 팝업(모달) 열기 함수
+    function openModal(modalId) {
+        document.getElementById(modalId).style.display = 'flex';
+    }
+
+    // 통합 팝업(모달) 닫기 함수
+    function closeModal(modalId, event) {
+        // 배경을 클릭했을 때만 닫히도록 예외 처리
+        if (event && event.target !== document.getElementById(modalId) && event.target.tagName !== 'BUTTON' && event.type !== 'click') {
+            return;
+        }
+        document.getElementById(modalId).style.display = 'none';
+        
+        // 제휴카드 모달 닫을 때 QR 이미지 초기화
+        if (modalId === 'cardQrModalOverlay') {
+            const qrImage = document.getElementById('cardQrImage');
+            if (qrImage) qrImage.src = '';
+        }
+    }
+
     function getTodayYmd() {
         const now = new Date();
         const y = now.getFullYear();
@@ -1506,7 +1527,7 @@
         if (!htmlString) return '';
         let processedHtml = String(htmlString)
             .replace(/<br\s*[\/]?>/gi, '\n')                  
-            .replace(/<\/p>/gi, '\n')                      
+            .replace(/<\/p>/gi, '\n')                       
             .replace(/<\/div>/gi, '\n')
             .replace(/<\/li>/gi, '\n')
             .replace(/<li[^>]*>/gi, '\n');                 
@@ -1771,7 +1792,7 @@
 
     function normalizeModelLine(text) {
         return String(text || '')
-            .replace(/\s+/g, ' ')               
+            .replace(/\s+/g, ' ')                
             .replace(/\s*\[구독\]/gi, ' [구독]') 
             .trim();
     }
@@ -2310,7 +2331,7 @@
             { id: 'wt4', name: '설치/철거 무상 제공', period: '계약기간 內 1회', price: 220000, desc: '무상 철거 및 재설치 총합' },
             { id: 'wt5', name: '무상 A/S 제공', period: '계약기간', price: 110000, desc: '세탁기 평균 수리비용 기준' },
             { id: 'wtx', name: '위생 관리, 시간 절약 등', period: '-', price: 0, desc: '기회비용 (최저시급 x 케어 시간)' }
-        ],
+       ],
         washCombo: [
             { id: 'wc1', name: '센서/패킹/필터 세척 & 드럼/스팀케어', period: '6개월 / 12회', price: 390000, desc: '회당 65,000원 x 6회' },
             { id: 'wc2', name: '배수필터 교체 서비스', period: '24개월 / 3회', price: 15600, desc: '회당 5,200원 x 3회' },
@@ -2615,144 +2636,11 @@
         }
     }
 
-    <div class="security-overlay" id="contestOverlay" style="display:none;" onclick="closeContestModal(event)">
-    <div class="contest-card" onclick="event.stopPropagation()">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-            <h3 style="margin: 0; font-size: 18px; color: #1e293b;">🏆 7월 경남담당 컨테스트 현황</h3>
-            <button type="button" onclick="closeContestModal()" style="background: none; border: none; font-size: 20px; cursor: pointer; color: #64748b;">✖</button>
-        </div>
-
-        <!-- 컨테스트 1 -->
-        <div class="contest-section">
-            <h4>1. 선납 구독 / 바스에어 Contest</h4>
-            <ul class="contest-list">
-                <li><strong>기간:</strong> '26. 7. 1(수) ~ 7. 12(일), 12일 간</li>
-                <li><strong>조건:</strong> 동일 고객 선납금액 합산 500만원 이상</li>
-                <li><strong>시상:</strong> 선납구독 판매 시 건당 <span class="highlight-text">2만원</span></li>
-                <li><strong>추가 혜택:</strong> 위 조건 달성 + 바스에어 구독 시 <span class="highlight-text">+2만원 추가 시상</span></li>
-            </ul>
-        </div>
-
-        <!-- 컨테스트 2 -->
-        <div class="contest-section">
-            <h4>2. 총판 판매활성화 컨테스트</h4>
-            <ul class="contest-list">
-                <li><strong>기간:</strong> '26. 7. 1(수) ~ 7. 12(일), 12일 간</li>
-                <li><strong>목표:</strong> 7월 12일까지 200억↑ 달성</li>
-                <li><strong>시상 (리그별 상위점 판촉비):</strong>
-                    <ul>
-                        <li>G/P리그: 1위 117만 ~ 4위 60만</li>
-                        <li>S/A리그: 1위 87만 ~ 5위 40만</li>
-                        <li>B/C리그: 1위 67만 ~ 3위 40만</li>
-                    </ul>
-                </li>
-                <li><strong>추가 혜택:</strong> 상위점 중 구독 비중 70% 이상 시 <span class="highlight-text">+70만원 추가 지급</span></li>
-            </ul>
-        </div>
-
-        <!-- 컨테스트 3 -->
-        <div class="contest-section">
-            <h4>3. 에어컨 판매 활성화 (권역별 대전)</h4>
-            <ul class="contest-list">
-                <li><strong>기간:</strong> '26. 7. 1(수) ~ 7. 12(일), 12일 간</li>
-                <li><strong>시상:</strong> 권역별 달성률 상위 1~3등 스퀘어가든 써큘레이터 시상</li>
-                <li><strong>점수 기준 (에어컨 스탠드 구독 기준):</strong>
-                    <ul>
-                        <li>에어컨(스탠드) 1대 = 1점</li>
-                        <li>에어컨(스탠드) + 타제품 1대 = 2점</li>
-                        <li>에어컨(스탠드) + <span class="highlight-text">바스에어</span> = <span class="highlight-text">5점</span></li>
-                    </ul>
-                </li>
-            </ul>
-        </div>
-
-        <div class="security-actions" style="margin-top:20px;">
-            <button type="button" class="btn-security btn-security-primary" onclick="closeContestModal()">확인</button>
-        </div>
-    </div>
-</div>
-</script>
-    // 컨테스트 모달 열기/닫기 함수
-    function openContestModal() {
-        document.getElementById('contestOverlay').style.display = 'flex';
-    }
-
-    function closeContestModal(event) {
-        if (event && event.target !== document.getElementById('contestOverlay') && event.target.tagName !== 'BUTTON' && event.type !== 'click') {
-            return;
-        }
-        document.getElementById('contestOverlay').style.display = 'none';
-    }
-function toggleModelRowVisibility() {
+    function toggleModelRowVisibility() {
         modelRowVisible = !modelRowVisible;
         applyModelRowVisibility();
     }
 
-    // 컨테스트 모달 열기/닫기 함수
-    function openContestModal() {
-        document.getElementById('contestOverlay').style.display = 'flex';
-    }
-
-    function closeContestModal(event) {
-        if (event && event.target !== document.getElementById('contestOverlay') && event.target.tagName !== 'BUTTON' && event.type !== 'click') {
-            return;
-        }
-        document.getElementById('contestOverlay').style.display = 'none';
-    }
 </script>
-
-<div class="security-overlay" id="contestOverlay" style="display:none;" onclick="closeContestModal(event)">
-    <div class="contest-card" onclick="event.stopPropagation()">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-            <h3 style="margin: 0; font-size: 18px; color: #1e293b;">🏆 7월 경남담당 컨테스트 현황</h3>
-            <button type="button" onclick="closeContestModal()" style="background: none; border: none; font-size: 20px; cursor: pointer; color: #64748b;">✖</button>
-        </div>
-
-                <div class="contest-section">
-            <h4>1. 선납 구독 / 바스에어 Contest</h4>
-            <ul class="contest-list">
-                <li><strong>기간:</strong> '26. 7. 1(수) ~ 7. 12(일), 12일 간</li>
-                <li><strong>조건:</strong> 동일 고객 선납금액 합산 500만원 이상</li>
-                <li><strong>시상:</strong> 선납구독 판매 시 건당 <span class="highlight-text">2만원</span></li>
-                <li><strong>추가 혜택:</strong> 위 조건 달성 + 바스에어 구독 시 <span class="highlight-text">+2만원 추가 시상</span></li>
-            </ul>
-        </div>
-
-                <div class="contest-section">
-            <h4>2. 총판 판매활성화 컨테스트</h4>
-            <ul class="contest-list">
-                <li><strong>기간:</strong> '26. 7. 1(수) ~ 7. 12(일), 12일 간</li>
-                <li><strong>목표:</strong> 7월 12일까지 200억↑ 달성</li>
-                <li><strong>시상 (리그별 상위점 판촉비):</strong>
-                    <ul>
-                        <li>G/P리그: 1위 117만 ~ 4위 60만</li>
-                        <li>S/A리그: 1위 87만 ~ 5위 40만</li>
-                        <li>B/C리그: 1위 67만 ~ 3위 40만</li>
-                    </ul>
-                </li>
-                <li><strong>추가 혜택:</strong> 상위점 중 구독 비중 70% 이상 시 <span class="highlight-text">+70만원 추가 지급</span></li>
-            </ul>
-        </div>
-
-                <div class="contest-section">
-            <h4>3. 에어컨 판매 활성화 (권역별 대전)</h4>
-            <ul class="contest-list">
-                <li><strong>기간:</strong> '26. 7. 1(수) ~ 7. 12(일), 12일 간</li>
-                <li><strong>시상:</strong> 권역별 달성률 상위 1~3등 스퀘어가든 써큘레이터 시상</li>
-                <li><strong>점수 기준 (에어컨 스탠드 구독 기준):</strong>
-                    <ul>
-                        <li>에어컨(스탠드) 1대 = 1점</li>
-                        <li>에어컨(스탠드) + 타제품 1대 = 2점</li>
-                        <li>에어컨(스탠드) + <span class="highlight-text">바스에어</span> = <span class="highlight-text">5점</span></li>
-                    </ul>
-                </li>
-            </ul>
-        </div>
-
-        <div class="security-actions" style="margin-top:20px;">
-            <button type="button" class="btn-security btn-security-primary" onclick="closeContestModal()">확인</button>
-        </div>
-    </div>
-</div>
 </body>
 </html>
