@@ -45,6 +45,7 @@
             flex: unset;
             position: static;
         }
+
         h2 {
             border-bottom: 2px solid #2c3e50;
             padding-bottom: 10px;
@@ -123,6 +124,7 @@
             text-align: right;
             padding-right: 10px;
         }
+
         .paste-area-container {
             background: #eef2f5;
             padding: 15px;
@@ -136,7 +138,6 @@
             color: #0056b3;
             margin-bottom: 10px;
         }
-
         .excel-paste-shell {
             border: 1px solid #c9d3df;
             border-radius: 6px;
@@ -168,6 +169,7 @@
             height: 224px;
             background: #fff;
         }
+
         .excel-row-head {
             overflow: hidden;
             background:
@@ -266,6 +268,7 @@
             color: #2c3e50;
             margin-bottom: 8px;
         }
+
         .selected-items-list {
             font-size: 14px;
             line-height: 1.7;
@@ -355,50 +358,11 @@
             transition: 0.2s;
         }
         .btn-print-secondary { background-color: #5f6b77; }
-        .btn-proposal { background-color: #0056b3; }
-        .btn-proposal:hover { background-color: #004494; }
         .btn-planner { background-color: #0f766e; }
         .btn-planner:hover { background-color: #0d5c56; }
         .btn-roni { background-color: #a50034; }
         .btn-roni:hover { background-color: #8c002c; }
-        .btn-contest { background-color: #d97706; }
-        .btn-contest:hover { background-color: #b45309; }
 
-        .contest-card {
-            width: 100%;
-            max-width: 550px;
-            background: #fff;
-            border-radius: 10px;
-            padding: 24px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            max-height: 85vh;
-            overflow-y: auto;
-        }
-        .contest-section {
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            padding: 16px;
-            margin-bottom: 16px;
-            background: #f8fafc;
-            text-align: left;
-        }
-        .contest-section h4 {
-            margin: 0 0 10px 0;
-            color: #0f172a;
-            font-size: 15px;
-            border-bottom: 2px solid #cbd5e1;
-            padding-bottom: 6px;
-        }
-        .contest-list {
-            margin: 0;
-            padding-left: 20px;
-            font-size: 13px;
-            color: #334155;
-            line-height: 1.6;
-        }
-        .contest-list li { margin-bottom: 4px; }
-        .highlight-text { color: #dc2626; font-weight: bold; }
-        
         .app-meta {
             margin-top: 10px;
             font-size: 12px;
@@ -425,15 +389,6 @@
         }
         .security-card h3 { margin: 0 0 10px 0; font-size: 20px; color: #2c3e50; }
         .security-card p { margin: 0 0 12px 0; color: #555; line-height: 1.5; }
-        .security-input {
-            width: 100%;
-            box-sizing: border-box;
-            padding: 12px;
-            border: 1px solid #cfd8dc;
-            border-radius: 6px;
-            font-size: 15px;
-            margin-bottom: 10px;
-        }
         .security-actions { display: flex; gap: 8px; }
         .btn-security {
             flex: 1;
@@ -446,12 +401,6 @@
         }
         .btn-security-primary { background: #0056b3; color: #fff; }
         .btn-security-secondary { background: #e9eef3; color: #2c3e50; }
-        .security-error {
-            color: #d32f2f;
-            font-size: 13px;
-            min-height: 18px;
-            margin-bottom: 8px;
-        }
         .print-footer { display: none; }
         
         .gap-toolbar {
@@ -553,11 +502,46 @@
         .highlight-dark td.subscription-dominant-cell { background-color: #2f6f3b !important; color: #ffffff !important; }
         .highlight-yellow td.subscription-dominant-cell { background-color: #d9f0d9 !important; color: #1f6b2a !important; }
         .gap-row td.subscription-dominant-cell { background-color: #eaf7ea !important; color: #1f6b2a !important; }
+        
+        .contest-card {
+            width: 100%;
+            max-width: 550px;
+            background: #fff;
+            border-radius: 10px;
+            padding: 24px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+        .contest-section {
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
+            background: #f8fafc;
+            text-align: left;
+        }
+        .contest-section h4 {
+            margin: 0 0 10px 0;
+            color: #0f172a;
+            font-size: 15px;
+            border-bottom: 2px solid #cbd5e1;
+            padding-bottom: 6px;
+        }
+        .contest-list {
+            margin: 0;
+            padding-left: 20px;
+            font-size: 13px;
+            color: #334155;
+            line-height: 1.6;
+        }
+        .contest-list li { margin-bottom: 4px; }
+        .highlight-text { color: #dc2626; font-weight: bold; }
     </style>
 </head>
 <body>
 
-<div class="container" id="mainAppContainer" style="display: none;">
+<div class="container" id="mainAppContainer" style="display: flex;">
     <div class="panel left-panel" id="estimatePanel">
         <!-- 메인 타이틀 -->
         <h2>📊 경남담당 고객맞춤 플래너</h2>
@@ -566,11 +550,9 @@
             <button type="button" class="btn-print" onclick="printEstimate()">비교표 출력</button>
             <button type="button" class="btn-print btn-print-secondary" onclick="printCare()">구독 Care 출력</button>
             <button type="button" class="btn-print btn-print-secondary" onclick="printAllPage()">전체 출력</button>
-            <button type="button" class="btn-print btn-proposal" onclick="window.open('https://akohw1003.github.io/kangnam/gudok.html', '_blank')">구독 특화 제안서</button>
             <button type="button" class="btn-print btn-planner" onclick="window.open('https://akohw1003.github.io/kangnam/kyowon3', '_blank')">교원 플래너</button>
-            <button type="button" class="btn-print btn-contest" onclick="openContestModal()">🎁 7월 컨테스트</button>
             
-            <!-- ✨ RONi 특장점 팝업 버튼 (에러나는 iframe 여는 버튼 삭제됨) -->
+            <!-- ✨ RONi 특장점 팝업 버튼 -->
             <button type="button" class="btn-print btn-roni" style="background-color:#4338ca;" onclick="openRoniFeatureModal()">✨ 신모델 RONi 특장점</button>
         </div>
 
@@ -761,79 +743,6 @@
     </div>
 </div>
 
-<!-- ================= 🎁 7월 컨테스트 팝업 창 (5개 업데이트) ================= -->
-<div class="security-overlay" id="contestOverlay" style="display:none;" onclick="closeContestModal(event)">
-    <div class="contest-card" onclick="event.stopPropagation()">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-            <h3 style="margin: 0; font-size: 18px; color: #1e293b;">🏆 7월 경남담당 컨테스트 현황</h3>
-            <button type="button" onclick="closeContestModal()" style="background: none; border: none; font-size: 20px; cursor: pointer; color: #64748b;">✖</button>
-        </div>
-
-        <!-- 컨테스트 1 -->
-        <div class="contest-section">
-            <h4>1. 선납 구독 / 바스에어 Contest</h4>
-            <ul class="contest-list">
-                <li><strong>기간:</strong> '26. 7. 1(수) ~ 7. 12(일), 12일 간</li>
-                <li><strong>조건:</strong> 동일 고객 선납금액 합산 500만원 이상</li>
-                <li><strong>시상:</strong> 선납구독 판매 시 건당 <span class="highlight-text">2만원</span></li>
-                <li><strong>추가 혜택:</strong> 위 조건 달성 + 바스에어 구독 시 <span class="highlight-text">+2만원 추가 시상</span></li>
-            </ul>
-        </div>
-
-        <!-- 컨테스트 2 -->
-        <div class="contest-section">
-            <h4>2. 총판 판매활성화 컨테스트</h4>
-            <ul class="contest-list">
-                <li><strong>기간:</strong> '26. 7. 1(수) ~ 7. 12(일), 12일 간</li>
-                <li><strong>목표:</strong> 7월 12일까지 200억↑ 달성</li>
-                <li><strong>시상 (리그별 상위점 판촉비):</strong>
-                    <ul>
-                        <li>G/P리그: 1위 117만 ~ 4위 60만</li>
-                        <li>S/A리그: 1위 87만 ~ 5위 40만</li>
-                        <li>B/C리그: 1위 67만 ~ 3위 40만</li>
-                    </ul>
-                </li>
-                <li><strong>추가 혜택:</strong> 상위점 중 구독 비중 70% 이상 시 <span class="highlight-text">+70만원 추가 지급</span></li>
-            </ul>
-        </div>
-
-        <!-- 컨테스트 3 -->
-        <div class="contest-section">
-            <h4>3. 에어컨 판매 활성화 (권역별 대전)</h4>
-            <ul class="contest-list">
-                <li><strong>기간:</strong> '26. 7. 1(수) ~ 7. 12(일), 12일 간</li>
-                <li><strong>시상:</strong> 권역별 달성률 상위 1~3등 스퀘어가든 써큘레이터 시상</li>
-                <li><strong>점수 기준:</strong> 에어컨(스탠드) 1대=1점 / 타제품+1대=2점 / 바스에어+5점</li>
-            </ul>
-        </div>
-
-        <!-- 컨테스트 4 (새로 추가됨) -->
-        <div class="contest-section" style="border-left: 4px solid #d97706;">
-            <h4 style="color: #d97706;">4. 에어컨+바스에어 / RONi 구독 Contest</h4>
-            <ul class="contest-list">
-                <li><strong>기간:</strong> '26. 7. 8(수) ~ 7. 31(금), 24일 간</li>
-                <li><strong>조건:</strong> 에어컨+바스에어 구독 OR 에어컨+RONi 구독 판매 시</li>
-                <li><strong>시상:</strong> 판매 건 당 <span class="highlight-text">추가 2만원</span> 개인 시상</li>
-                <li><strong>추가 혜택:</strong> 에어컨+바스에어+RONi 모두 구독 판매 시 <span class="highlight-text">4만 급여 지급!</span></li>
-            </ul>
-        </div>
-
-        <!-- 컨테스트 5 (새로 추가됨) -->
-        <div class="contest-section" style="border-left: 4px solid #d97706;">
-            <h4 style="color: #d97706;">5. 바스에어 / RONi 판매 활성화</h4>
-            <ul class="contest-list">
-                <li><strong>기간:</strong> '26. 7. 8(수) ~ 7. 31(금), 22일 간</li>
-                <li><strong>조건:</strong> 동일고객번호 기준 바스에어 또는 RONi 픽업 시 (M메신저 공유 필수)</li>
-                <li><strong>시상:</strong> Best Point <span class="highlight-text">30,000원</span> 지원 (선착순)</li>
-            </ul>
-        </div>
-
-        <div class="security-actions" style="margin-top:20px;">
-            <button type="button" class="btn-security btn-security-primary" onclick="closeContestModal()">확인 (닫기)</button>
-        </div>
-    </div>
-</div>
-
 <!-- ================= ✨ RONi 특장점 팝업 창 ================= -->
 <div class="security-overlay" id="roniFeatureOverlay" style="display:none;" onclick="closeRoniFeatureModal(event)">
     <div class="contest-card" style="max-width: 700px;" onclick="event.stopPropagation()">
@@ -888,268 +797,6 @@
     // =========================================================
     // 🚨 자바스크립트 스크립트 시작
     // =========================================================
-    const MANAGER_DATA = {
-        "17703": { birth: "coalstlr", name: "채민식", branch: "경남담당" },
-        "52240": { birth: "dldudwls", name: "이영진", branch: "경남담당" },
-        "17352": { birth: "whtjdgns", name: "조성훈", branch: "경남담당" },
-        "18288": { birth: "rhkrwkdtjq", name: "곽장섭", branch: "경남담당" },
-        "16916": { birth: "dlwlgns", name: "이지훈", branch: "경남담당" },
-        "11564": { birth: "ghkddusrlf", name: "황연길", branch: "경남담당" },
-        "17525": { birth: "dladnltjd", name: "임위성", branch: "경남담당" },
-        "18695": { birth: "qkrtjdals", name: "박성민", branch: "경남담당" },
-        "12798": { birth: "ckdydwn", name: "차용주", branch: "경남담당" },
-        "15828": { birth: "rlatkdwls", name: "김상진", branch: "경남담당" },
-        "11153": { birth: "tlswjdtlr", name: "신정식", branch: "경남담당" },
-        "19339": { birth: "ckhdls", name: "차호인", branch: "경남담당" },
-        "15422": { birth: "ghddntjd", name: "홍우성", branch: "경남담당" },
-        "17187": { birth: "qkrworms", name: "박재근", branch: "경남담당" },
-        "17389": { birth: "rlaxoals", name: "김태민", branch: "경남담당" },
-        "13714": { birth: "rlatpwls", name: "김세진", branch: "경남담당" },
-        "13957": { birth: "qkrrmswls", name: "박근진", branch: "경남담당" },
-        "19244": { birth: "qkrwogus", name: "박재현", branch: "경남담당" },
-        "51751": { birth: "qkrrldnjs", name: "박기원", branch: "경남담당" },
-        "13755": { birth: "djdmstjr", name: "어은석", branch: "경남담당" },
-        "17948": { birth: "didtkdals", name: "양상민", branch: "경남담당" },
-        "12171": { birth: "wjdgusgml", name: "정현희", branch: "경남담당" },
-        "12729": { birth: "rlagywls", name: "김효진", branch: "경남담당" },
-        "16098": { birth: "rlagPals", name: "김혜민", branch: "경남담당" },
-        "16099": { birth: "tjwlsdud", name: "서진영", branch: "경남담당" },
-        "18267": { birth: "whdudgns", name: "조영훈", branch: "경남담당" },
-        "19605": { birth: "tlswhddlf", name: "신종일", branch: "경남담당" },
-        "19034": { birth: "qkrwngus", name: "박주현", branch: "경남담당" },
-        "51903": { birth: "rlarudals", name: "김경민", branch: "경남담당" },
-        "19715": { birth: "chlwlsdyd", name: "최진용", branch: "경남담당" },
-        "50699": { birth: "chlalts", name: "최미선", branch: "경남담당" },
-        "15308": { birth: "rkdwngud", name: "강주형", branch: "경남담당" },
-        "11150": { birth: "chlwogud", name: "최재형", branch: "경남담당" },
-        "12481": { birth: "dkschodhks", name: "안채완", branch: "경남담당" },
-        "17044": { birth: "rladudtlr", name: "김영식", branch: "경남담당" },
-        "16917": { birth: "gkswjddn", name: "한정우", branch: "경남담당" },
-        "11750": { birth: "dlwntj", name: "이준서", branch: "경남담당" },
-        "12734": { birth: "dldudrjs", name: "이영건", branch: "경남담당" },
-        "19369": { birth: "rkdtnqls", name: "강수빈", branch: "경남담당" },
-        "14159": { birth: "wjdwofyd", name: "정재룡", branch: "경남담당" },
-        "15484": { birth: "rlawlgns", name: "김지훈", branch: "경남담당" },
-        "52307": { birth: "xkrrkdud", name: "탁가영", branch: "경남담당" },
-        "51648": { birth: "qorwldms", name: "백지은", branch: "경남담당" },
-        "13478": { birth: "rlaehghd", name: "김도홍", branch: "경남담당" },
-        "14845": { birth: "wjdwjdwn", name: "정정주", branch: "경남담당" },
-        "17063": { birth: "qkrtjdgns", name: "박성훈", branch: "경남담당" },
-        "15507": { birth: "dlrkdgh", name: "이강호", branch: "경남담당" },
-        "13956": { birth: "whwjdgns", name: "조정훈", branch: "경남담당" },
-        "19132": { birth: "qkrtjdwls", name: "박성진", branch: "경남담당" },
-        "51088": { birth: "rladmswl", name: "김은지", branch: "경남담당" },
-        "18496": { birth: "ckdnjsgud", name: "차원형", branch: "경남담당" },
-        "19697": { birth: "qkrtkdwls", name: "박상진", branch: "경남담당" },
-        "11897": { birth: "dldudgh", name: "이영호", branch: "경남담당" },
-        "18696": { birth: "dlehdrms", name: "이동근", branch: "경남담당" },
-        "18697": { birth: "wjdalswo", name: "정민재", branch: "경남담당" },
-        "16745": { birth: "rladnfka", name: "김우람", branch: "경남담당" },
-        "12832": { birth: "thdwlsgur", name: "송진혁", branch: "경남담당" },
-        "51173": { birth: "rladusdhr", name: "김연옥", branch: "경남담당" },
-        "15665": { birth: "dlghdrl", name: "이홍기", branch: "경남담당" },
-        "14421": { birth: "chlcjfgus", name: "최철현", branch: "경남담당" },
-        "18693": { birth: "rlatmdvlf", name: "김승필", branch: "경남담당" },
-        "17343": { birth: "wjdengud", name: "정두형", branch: "경남담당" },
-        "18970": { birth: "wntjdgns", name: "주성훈", branch: "경남담당" },
-        "17994": { birth: "rkdalstn", name: "강민수", branch: "경남담당" },
-        "15886": { birth: "rkdalsgur", name: "강민혁", branch: "경남담당" },
-        "19737": { birth: "dlwlgks", name: "이지한", branch: "경남담당" },
-        "10765": { birth: "dlwhdgns", name: "이종훈", branch: "경남담당" },
-        "18888": { birth: "rladlstjq", name: "김인섭", branch: "경남담당" },
-        "18546": { birth: "wjddnr", name: "정욱", branch: "경남담당" },
-        "51419": { birth: "rlawjddms", name: "김정은", branch: "경남담당" },
-        "15162": { birth: "rlarbdyd", name: "김규용", branch: "경남담당" },
-        "51210": { birth: "tlstnwls", name: "신수진", branch: "경남담당" },
-        "17849": { birth: "tjtkdqja", name: "서상범", branch: "경남담당" },
-        "13199": { birth: "qkrdnjsrn", name: "박원구", branch: "경남담당" },
-        "18891": { birth: "dlclrnjs", name: "이치권", branch: "경남담당" },
-        "17286": { birth: "ghdtmdgns", name: "홍승훈", branch: "경남담당" },
-        "18498": { birth: "chlghkdyd", name: "최화용", branch: "경남담당" },
-        "17437": { birth: "wkdrkdwls", name: "장강진", branch: "경남담당" },
-        "17323": { birth: "rladmstn", name: "김은수", branch: "경남담당" },
-        "18218": { birth: "dksrltjr", name: "안기석", branch: "경남담당" },
-        "13952": { birth: "dhsxotlr", name: "온태식", branch: "경남담당" },
-        "19341": { birth: "rlaghddlf", name: "김홍일", branch: "경남담당" },
-        "14305": { birth: "qkrwlsdn", name: "박진우", branch: "경남담당" },
-        "10937": { birth: "dlwjdgjs", name: "이정헌", branch: "경남담당" },
-        "12111": { birth: "rkadmdrb", name: "감응규", branch: "경남담당" },
-        "14510": { birth: "rlatjrgns", name: "김석훈", branch: "경남담당" },
-        "19219": { birth: "dlcorud", name: "이채경", branch: "경남담당" },
-        "17359": { birth: "answnsdnjs", name: "문준원", branch: "경남담당" },
-        "18955": { birth: "qkrqhdgks", name: "박봉한", branch: "경남담당" },
-        "19260": { birth: "dltnals", name: "이수민", branch: "경남담당" },
-        "52143": { birth: "rlawlgus", name: "김지현", branch: "경남담당" },
-        "17300": { birth: "qustjdwo", name: "변성재", branch: "경남담당" },
-        "18616": { birth: "rkdwnsdyd", name: "강준용", branch: "경남담당" },
-        "18217": { birth: "alsrudvy", name: "민경표", branch: "경남담당" },
-        "15184": { birth: "gkstjddyd", name: "한성용", branch: "경남담당" },
-        "14697": { birth: "whwodud", name: "조재영", branch: "경남담당" },
-        "19698": { birth: "qkrtjdtn", name: "박성수", branch: "경남담당" },
-        "19333": { birth: "qkrdltkr", name: "박이삭", branch: "경남담당" },
-        "19506": { birth: "qkrdudghks", name: "박영환", branch: "경남담당" },
-        "18884": { birth: "anstmdwls", name: "문승진", branch: "경남담당" },
-        "16168": { birth: "qusruddjs", name: "변경언", branch: "경남담당" },
-        "13431": { birth: "qkrtngh", name: "박수호", branch: "경남담당" },
-        "50290": { birth: "qkrrudghk", name: "박경화", branch: "경남담당" },
-        "52064": { birth: "rlawlsdnr", name: "김진욱", branch: "경남담당" },
-        "17479": { birth: "qkrwnstjr", name: "박준석", branch: "경남담당" },
-        "50352": { birth: "rnehgml", name: "구도희", branch: "경남담당" },
-        "19371": { birth: "rlarudals", name: "김경민", branch: "경남담당" },
-        "14938": { birth: "wkdghdud", name: "장호영", branch: "경남담당" },
-        "14123": { birth: "rlacjfgus", name: "김철현", branch: "경남담당" },
-        "18807": { birth: "anstjdrms", name: "문성근", branch: "경남담당" },
-        "19282": { birth: "rntpgks", name: "구세한", branch: "경남담당" },
-        "15249": { birth: "ckworb", name: "차재규", branch: "경남담당" },
-        "11748": { birth: "rkdtjdgjs", name: "강성헌", branch: "경남담당" },
-        "19474": { birth: "tjddnldyd", name: "성위용", branch: "경남담당" },
-        "51618": { birth: "qkrgusdud", name: "박현영", branch: "경남담당" },
-        "15112": { birth: "chldnwls", name: "최우진", branch: "경남담당" },
-        "17651": { birth: "qkrwlswo", name: "박진재", branch: "경남담당" },
-        "17774": { birth: "dlaehdwns", name: "임동준", branch: "경남담당" },
-        "18266": { birth: "wjddyddns", name: "정용운", branch: "경남담당" },
-        "52066": { birth: "ghkddudtnr", name: "황영숙", branch: "경남담당" },
-        "18494": { birth: "dkswlgns", name: "안지훈", branch: "경남담당" },
-        "12873": { birth: "dhwjdgjs", name: "오정헌", branch: "경남담당" },
-        "51776": { birth: "rlaalsdud", name: "김민영", branch: "경남담당" },
-        "18074": { birth: "ghkdqhtjdfhr", name: "황보성록", branch: "경남담당" },
-        "17836": { birth: "rlawlgns", name: "김지훈", branch: "경남담당" },
-        "18540": { birth: "gusgockd", name: "현해창", branch: "경남담당" },
-        "19233": { birth: "qkrrudwns", name: "박경준", branch: "경남담당" },
-        "17975": { birth: "qkrwpdnr", name: "박제욱", branch: "경남담당" },
-        "15599": { birth: "dlwndnjs", name: "이주원", branch: "경남담당" },
-        "51332": { birth: "rnjsalwjd", name: "권미정", branch: "경남담당" },
-        "19374": { birth: "dkstmdgns", name: "안승훈", branch: "경남담당" },
-        "17042": { birth: "gksckddn", name: "한창우", branch: "경남담당" },
-        "10107": { birth: "qkrehrbs", name: "박도균", branch: "경남담당" },
-        "16023": { birth: "dlrudrn", name: "이경구", branch: "경남담당" },
-        "52313": { birth: "qkrthgus", name: "박소현", branch: "경남담당" },
-        "19699": { birth: "qkrwogur", name: "박재혁", branch: "경남담당" },
-        "18968": { birth: "dlaghwls", name: "임호진", branch: "경남담당" },
-        "11000": { birth: "rlagusrnr", name: "김현국", branch: "경남담당" },
-        "18765": { birth: "thdntjq", name: "소우섭", branch: "경남담당" },
-        "16231": { birth: "dkstjrrms", name: "안석근", branch: "경남담당" },
-        "16819": { birth: "rnjsrjsdn", name: "권건우", branch: "경남담당" },
-        "52161": { birth: "dlwldnjs", name: "이지원", branch: "경남담당" },
-        "19334": { birth: "qockdgus", name: "배창현", branch: "경남담당" },
-        "19335": { birth: "tjehdghk", name: "서동화", branch: "경남담당" },
-        "18733": { birth: "rlaxoghd", name: "김태홍", branch: "경남담당" },
-        "51158": { birth: "rlaguswjd", name: "김현정", branch: "경남담당" },
-        "17189": { birth: "rkdalsdn", name: "강민우", branch: "경남담당" },
-        "15612": { birth: "rkdtjdco", name: "강성채", branch: "경남담당" },
-        "11343": { birth: "wjdcksgh", name: "정찬호", branch: "경남담당" },
-        "19615": { birth: "rkdrnrqls", name: "강국빈", branch: "경남담당" },
-        "15664": { birth: "wjdrudghks", name: "정경환", branch: "경남담당" },
-        "11800": { birth: "rlatnghks", name: "김수환", branch: "경남담당" },
-        "13233": { birth: "fbejrghk", name: "류덕화", branch: "경남담당" },
-        "14663": { birth: "qkrtjdrhs", name: "박성곤", branch: "경남담당" },
-        "18482": { birth: "qkrwjdgns", name: "박정훈", branch: "경남담당" },
-        "10833": { birth: "rlaqudcjf", name: "김병철", branch: "경남담당" },
-        "10834": { birth: "dldnjscjf", name: "이원철", branch: "경남담당" },
-        "15037": { birth: "rlaxogns", name: "김태훈", branch: "경남담당" },
-        "52042": { birth: "chlalsdud", name: "최민영", branch: "경남담당" },
-        "19471": { birth: "wjdgusdn", name: "정현우", branch: "경남담당" },
-        "52268": { birth: "didwldud", name: "양지영", branch: "경남담당" },
-        "17458": { birth: "gjalswns", name: "허민준", branch: "경남담당" },
-        "19323": { birth: "didwlsah", name: "양진모", branch: "경남담당" },
-        "12366": { birth: "quswjdtjq", name: "변정섭", branch: "경남담당" },
-        "18220": { birth: "rlasmdghks", name: "김능환", branch: "경남담당" },
-        "15227": { birth: "chldntjr", name: "최우석", branch: "경남담당" },
-        "50709": { birth: "thsalwjd", name: "손미정", branch: "경남담당" },
-        "18165": { birth: "cktkdals", name: "차상민", branch: "경남담당" },
-        "11953": { birth: "qkrqhdrl", name: "박봉기", branch: "경남담당" },
-        "15540": { birth: "tlsxotlr", name: "신태식", branch: "경남담당" },
-        "12805": { birth: "thdehdgo", name: "송동해", branch: "경남담당" },
-        "14810": { birth: "dlalsdnr", name: "이민욱", branch: "경남담당" },
-        "19445": { birth: "thsgocjd", name: "손해청", branch: "경남담당" },
-        "18890": { birth: "whtmddn", name: "조승우", branch: "경남담당" },
-        "10732": { birth: "tjdguscjf", name: "성현철", branch: "경남담당" },
-        "15745": { birth: "dlrkgud", name: "이가형", branch: "경남담당" },
-        "18954": { birth: "rlaehddbs", name: "김동윤", branch: "경남담당" },
-        "19604": { birth: "qkrtjdgns", name: "박성훈", branch: "경남담당" },
-        "50642": { birth: "chltjghk", name: "최서화", branch: "경남담당" },
-        "17946": { birth: "rhkrtjdgns", name: "곽성훈", branch: "경남담당" },
-        "17727": { birth: "rladudtn", name: "김영수", branch: "경남담당" },
-        "17186": { birth: "rnjsdhals", name: "권오민", branch: "경남담당" },
-        "17079": { birth: "rlaeogus", name: "김대현", branch: "경남담당" },
-        "16926": { birth: "fbdudrhkd", name: "류영광", branch: "경남담당" },
-        "52083": { birth: "tlstmddP", name: "신승예", branch: "경남담당" },
-        "18880": { birth: "rlaqhtjd", name: "김보성", branch: "경남담당" },
-        "17704": { birth: "dltjddms", name: "이성은", branch: "경남담당" },
-        "13605": { birth: "ghdanstp", name: "홍문세", branch: "경남담당" },
-        "11752": { birth: "chltjdrhs", name: "최성곤", branch: "경남담당" },
-        "15773": { birth: "rlaqudcjf", name: "김병철", branch: "경남담당" },
-        "17149": { birth: "dltkdgud", name: "이상형", branch: "경남담당" },
-        "17503": { birth: "dlckddms", name: "이창은", branch: "경남담당" },
-        "17439": { birth: "rlaehdgus", name: "김동현", branch: "경남담당" },
-        "19337": { birth: "dltjdgus", name: "이성현", branch: "경남담당" },
-        "14984": { birth: "wlsaudrb", name: "진명규", branch: "경남담당" },
-        "11194": { birth: "dlwngud", name: "이주형", branch: "경남담당" },
-        "11816": { birth: "rlaengks", name: "김두한", branch: "경남담당" },
-        "16654": { birth: "dltjdtn", name: "이성수", branch: "경남담당" },
-        "18615": { birth: "rladlswls", name: "김인진", branch: "경남담당" },
-        "16193": { birth: "dhtmdwls", name: "오승진", branch: "경남담당" },
-        "12831": { birth: "rlaehdwls", name: "김동진", branch: "경남담당" },
-        "19634": { birth: "rlaehgus", name: "김도현", branch: "경남담당" },
-        "10577": { birth: "gjworn", name: "허재구", branch: "경남담당" },
-        "51899": { birth: "gjtjsgml", name: "허선희", branch: "경남담당" },
-        "18746": { birth: "djaemrcjs", name: "엄득천", branch: "경남담당" },
-        "19531": { birth: "qkrcksgh", name: "박찬호", branch: "경남담당" },
-        "16781": { birth: "didwjdrb", name: "양정규", branch: "경남담당" },
-        "15506": { birth: "dydudrnr", name: "용영국", branch: "경남담당" },
-        "15717": { birth: "gksghtjr", name: "한호석", branch: "경남담당" },
-        "11215": { birth: "dltnghks", name: "이수환", branch: "경남담당" },
-        "18877": { birth: "aktjdduf", name: "마성열", branch: "경남담당" },
-        "17683": { birth: "rlaguswo", name: "김현재", branch: "경남담당" },
-        "14363": { birth: "rlaehdgud", name: "김동형", branch: "경남담당" },
-        "16795": { birth: "ghkdwlsdud", name: "황진영", branch: "경남담당" },
-        "15597": { birth: "wjdgustjr", name: "정현석", branch: "경남담당" },
-        "12150": { birth: "wjswhdqo", name: "전종배", branch: "경남담당" },
-        "13005": { birth: "dltjdgml", name: "이성희", branch: "경남담당" },
-        "11679": { birth: "dlehdms", name: "이동은", branch: "경남담당" },
-        "19456": { birth: "qortjdwhd", name: "백성종", branch: "경남담당" },
-        "52160": { birth: "chlwldms", name: "최지은", branch: "경남담당" },
-        "16736": { birth: "dkswlstkd", name: "안진상", branch: "경남담당" },
-        "19192": { birth: "wlsqudrb", name: "진병규", branch: "경남담당" },
-        "19035": { birth: "rlarudfkr", name: "김경락", branch: "경남담당" },
-        "50634": { birth: "rlacots", name: "김채선", branch: "경남담당" },
-        "18495": { birth: "wjdwlsrl", name: "정진기", branch: "경남담당" },
-        "18378": { birth: "rlawjdtn", name: "김정수", branch: "경남담당" },
-        "19140": { birth: "qkrwjdwls", name: "박정진", branch: "경남담당" },
-        "12050": { birth: "rnjsendud", name: "권두영", branch: "경남담당" },
-        "16250": { birth: "skagudckd", name: "남형창", branch: "경남담당" },
-        "19585": { birth: "wjdehdgh", name: "정동호", branch: "경남담당" },
-        "19338": { birth: "qkrehddhks", name: "박동완", branch: "경남담당" },
-        "15543": { birth: "dlgksdnr", name: "이한욱", branch: "경남담당" },
-        "14702": { birth: "thsrnrfkr", name: "손국락", branch: "경남담당" },
-        "17159": { birth: "djwotjr", name: "어재석", branch: "경남담당" },
-        "15247": { birth: "dlckdals", name: "이창민", branch: "경남담당" },
-        "19177": { birth: "rlaxowns", name: "김태준", branch: "경남담당" },
-        "15831": { birth: "rlatjrgus", name: "김석현", branch: "경남담당" },
-        "51481": { birth: "chldmsql", name: "최은비", branch: "경남담당" },
-        "12297": { birth: "tjtjrals", name: "서석민", branch: "경남담당" },
-        "19032": { birth: "dlehddnjs", name: "이동원", branch: "경남담당" },
-        "15245": { birth: "rladnwls", name: "김우진", branch: "경남담당" },
-        "16169": { birth: "dksxogus", name: "안태현", branch: "경남담당" },
-        "17243": { birth: "gkehddn", name: "하동우", branch: "경남담당" },
-        "17045": { birth: "dltmdwo", name: "이승재", branch: "경남담당" },
-        "11747": { birth: "rladydwn", name: "김용주", branch: "경남담당" },
-        "10745": { birth: "rkdaudwjd", name: "강명정", branch: "경남담당" },
-        "15953": { birth: "wjsckddnr", name: "전창욱", branch: "경남담당" },
-        "10088": { birth: "dlxodud", name: "이태영", branch: "경남담당" },
-        "18694": { birth: "rlagur", name: "김혁", branch: "경남담당" },
-        "14160": { birth: "rlaxogns", name: "김태훈", branch: "경남담당" },
-        "50031": { birth: "rlawlwjd", name: "김지정", branch: "경남담당" },
-        "17790": { birth: "dlatnqls", name: "임수빈", branch: "경남담당" },
-        "18525": { birth: "dlwndnjs", name: "이주원", branch: "경남담당" },
-        "16813": { birth: "dhwjdals", name: "오정민", branch: "경남담당" },
-        "11998": { birth: "qkrqudtjd", name: "박병성", branch: "경남담당" },
-        "19316": { birth: "dhwpgh", name: "오제호", branch: "경남담당" },
-        "18629": { birth: "qkrckdghks", name: "박창환", branch: "경남담당" },
-        "13563": { birth: "qkrrkdfla", name: "박강림", branch: "경남담당" },
-        "1111": { birth: "rudskaekaekd", name: "경남담당", branch: "경남담당" }
-    };
-
     const APP_CONFIG = {
         version: 'v1.9', 
         expiryDate: '2026-07-31', 
@@ -1175,13 +822,8 @@
     }
 
     function updateAppMeta() {
-        const savedId = sessionStorage.getItem('planner_emp_id');
-        const mgr = savedId && typeof MANAGER_DATA !== 'undefined' ? MANAGER_DATA[savedId] : null;
-
-        let mgrString = mgr ? `[${mgr.branch}] ${savedId} ${mgr.name} 플래너` : '';
-
-        const metaText = `${APP_CONFIG.notice} / 버전 ${APP_CONFIG.version} / 사용 만료일 ${APP_CONFIG.expiryDate}${mgrString ? ' / ' + mgrString : ''}`;
-        const printText = `출력일시: ${getNowStamp()}${mgrString ? ' / 소속: ' + mgr.branch + ' / 사번: ' + savedId + ' / 담당자: ' + mgr.name : ''}`;
+        const metaText = `${APP_CONFIG.notice} / 버전 ${APP_CONFIG.version} / 사용 만료일 ${APP_CONFIG.expiryDate}`;
+        const printText = `출력일시: ${getNowStamp()}`;
 
         const meta = document.getElementById('appMeta');
         const footer = document.getElementById('printFooter');
@@ -1194,8 +836,8 @@
     }
 
     function initSecurity() {
-        document.getElementById('mainAppContainer').style.display = 'flex'; 
-        updateAppMeta();
+        // 보안 검사 없이 무조건 대시보드 화면을 보이게 함
+        updateAppMeta(); 
     }
 
     function fn(num) {
@@ -1475,6 +1117,7 @@
         if (norm.includes('프로모션할인')) return '프로모션할인(월)';
         if (norm.includes('결합할인')) return '결합할인(월)';
         if (norm.includes('선납할인')) return '선납할인(월)';
+        // 강력한 캐시백 파싱
         if (norm.includes('캐시백') || norm.includes('캐쉬백') || norm.includes('현금지원')) return '캐시백';
         if (norm.includes('제휴카드월') || norm.includes('제휴카드할인') || norm.includes('카드할인월') || (norm.includes('제휴카드') && norm.includes('월'))) return '제휴카드(월)';
         if (norm.includes('제휴카드')) return '제휴카드';
@@ -1620,7 +1263,20 @@
         return result;
     }
 
+    function iSKnownValueRow(text) {
+        const known = [
+            '정상가','행사가','특별할인','결제금액','캐시백','상품권','멤버십',
+            '특별혜택','제휴카드','선택결제카드','선택결제카드명','선택결제카드설명',
+            '혜택합계','최종혜택금액','정상구독료(월)','프로모션할인(월)','결합할인(월)',
+            '선납할인(월)','제휴카드(월)','선납금액','선납시카드혜택','체감구독료(월)'
+        ];
+        const key = getKnownKey(String(text || ''));
+        return !!key && known.includes(key);
+    }
+
     function parseExcelData() {
+        // 로그인 인증 확인 부분 제거됨 (항상 실행)
+        
         const rawText = document.getElementById("rawPasteArea").value;
         if (rawText.trim() === "") {
             alert("Data를 먼저 붙여넣어 주세요.");
@@ -2316,21 +1972,7 @@
     window.onload = function() {
         const firstBtn = document.querySelector('.tab-btn');
         changeTab('tvCare', 'TV 케어', firstBtn);
-        initSecurity();
-
-        const idInput = document.getElementById('empIdInput');
-        const birthInput = document.getElementById('empBirthInput');
-        
-        if (idInput) {
-            idInput.addEventListener('keydown', function(e) {
-                if (e.key === 'Enter') birthInput.focus();
-            });
-        }
-        if (birthInput) {
-            birthInput.addEventListener('keydown', function(e) {
-                if (e.key === 'Enter') validateAccess();
-            });
-        }
+        initSecurity(); // 바로 대시보드 진입
     };
 
     let modelRowVisible = true;
@@ -2349,15 +1991,6 @@
     function toggleModelRowVisibility() {
         modelRowVisible = !modelRowVisible;
         applyModelRowVisibility();
-    }
-
-    // [컨테스트 모달]
-    function openContestModal() {
-        document.getElementById('contestOverlay').style.display = 'flex';
-    }
-    function closeContestModal(event) {
-        if (event && event.target !== document.getElementById('contestOverlay') && event.target.tagName !== 'BUTTON' && event.type !== 'click') return;
-        document.getElementById('contestOverlay').style.display = 'none';
     }
 
     // [RONi 특장점 팝업]
