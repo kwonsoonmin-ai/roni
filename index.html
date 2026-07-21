@@ -45,7 +45,6 @@
             flex: unset;
             position: static;
         }
-
         h2 {
             border-bottom: 2px solid #2c3e50;
             padding-bottom: 10px;
@@ -53,6 +52,7 @@
             margin-top: 0;
             font-size: 18px;
         }
+
         table {
             width: 100%;
             border-collapse: collapse;
@@ -138,6 +138,7 @@
             color: #0056b3;
             margin-bottom: 10px;
         }
+
         .excel-paste-shell {
             border: 1px solid #c9d3df;
             border-radius: 6px;
@@ -169,7 +170,6 @@
             height: 224px;
             background: #fff;
         }
-
         .excel-row-head {
             overflow: hidden;
             background:
@@ -246,7 +246,7 @@
         .btn-calc:hover { background-color: #004494; }
         .btn-clear { background-color: #6c757d; }
         .btn-clear:hover { background-color: #5a6268; }
-        
+
         .care-summary {
             background-color: #eef2f5;
             padding: 15px 20px;
@@ -268,7 +268,6 @@
             color: #2c3e50;
             margin-bottom: 8px;
         }
-
         .selected-items-list {
             font-size: 14px;
             line-height: 1.7;
@@ -339,7 +338,7 @@
             .container { flex-direction: column; }
             .right-column { position: static; }
         }
-        
+
         .print-toolbar {
             display: flex;
             gap: 8px;
@@ -363,6 +362,41 @@
         .btn-roni { background-color: #a50034; }
         .btn-roni:hover { background-color: #8c002c; }
 
+        .contest-card {
+            width: 100%;
+            max-width: 550px;
+            background: #fff;
+            border-radius: 10px;
+            padding: 24px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+        .contest-section {
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
+            background: #f8fafc;
+            text-align: left;
+        }
+        .contest-section h4 {
+            margin: 0 0 10px 0;
+            color: #0f172a;
+            font-size: 15px;
+            border-bottom: 2px solid #cbd5e1;
+            padding-bottom: 6px;
+        }
+        .contest-list {
+            margin: 0;
+            padding-left: 20px;
+            font-size: 13px;
+            color: #334155;
+            line-height: 1.6;
+        }
+        .contest-list li { margin-bottom: 4px; }
+        .highlight-text { color: #dc2626; font-weight: bold; }
+        
         .app-meta {
             margin-top: 10px;
             font-size: 12px;
@@ -464,9 +498,6 @@
         .hidden-raw{ display:none !important; }
         .print-subscription-notice { display: none; }
 
-        /* =========================================================
-           🖨️ [인쇄 전용 스타일]
-           ========================================================= */
         @media print {
             * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
             .print-toolbar, .paste-area-container, .tab-container, .btn-calc, .btn-clear, .btn-clear-select, #videoPanel, #installGuidePanel, #qrPanel, #cardQrModalOverlay, .security-overlay, .gap-toolbar, .app-meta { display: none !important; }
@@ -502,45 +533,11 @@
         .highlight-dark td.subscription-dominant-cell { background-color: #2f6f3b !important; color: #ffffff !important; }
         .highlight-yellow td.subscription-dominant-cell { background-color: #d9f0d9 !important; color: #1f6b2a !important; }
         .gap-row td.subscription-dominant-cell { background-color: #eaf7ea !important; color: #1f6b2a !important; }
-        
-        .contest-card {
-            width: 100%;
-            max-width: 550px;
-            background: #fff;
-            border-radius: 10px;
-            padding: 24px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            max-height: 85vh;
-            overflow-y: auto;
-        }
-        .contest-section {
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            padding: 16px;
-            margin-bottom: 16px;
-            background: #f8fafc;
-            text-align: left;
-        }
-        .contest-section h4 {
-            margin: 0 0 10px 0;
-            color: #0f172a;
-            font-size: 15px;
-            border-bottom: 2px solid #cbd5e1;
-            padding-bottom: 6px;
-        }
-        .contest-list {
-            margin: 0;
-            padding-left: 20px;
-            font-size: 13px;
-            color: #334155;
-            line-height: 1.6;
-        }
-        .contest-list li { margin-bottom: 4px; }
-        .highlight-text { color: #dc2626; font-weight: bold; }
     </style>
 </head>
 <body>
 
+<!-- 대시보드가 처음부터 보이도록 display: flex; 로 설정되어 있습니다 -->
 <div class="container" id="mainAppContainer" style="display: flex;">
     <div class="panel left-panel" id="estimatePanel">
         <!-- 메인 타이틀 -->
@@ -554,6 +551,8 @@
             
             <!-- ✨ RONi 특장점 팝업 버튼 -->
             <button type="button" class="btn-print btn-roni" style="background-color:#4338ca;" onclick="openRoniFeatureModal()">✨ 신모델 RONi 특장점</button>
+            <!-- 📺 RONi 귀곰 유튜브 버튼 (새로 추가됨) -->
+            <button type="button" class="btn-print" style="background-color:#e50914;" onclick="window.open('https://www.youtube.com/watch?v=x4Wvf-2LCBY', '_blank')">📺 RONi 귀곰 유튜브</button>
         </div>
 
         <div class="gap-toolbar">
@@ -797,10 +796,13 @@
     // =========================================================
     // 🚨 자바스크립트 스크립트 시작
     // =========================================================
+    
+    // (로그인 창이 삭제되면서 MANAGER_DATA 등 인증 관련 코드는 제외됨)
+
     const APP_CONFIG = {
-        version: 'v1.9', 
-        expiryDate: '2026-07-31', 
-        notice: '내부전용 / 지점배포용'
+        version: 'v2.0', 
+        expiryDate: '2026-12-31', 
+        notice: '경남담당 전용플래너'
     };
 
     function getTodayYmd() {
@@ -822,7 +824,7 @@
     }
 
     function updateAppMeta() {
-        const metaText = `${APP_CONFIG.notice} / 버전 ${APP_CONFIG.version} / 사용 만료일 ${APP_CONFIG.expiryDate}`;
+        const metaText = `${APP_CONFIG.notice} / 버전 ${APP_CONFIG.version}`;
         const printText = `출력일시: ${getNowStamp()}`;
 
         const meta = document.getElementById('appMeta');
@@ -831,13 +833,10 @@
         if (footer) footer.innerText = printText;
     }
 
-    function isExpired() {
-        return getTodayYmd() > APP_CONFIG.expiryDate;
-    }
-
     function initSecurity() {
-        // 보안 검사 없이 무조건 대시보드 화면을 보이게 함
-        updateAppMeta(); 
+        // 보안(로그인) 검사 없이 무조건 대시보드 화면을 보이게 함
+        document.getElementById('mainAppContainer').style.display = 'flex'; 
+        updateAppMeta();
     }
 
     function fn(num) {
@@ -1117,7 +1116,6 @@
         if (norm.includes('프로모션할인')) return '프로모션할인(월)';
         if (norm.includes('결합할인')) return '결합할인(월)';
         if (norm.includes('선납할인')) return '선납할인(월)';
-        // 강력한 캐시백 파싱
         if (norm.includes('캐시백') || norm.includes('캐쉬백') || norm.includes('현금지원')) return '캐시백';
         if (norm.includes('제휴카드월') || norm.includes('제휴카드할인') || norm.includes('카드할인월') || (norm.includes('제휴카드') && norm.includes('월'))) return '제휴카드(월)';
         if (norm.includes('제휴카드')) return '제휴카드';
@@ -1275,8 +1273,7 @@
     }
 
     function parseExcelData() {
-        // 로그인 인증 확인 부분 제거됨 (항상 실행)
-        
+        // 인증 절차가 제거되었으므로 제한 없이 바로 실행됩니다.
         const rawText = document.getElementById("rawPasteArea").value;
         if (rawText.trim() === "") {
             alert("Data를 먼저 붙여넣어 주세요.");
@@ -1972,7 +1969,7 @@
     window.onload = function() {
         const firstBtn = document.querySelector('.tab-btn');
         changeTab('tvCare', 'TV 케어', firstBtn);
-        initSecurity(); // 바로 대시보드 진입
+        initSecurity();
     };
 
     let modelRowVisible = true;
