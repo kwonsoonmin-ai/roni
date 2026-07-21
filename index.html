@@ -761,20 +761,6 @@
     </div>
 </div>
 
-<div class="security-overlay" id="securityOverlay">
-    <div class="security-card">
-        <h3>프로그램 인증</h3>
-        <p id="securityGuide">사번과 비밀번호(이름 영문타자)를 입력해 주세요.</p>
-        <input type="text" id="empIdInput" class="security-input" placeholder="사번 입력" />
-        <input type="password" id="empBirthInput" class="security-input" placeholder="이름 영문타자 (예: 홍길동 -> ghdrilfehd)" />
-        <div class="security-error" id="securityError"></div>
-        <div class="security-actions">
-            <button type="button" class="btn-security btn-security-primary" onclick="validateAccess()">확인</button>
-            <button type="button" class="btn-security btn-security-secondary" onclick="closeWindowApp()">닫기</button>
-        </div>
-    </div>
-</div>
-
 <!-- ================= 🎁 7월 컨테스트 팝업 창 (5개 업데이트) ================= -->
 <div class="security-overlay" id="contestOverlay" style="display:none;" onclick="closeContestModal(event)">
     <div class="contest-card" onclick="event.stopPropagation()">
@@ -1207,76 +1193,9 @@
         return getTodayYmd() > APP_CONFIG.expiryDate;
     }
 
-    function validateAccess() {
-        const idInput = document.getElementById('empIdInput');
-        const birthInput = document.getElementById('empBirthInput');
-        const error = document.getElementById('securityError');
-        const guide = document.getElementById('securityGuide');
-
-        if (isExpired()) {
-            guide.innerText = '사용 만료일이 지나 프로그램을 열 수 없습니다. 최신 버전을 다시 배포받아 주세요.';
-            error.innerText = '만료된 버전입니다.';
-            return;
-        }
-
-        const empId = idInput.value.trim();
-        const empBirth = birthInput.value.trim();
-
-        if (typeof MANAGER_DATA !== 'undefined' && MANAGER_DATA[empId]) {
-            if (MANAGER_DATA[empId].birth === empBirth || (MANAGER_DATA[empId].birth === "000000" && empBirth === "000000")) {
-                document.getElementById('securityOverlay').style.display = 'none';
-                document.getElementById('mainAppContainer').style.display = 'flex'; 
-                sessionStorage.setItem('planner_emp_id', empId); 
-                error.innerText = '';
-                updateAppMeta(); 
-            } else {
-                error.innerText = '생년월일이 일치하지 않습니다.';
-                birthInput.focus();
-                birthInput.select();
-            }
-        } else {
-            error.innerText = '등록되지 않은 사번입니다.';
-            idInput.focus();
-            idInput.select();
-        }
-    }
-
-    function closeWindowApp() {
-        window.close();
-    }
-
     function initSecurity() {
-        const savedId = sessionStorage.getItem('planner_emp_id');
-        
-        if (savedId && typeof MANAGER_DATA !== 'undefined' && MANAGER_DATA[savedId] && !isExpired()) {
-            document.getElementById('securityOverlay').style.display = 'none';
-            document.getElementById('mainAppContainer').style.display = 'flex'; 
-            updateAppMeta();
-            return;
-        }
-
-        updateAppMeta(); 
-        const overlay = document.getElementById('securityOverlay');
-        const guide = document.getElementById('securityGuide');
-        const error = document.getElementById('securityError');
-        const idInput = document.getElementById('empIdInput');
-        const birthInput = document.getElementById('empBirthInput');
-
-        if (isExpired()) {
-            overlay.style.display = 'flex';
-            guide.innerText = '사용 만료일이 지나 프로그램을 열 수 없습니다. 최신 버전을 다시 배포받아 주세요.';
-            error.innerText = '만료된 버전입니다.';
-            idInput.disabled = true;
-            birthInput.disabled = true;
-            return;
-        }
-
-        overlay.style.display = 'flex';
-        idInput.disabled = false;
-        birthInput.disabled = false;
-        idInput.value = '';
-        birthInput.value = '';
-        idInput.focus();
+        document.getElementById('mainAppContainer').style.display = 'flex'; 
+        updateAppMeta();
     }
 
     function fn(num) {
@@ -1556,7 +1475,6 @@
         if (norm.includes('프로모션할인')) return '프로모션할인(월)';
         if (norm.includes('결합할인')) return '결합할인(월)';
         if (norm.includes('선납할인')) return '선납할인(월)';
-        // 강력한 캐시백 파싱: '캐시백' 또는 '캐쉬백'이 들어간 글자는 전부 찾아냄!
         if (norm.includes('캐시백') || norm.includes('캐쉬백') || norm.includes('현금지원')) return '캐시백';
         if (norm.includes('제휴카드월') || norm.includes('제휴카드할인') || norm.includes('카드할인월') || (norm.includes('제휴카드') && norm.includes('월'))) return '제휴카드(월)';
         if (norm.includes('제휴카드')) return '제휴카드';
@@ -1702,25 +1620,7 @@
         return result;
     }
 
-    function iSKnownValueRow(text) {
-        const known = [
-            '정상가','행사가','특별할인','결제금액','캐시백','상품권','멤버십',
-            '특별혜택','제휴카드','선택결제카드','선택결제카드명','선택결제카드설명',
-            '혜택합계','최종혜택금액','정상구독료(월)','프로모션할인(월)','결합할인(월)',
-            '선납할인(월)','제휴카드(월)','선납금액','선납시카드혜택','체감구독료(월)'
-        ];
-        const key = getKnownKey(String(text || ''));
-        return !!key && known.includes(key);
-    }
-
     function parseExcelData() {
-        const savedId = sessionStorage.getItem('planner_emp_id');
-        if (!savedId || typeof MANAGER_DATA === 'undefined' || !MANAGER_DATA[savedId]) {
-            alert("정상적인 로그인 절차를 거치지 않았습니다. 새로고침 후 로그인해주세요.");
-            location.reload();
-            return;
-        }
-        
         const rawText = document.getElementById("rawPasteArea").value;
         if (rawText.trim() === "") {
             alert("Data를 먼저 붙여넣어 주세요.");
