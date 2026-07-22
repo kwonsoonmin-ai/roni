@@ -1042,15 +1042,13 @@
         <div style="position: relative; width: 100%; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.05); background: #f8f9fa;">
             <img id="roniCareMainImage" src="https://raw.githubusercontent.com/kwonsoonmin-ai/roni/main/2.png" alt="케어 서비스 상세" style="width: 100%; display: block;">
             
-            <!-- 우측 텍스트 메뉴 위에 덧씌우는 투명 클릭 영역 -->
+            <!-- 우측 텍스트 메뉴 위에 덧씌우는 투명 클릭 영역 (위치 정밀 보정 완료) -->
             <!-- 이 영역을 클릭하면 해당 메뉴에 맞는 이미지로 src가 즉시 변경됩니다 -->
-            <div style="position: absolute; top: 10%; right: 2%; width: 33%; height: 80%; display: flex; flex-direction: column; z-index: 10;">
-                <div class="care-click-zone" onclick="changeCareImage('https://raw.githubusercontent.com/kwonsoonmin-ai/roni/main/2.png')" title="위생 케어(스팀)"></div>
-                <div class="care-click-zone" onclick="changeCareImage('https://raw.githubusercontent.com/kwonsoonmin-ai/roni/main/3.png')" title="로봇/오수관 클리닝"></div>
-                <div class="care-click-zone" onclick="changeCareImage('https://raw.githubusercontent.com/kwonsoonmin-ai/roni/main/4.png')" title="급배수통 스팀 클리닝"></div>
-                <div class="care-click-zone" onclick="changeCareImage('https://raw.githubusercontent.com/kwonsoonmin-ai/roni/main/5.png')" title="소모품7종 교체 및 배터리 교체"></div>
-                <div class="care-click-zone" onclick="changeCareImage('https://raw.githubusercontent.com/kwonsoonmin-ai/roni/main/6.png')" title="무상 철거/재설치"></div>
-            </div>
+            <div class="care-click-zone" style="position: absolute; top: 7%; right: 2%; width: 33%; height: 11%; z-index: 10; margin: 0;" onclick="changeCareImage('https://raw.githubusercontent.com/kwonsoonmin-ai/roni/main/2.png')" title="위생 케어(스팀)"></div>
+            <div class="care-click-zone" style="position: absolute; top: 19.5%; right: 2%; width: 33%; height: 11%; z-index: 10; margin: 0;" onclick="changeCareImage('https://raw.githubusercontent.com/kwonsoonmin-ai/roni/main/3.png')" title="로봇/오수관 클리닝"></div>
+            <div class="care-click-zone" style="position: absolute; top: 32%; right: 2%; width: 33%; height: 11%; z-index: 10; margin: 0;" onclick="changeCareImage('https://raw.githubusercontent.com/kwonsoonmin-ai/roni/main/4.png')" title="급배수통 스팀 클리닝"></div>
+            <div class="care-click-zone" style="position: absolute; top: 44.5%; right: 2%; width: 33%; height: 11%; z-index: 10; margin: 0;" onclick="changeCareImage('https://raw.githubusercontent.com/kwonsoonmin-ai/roni/main/5.png')" title="소모품7종 교체 및 배터리 교체"></div>
+            <div class="care-click-zone" style="position: absolute; top: 57%; right: 2%; width: 33%; height: 11%; z-index: 10; margin: 0;" onclick="changeCareImage('https://raw.githubusercontent.com/kwonsoonmin-ai/roni/main/6.png')" title="무상 철거/재설치"></div>
         </div>
 
         <div class="security-actions" style="margin-top:30px; text-align: center;">
