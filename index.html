@@ -902,7 +902,7 @@
                                 <li>LG Shield 글로벌 보안 인증</li>
                             </ul>
                             <div style="background: #dbeafe; border-left: 3px solid #3b82f6; padding: 8px; margin-top: 8px; border-radius: 4px; font-size: 12px;">
-                                🗣️ "삼성의 녹스(Knox) 같은 훌륭한 S/W 보안 프로그램도 안심이 되지만, 가장 확실한 건 아예 <strong>물리적으로 문을 닫아 렌즈를 가려버리는 로니의 도어 가림막</strong>입니다. S/W는 뚫릴 수 있어도 물리적 가림막은 절대 해킹할 수 없습니다."
+                                🗣️ "삼성의 녹스(Knox) 같은 훌륭한 S/W 보안 프로그램도 안심이 되지만, 가장 확실한 건 아예 <strong>물리적으로 문을 닫아 렌즈 가려버리는 로니의 도어 가림막</strong>입니다. S/W는 뚫릴 수 있어도 물리적 가림막은 절대 해킹할 수 없습니다."
                             </div>
                         </td>
                         <td style="background: #fff; border-right: 1px solid #cbd5e1; border-bottom: 1px solid #cbd5e1; padding: 12px;">
@@ -1411,7 +1411,7 @@
     let gapBaseIndex = 0;
     let latestResults = [];
 
-    function getKnownKey(text) {
+    <comment-tag id="1">function getKnownKey(text) {
         const norm = String(text).replace(/\s+/g, '');
         if (!norm) return null;
 
@@ -1424,7 +1424,20 @@
         if (norm.includes('제휴카드월') || norm.includes('제휴카드할인') || norm.includes('카드할인월') || (norm.includes('제휴카드') && norm.includes('월'))) return '제휴카드(월)';
         if (norm.includes('제휴카드')) return '제휴카드';
         if (norm.includes('선납금액')) return '선납금액';
-        if (norm.includes('선납시카드') || norm.includes('선납카드')) return '선납시카드혜택';
+        if (norm.includes('선납시카드') || norm.includes('선납카드')) return '선납시카드혜택';</comment-tag id="1" text="function getKnownKey(text) {
+        const norm = String(text).replace(/\s+/g, '');
+        if (!norm) return null;
+
+        if (norm.includes('체감구독료')) return '체감구독료(월)';
+        if (norm.includes('정상구독료') || norm.includes('월구독료')) return '정상구독료(월)';
+        if (norm.includes('프로모션할인')) return '프로모션할인(월)';
+        if (norm.includes('결합할인')) return '결합할인(월)';
+        if (norm.includes('선납할인')) return '선납할인(월)';
+        if (norm.includes('선납금액')) return '선납금액';
+        if (norm.includes('선납캐시백') || norm.includes('선납시캐시백') || norm.includes('선납시카드') || norm.includes('선납카드')) return '선납시카드혜택';
+        if (norm.includes('캐시백') || norm.includes('캐쉬백') || norm.includes('현금지원')) return '캐시백';
+        if (norm.includes('제휴카드월') || norm.includes('제휴카드할인') || norm.includes('카드할인월') || (norm.includes('제휴카드') && norm.includes('월'))) return '제휴카드(월)';
+        if (norm.includes('제휴카드')) return '제휴카드';" type="suggestion">
         
         if (norm.includes('정상가') || norm.includes('정상판매가') || norm.includes('정상가격')) return '정상가';
         if (norm.includes('행사가') || norm.includes('행사판매가') || (norm.includes('판매가') && !norm.includes('정상'))) return '행사가';
@@ -1681,7 +1694,7 @@
             const identifiedKey = getKnownKey(firstCell) || getKnownKey(rowText);
             if (!identifiedKey) continue;
 
-            let nums = [];
+            <comment-tag id="2">let nums = [];
             if (row.length > 1) {
                 nums = row.slice(1, optionCount + 1).map(v => cleanNumber(v));
             } else {
@@ -1690,7 +1703,23 @@
                 nums = extracted.map(v => cleanNumber(v)).slice(0, optionCount);
             }
             parsedData[identifiedKey] = nums;
-        }
+        }</comment-tag id="2" text="let nums = [];
+            if (row.length > 1) {
+                nums = row.slice(1, optionCount + 1).map(v => cleanNumber(v));
+            } else {
+                const pureText = rowText.replace(firstCell, '').trim();
+                const extracted = pureText.match(/-?\d{1,3}(?:,\d{3})*(?:\.\d+)?/g) || [];
+                nums = extracted.map(v => cleanNumber(v)).slice(0, optionCount);
+            }
+            
+            if (parsedData[identifiedKey]) {
+                nums.forEach((num, idx) => {
+                    parsedData[identifiedKey][idx] = (parsedData[identifiedKey][idx] || 0) + num;
+                });
+            } else {
+                parsedData[identifiedKey] = nums;
+            }
+        }" type="suggestion">
 
         gapBaseIndex = Math.min(gapBaseIndex, Math.max(0, optionCount - 1));
         populateGapBaseOptions();
