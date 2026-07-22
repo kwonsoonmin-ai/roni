@@ -3,521 +3,2325 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>통합 대시보드 (견적 산출 및 로봇청소기 비교)</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome for Visual Guide -->
+    <title>경남담당 고객맞춤플래너 통합 대시보드</title>
+    <!-- FontAwesome 추가 (비주얼 가이드 아이콘용) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap');
-        body { font-family: 'Noto Sans KR', sans-serif; background-color: #f1f5f9; }
-        
-        /* 커스텀 테이블 스크롤 및 스타일 */
-        .excel-table th, .excel-table td {
-            white-space: nowrap;
-            padding: 8px 12px;
-            text-align: center;
-            border: 1px solid #e2e8f0;
+        /* =========================================================
+           💻 화면(스크린) 레이아웃
+           ========================================================= */
+        body {
+            font-family: 'Malgun Gothic', '맑은 고딕', sans-serif;
+            background-color: #f4f7f6;
+            margin: 0;
+            padding: 20px;
+            color: #333;
             font-size: 14px;
         }
-        .excel-table th { background-color: #f8fafc; font-weight: 600; color: #475569; }
-        
-        /* 모달 백드롭 블러 효과 */
-        .modal-backdrop {
-            background-color: rgba(15, 23, 42, 0.6);
-            backdrop-filter: blur(4px);
+        .container {
+            display: flex;
+            gap: 20px;
+            max-width: 1900px;
+            margin: 0 auto;
+            align-items: flex-start;
         }
+        .right-column {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            position: sticky;
+            top: 20px;
+        }
+        .panel {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        .left-panel {
+            flex: 1.3;
+            overflow-x: auto;
+        }
+        .right-panel {
+            flex: unset;
+            position: static;
+        }
+        h2 {
+            border-bottom: 2px solid #2c3e50;
+            padding-bottom: 10px;
+            color: #2c3e50;
+            margin-top: 0;
+            font-size: 18px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            text-align: center;
+            table-layout: fixed;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            font-size: 13px;
+            word-break: break-all;
+        }
+        th {
+            background-color: #f8f9fa;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        #quoteTable tr.highlight-dark td {
+            background-color: #475569 !important; 
+            color: #ffffff !important;
+            font-weight: 700 !important;
+        }
+        #quoteTable tr.highlight-dark td.label-cell {
+            background-color: #334155 !important;
+            color: #ffffff !important;
+        }
+        #quoteTable tr.highlight-dark td.base-col-cell {
+            background-color: #1e293b !important;
+            color: #ffffff !important;
+        }
+
+        .highlight-yellow {
+            background-color: #fff200;
+            font-weight: bold;
+            color: #d32f2f;
+            font-size: 15px;
+        }
+        .gap-row {
+            background-color: #f8f9fa;
+            font-weight: bold;
+        }
+        .label-cell {
+            font-weight: bold;
+            background: #fafafa;
+            color: #333;
+            text-align: center;
+            position: sticky;
+            left: 0;
+            z-index: 2;
+        }
+        .highlight-yellow .label-cell {
+            background-color: #fff200 !important;
+            color: #d32f2f !important;
+        }
+        .model-cell {
+            white-space: pre; 
+            word-break: normal; 
+            text-align: left;
+            padding-left: 15px;
+            font-size: 12px;
+            line-height: 1.6;
+            color: #0056b3;
+            font-weight: bold;
+            vertical-align: middle;
+        }
+        .number-cell {
+            text-align: right;
+            padding-right: 10px;
+        }
+        .paste-area-container {
+            background: #eef2f5;
+            padding: 15px;
+            border-radius: 5px;
+            border: 1px dashed #0056b3;
+            margin-bottom: 20px;
+        }
+        .paste-area-container p {
+            margin-top: 0;
+            font-weight: bold;
+            color: #0056b3;
+            margin-bottom: 10px;
+        }
+
+        .excel-paste-shell {
+            border: 1px solid #c9d3df;
+            border-radius: 6px;
+            overflow: hidden;
+            background: #ffffff;
+            height: 260px;
+        }
+        .excel-paste-header {
+            display: grid;
+            grid-template-columns: 44px repeat(8, 1fr);
+            background: #e9edf3;
+            border-bottom: 1px solid #c9d3df;
+            font-size: 12px;
+            color: #4b5563;
+            user-select: none;
+        }
+        .excel-paste-header div {
+            padding: 6px 0;
+            text-align: center;
+            border-right: 1px solid #d6dee8;
+            font-weight: bold;
+        }
+        .excel-paste-header div:last-child {
+            border-right: none;
+        }
+        .excel-paste-body {
+            display: grid;
+            grid-template-columns: 44px 1fr;
+            height: 224px;
+            background: #fff;
+        }
+        .excel-row-head {
+            overflow: hidden;
+            background:
+                repeating-linear-gradient(
+                    to bottom,
+                    #eef2f6 0px,
+                    #eef2f6 31px,
+                    #dfe6ee 31px,
+                    #dfe6ee 32px
+                );
+            border-right: 1px solid #c9d3df;
+        }
+        .excel-grid-wrap {
+            position: relative;
+            overflow: auto;
+            background:
+                repeating-linear-gradient(
+                    to right,
+                    rgba(201, 211, 223, 0.9) 0px,
+                    rgba(201, 211, 223, 0.9) 1px,
+                    transparent 1px,
+                    transparent 120px
+                ),
+                repeating-linear-gradient(
+                    to bottom,
+                    rgba(201, 211, 223, 0.9) 0px,
+                    rgba(201, 211, 223, 0.9) 1px,
+                    transparent 1px,
+                    transparent 32px
+                ),
+                #fff;
+        }
+        #rawPasteArea {
+            position: relative;
+            z-index: 2;
+            width: 1400px;
+            min-width: 100%;
+            height: 100%;
+            min-height: 224px;
+            padding: 10px 12px;
+            border: none;
+            border-radius: 0;
+            font-family: 'Malgun Gothic', '맑은 고딕', sans-serif;
+            font-size: 12px;
+            resize: none;
+            box-sizing: border-box;
+            background: transparent;
+            line-height: 20px;
+            overflow: auto;
+            white-space: pre;
+        }
+        #rawPasteArea:focus {
+            outline: 2px solid #8bb8ff;
+            outline-offset: -2px;
+        }
+
+        .btn-row {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .btn-calc, .btn-clear {
+            color: white;
+            border: none;            
+            padding: 12px 20px;
+            cursor: pointer;
+            border-radius: 4px;
+            font-weight: bold;
+            width: 100%;
+            font-size: 15px;
+            transition: 0.2s;
+        }
+        .btn-calc { background-color: #0056b3; }
+        .btn-calc:hover { background-color: #004494; }
+        .btn-clear { background-color: #6c757d; }
+        .btn-clear:hover { background-color: #5a6268; }
+        
+        .care-summary {
+            background-color: #eef2f5;
+            padding: 15px 20px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 16px;
+            border: 1px solid #dce3e9;
+        }
+        .care-summary-left {
+            flex: 1;
+            min-width: 0;
+        }
+        .summary-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 8px;
+        }
+        .selected-items-list {
+            font-size: 14px;
+            line-height: 1.7;
+            color: #2c3e50;            
+            white-space: pre-wrap;
+        }
+        .care-summary-right {
+            text-align: right;
+            font-size: 16px;
+            font-weight: bold;
+            color: #2c3e50;
+            min-width: 190px;
+        }
+        .care-summary-right span {
+            color: #d32f2f;
+            font-size: 20px;
+        }
+        .btn-clear-select {
+            background-color: #fff;
+            color: #0056b3;
+            border: 1px solid #0056b3;
+            padding: 7px 12px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 12px;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+        .btn-clear-select:hover {
+            background-color: #eef5ff;
+        }
+        .print-selected-care-wrap { display: none; margin-top: 12px; }
+        
+        .tab-container {
+            margin-bottom: 10px;
+            display: flex;
+            gap: 4px;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+        }
+        .tab-btn {
+            flex: 1 1 calc(16% - 4px);
+            min-width: 95px;
+            padding: 8px 4px;
+            cursor: pointer;
+            border: 1px solid #0056b3;
+            background: #fff;
+            color: #0056b3;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 11px;
+            transition: 0.2s;
+            text-align: center;
+        }
+        .tab-btn.active { background: #0056b3; color: #fff; }
+        .video-btn:hover { background-color: #eef5ff; }
+
+        .care-table th { background-color: #eef2f5; }
+        .checkbox-cell { text-align: center; }
+        .text-left { text-align: left; }
+        .text-right { text-align: right; }
+        .disabled-row { opacity: 0.5; }
+        .table-scroll { max-height: 650px; overflow-y: auto; }
+        #quoteTableWrap { overflow-x: auto; }
+        #quoteTable { min-width: 900px; }
+
+        @media (max-width: 1200px) {
+            .container { flex-direction: column; }
+            .right-column { position: static; }
+        }
+        
+        .print-toolbar {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+        }
+        .btn-print {
+            background-color: #2c3e50;
+            color: #fff;
+            border: none;            
+            padding: 10px 14px;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 13px;
+            transition: 0.2s;
+        }
+        .btn-print-secondary { background-color: #5f6b77; }
+        .btn-planner { background-color: #0f766e; }
+        .btn-planner:hover { background-color: #0d5c56; }
+        .btn-roni { background-color: #4338ca; } /* RONi vs 로보락 버튼색상 */
+        .btn-roni:hover { background-color: #3730a3; }
+        .btn-youtube { background-color: #e50914; } /* 유튜브 버튼색상 */
+        .btn-youtube:hover { background-color: #b80710; }
+
+        .app-meta {
+            margin-top: 10px;
+            font-size: 12px;
+            color: #111827;
+            text-align: right;
+            font-weight: bold;
+        }
+        .security-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.85);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+        .security-card {
+            width: 100%;
+            max-width: 420px;
+            background: #fff;
+            border-radius: 10px;
+            padding: 24px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        .security-card h3 { margin: 0 0 10px 0; font-size: 20px; color: #2c3e50; }
+        .security-card p { margin: 0 0 12px 0; color: #555; line-height: 1.5; }
+        
+        .print-footer { display: none; }
+        
+        .gap-toolbar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+        .gap-select {
+            min-width: 120px;
+            padding: 8px 10px;
+            border: 1px solid #cfd8dc;
+            border-radius: 4px;
+            font-size: 14px;
+            background: #fff;
+        }
+    
+        .sheet-shell{
+            border:1px solid #c9d3df;
+            border-radius:8px;
+            overflow:hidden;
+            background:#fff;
+        }
+        .sheet-toolbar{
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            gap:8px;
+            padding:8px 10px;            
+            background:#f7f9fc;
+            border-bottom:1px solid #d7dfeb;
+            font-size:12px;
+            color:#4b5563;
+        }
+        .sheet-scroll{
+            max-height:260px;
+            overflow:auto;
+            background:#fff;
+        }
+        .sheet-table{
+            border-collapse:collapse;
+            width:max-content;
+            min-width:100%;
+            table-layout:fixed;
+            font-size:12px;
+        }
+        .sheet-table th, .sheet-table td{ border:1px solid #d7dfeb; }
+        .sheet-table thead th{
+            position:sticky; top:0; z-index:3; background:#eef2f7; color:#334155; font-weight:700; text-align:center; height:30px; min-width:120px;
+        }
+        .sheet-table thead th.corner{ left:0; z-index:4; min-width:42px; width:42px; }
+        .sheet-table tbody th{
+            position:sticky; left:0; z-index:2; background:#eef2f7; color:#475569; width:42px; min-width:42px; text-align:center; font-weight:700;
+        }
+        .sheet-table td{
+            min-width:120px; width:120px; height:30px; padding:4px 6px; white-space:pre-wrap; word-break:break-word; vertical-align:top; background:#fff; color:#111827; cursor:text;
+        }
+        .sheet-table td.active-cell{
+            outline:2px solid #4f8cff; outline-offset:-2px; background:#f8fbff;
+        }
+        .hidden-raw{ display:none !important; }
+        .print-subscription-notice { display: none; }
+
+        @media print {
+            * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+            .print-toolbar, .paste-area-container, .tab-container, .btn-calc, .btn-clear, .btn-clear-select, #videoPanel, #installGuidePanel, #qrPanel, #cardQrModalOverlay, .security-overlay, .gap-toolbar, .app-meta { display: none !important; }
+            body { padding: 0; margin: 0; padding-bottom: 40px !important; }
+            .container { display: block !important; max-width: none; margin: 0; } 
+            .panel { box-shadow: none; border: none; padding: 0; margin-bottom: 20px; page-break-inside: avoid; }
+            .left-panel, .right-column, .right-panel { position: static !important; overflow: visible !important; width: 100% !important; display: block !important; }
+            .table-scroll, #quoteTableWrap { max-height: none !important; overflow: visible !important; }
+            #quoteTable { min-width: 0 !important; }
+            .care-summary { break-inside: avoid; }
+            .print-selected-care-wrap { display: none !important; }
+            body.print-care .print-selected-care-wrap, body.print-all .print-selected-care-wrap { display: block !important; }
+            body.print-estimate #carePanel, body.print-estimate .right-column { display: none !important; }
+            body.print-care #estimatePanel, body.print-care .right-panel h2, body.print-care .table-scroll, body.print-care .tab-container { display: none !important; }
+            body.print-care .right-column, body.print-care .right-panel { display: block !important; position: static !important; top: auto !important; }
+            body.print-all .tab-container, body.print-all .table-scroll { display: none !important; }
+            body.print-all .right-column { page-break-before: always !important; break-before: page !important; }
+            .print-footer { display: block !important; position: fixed !important; bottom: 0 !important; width: 100% !important; padding-top: 8px; border-top: 1px solid #ddd; font-size: 9pt; color: #333; text-align: right; background: #fff; z-index: 9999; }
+            .print-subscription-notice { display: block !important; margin-top: 20px; margin-bottom: 15px; padding: 12px 15px; border: 1px solid #999; border-radius: 6px; background-color: #f8f9fa !important; page-break-inside: avoid; }
+            .print-subscription-notice h4 { margin: 0 0 6px 0; font-size: 12px; color: #2c3e50 !important; font-weight: bold; }
+            .print-subscription-notice ul { margin: 0; padding-left: 18px; }
+            .print-subscription-notice li { font-size: 11px; color: #444 !important; line-height: 1.4; margin-bottom: 4px; }
+            #quoteTable.hide-model-row tr.model-row { display: none !important; }
+        }
+        
+        .result-toolbar { display: flex; justify-content: flex-end; gap: 8px; margin: 8px 0 10px 0; }
+        .btn-toggle-model { background: #ffffff; color: #0056b3; border: 1px solid #0056b3; border-radius: 6px; padding: 8px 12px; font-size: 12px; font-weight: bold; cursor: pointer; white-space: nowrap; }
+        .btn-toggle-model:hover { background: #eef5ff; }
+        #quoteTable.hide-model-row tr.model-row { display: none !important; }
+
+        .subscription-dominant-header { background-color: #dff3df !important; color: #1f6b2a !important; font-weight: 700 !important; }
+        .subscription-dominant-cell { background-color: #eaf7ea !important; }
+        .highlight-dark td.subscription-dominant-cell { background-color: #2f6f3b !important; color: #ffffff !important; }
+        .highlight-yellow td.subscription-dominant-cell { background-color: #d9f0d9 !important; color: #1f6b2a !important; }
+        .gap-row td.subscription-dominant-cell { background-color: #eaf7ea !important; color: #1f6b2a !important; }
+
+        /* 프리미엄 비주얼 가이드 모달용 스타일 */
+        .vg-container { background-color: #ffffff; width: 100%; border-radius: 12px; box-shadow: 0 15px 35px rgba(0,0,0,0.05); overflow: hidden; position: relative;}
+        .vg-hero-section { background: linear-gradient(120deg, #1a1a2e 0%, #16213e 100%); color: #ffffff; padding: 40px 30px; text-align: center; position: relative; }
+        .vg-hero-section::after { content: ''; position: absolute; bottom: -1px; left: 0; right: 0; height: 30px; background: white; clip-path: polygon(0 100%, 100% 100%, 100% 0, 50% 100%, 0 0); }
+        .vg-hero-title { font-size: 26px; font-weight: 300; margin: 0 0 10px 0; letter-spacing: -1px; line-height: 1.3;}
+        .vg-hero-title strong { font-weight: 900; color: #e9ecef; }
+        .vg-hero-subtitle { font-size: 15px; color: #ced4da; font-weight: 300; margin: 0; }
+        .vg-content-body { padding: 30px 40px 50px; }
+        .vg-visual-block { margin-bottom: 40px; }
+        .vg-visual-block:last-child { margin-bottom: 0; }
+        .vg-block-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; border-bottom: 1px solid #e9ecef; padding-bottom: 12px; }
+        .vg-block-num { background: #a50034; color: white; font-size: 16px; font-weight: 900; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 50%; flex-shrink: 0;}
+        .vg-block-title { font-size: 20px; font-weight: 700; color: #212529; margin: 0; text-align: left; }
+        .vg-comparison-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .vg-compare-card { border-radius: 10px; padding: 25px; position: relative; transition: transform 0.3s ease; text-align: left; }
+        .vg-compare-card:hover { transform: translateY(-3px); }
+        .vg-card-lg { background: #fff5f7; border: 2px solid #a50034; box-shadow: 0 10px 25px rgba(165, 0, 52, 0.08); }
+        .vg-card-other { background: #f8f9fa; border: 1px solid #dee2e6; }
+        .vg-card-badge { display: inline-block; padding: 5px 12px; border-radius: 4px; font-size: 12px; font-weight: 700; margin-bottom: 15px; letter-spacing: 0.5px; }
+        .vg-card-lg .vg-card-badge { background: #a50034; color: white; }
+        .vg-card-other .vg-card-badge { background: #6c757d; color: white; }
+        .vg-visual-element { font-size: 32px; margin-bottom: 15px; color: #495057; }
+        .vg-card-lg .vg-visual-element { color: #a50034; }
+        .vg-card-title { font-size: 18px; font-weight: 700; margin: 0 0 10px 0; color: #212529; }
+        .vg-card-desc { font-size: 14px; color: #495057; margin: 0; word-break: keep-all; line-height: 1.6; }
+        .vg-card-desc strong { color: #212529; background: linear-gradient(180deg, rgba(255,255,255,0) 50%, rgba(165, 0, 52, 0.1) 50%); }
+        .vg-close-btn-top { position: absolute; top: 15px; right: 15px; background: rgba(0,0,0,0.3); color: #fff; border: none; width: 32px; height: 32px; border-radius: 50%; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10; transition: background 0.2s;}
+        .vg-close-btn-top:hover { background: rgba(0,0,0,0.7); }
+        
+        /* 추가: 구독 관리 모달용 클릭 존 스타일 */
+        .care-click-zone { flex: 1; cursor: pointer; transition: background 0.2s; border-radius: 6px; margin: 2px 0; }
+        .care-click-zone:hover { background: rgba(0, 0, 0, 0.04); }
+
+        /* 부등호 강조 배지 스타일 */
+        .win-badge-container {
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 10px; 
+            margin-bottom: 12px; 
+            background: #fff; 
+            border: 2px solid #a50034; 
+            padding: 8px 12px; 
+            border-radius: 8px; 
+            text-align: center;
+            box-shadow: 0 2px 6px rgba(165,0,52,0.1);
+        }
+        .win-badge-lg { color: #a50034; font-weight: 900; font-size: 14px; }
+        .win-badge-arrow { font-size: 18px; color: #e11d48; font-weight: 900; letter-spacing: -2px; }
+        .win-badge-other { color: #94a3b8; font-weight: normal; font-size: 13px; text-decoration: line-through; }
+
+        @media (max-width: 768px) { .vg-comparison-grid { grid-template-columns: 1fr; gap: 15px; } .vg-content-body { padding: 25px 20px; } .vg-hero-section { padding: 30px 20px; } .vg-hero-title { font-size: 22px; } }
     </style>
 </head>
-<body class="p-6">
+<body>
 
-    <div class="max-w-7xl mx-auto bg-white rounded-2xl shadow-xl overflow-hidden border border-slate-200 p-6">
+<div class="container" id="mainAppContainer" style="display: flex;">
+    <div class="panel left-panel" id="estimatePanel">
+        <!-- 메인 타이틀 -->
+        <h2>📊 경남담당 고객맞춤 플래너</h2>
         
-        <!-- 상단 헤더 및 버튼 영역 -->
-        <div class="flex justify-between items-center mb-6 border-b pb-4">
-            <div>
-                <h1 class="text-2xl font-black text-slate-800">📊 통합 견적 및 비교 대시보드</h1>
-                <p class="text-sm text-slate-500 mt-1">엑셀 데이터를 붙여넣어 견적을 산출하고, 프리미엄 가전 비교 화법을 확인하세요.</p>
-            </div>
-            <div class="flex gap-3">
-                <!-- RONi와 타사 비교 팝업 오픈 버튼 -->
-                <button onclick="openComparisonModal()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-5 py-2.5 rounded-xl shadow-md transition flex items-center gap-2">
-                    ✨ RONi와 로보락 비교
-                </button>
-            </div>
+        <div class="print-toolbar">
+            <button type="button" class="btn-print" onclick="printEstimate()">비교표 출력</button>
+            <button type="button" class="btn-print btn-print-secondary" onclick="printCare()">구독 Care 출력</button>
+            <button type="button" class="btn-print btn-print-secondary" onclick="printAllPage()">전체 출력</button>
+            <button type="button" class="btn-print btn-planner" onclick="window.open('https://akohw1003.github.io/kangnam/kyowon3', '_blank')">교원 플래너</button>
+            <button type="button" class="btn-print btn-youtube" onclick="window.open('https://www.youtube.com/watch?v=x4Wvf-2LCBY', '_blank')">📺 RONi 귀곰 유튜브</button>
+            <!-- ✨ RONi vs 로보락 비교 팝업 버튼 -->
+            <button type="button" class="btn-print btn-roni" onclick="openRoniFeatureModal()">✨ RONi 타사 비교</button>
         </div>
 
-        <!-- 엑셀 데이터 입력 영역 (예시 시뮬레이션용 텍스트아레아 및 테이블) -->
-        <div class="border-2 border-dashed border-slate-300 rounded-2xl p-6 bg-slate-50 mb-6">
-            <div class="flex items-center justify-between mb-4">
-                <h2 class="text-lg font-bold text-slate-700 flex items-center gap-2">
-                    📥 Data 붙여넣기 (Ctrl+V)
-                </h2>
-                <span class="text-xs text-slate-500">셀을 클릭한 뒤 Ctrl+V 하면 표/엑셀 값을 셀 단위로 붙여넣습니다.</span>
-            </div>
-            
-            <div class="overflow-x-auto bg-white rounded-xl border border-slate-200 shadow-sm">
-                <table class="excel-table w-full" id="inputTable">
-                    <thead>
-                        <tr>
-                            <th class="w-16">#</th>
-                            <th>A</th><th>B</th><th>C</th><th>D</th><th>E</th><th>F</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- 엑셀 행 셀 생성 (JS로 조작) -->
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="flex justify-end gap-3 mt-4">
-                <button onclick="calculateEstimates()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-6 py-2.5 rounded-xl shadow transition">
-                    견적 산출하기
-                </button>
-                <button onclick="clearTable()" class="bg-slate-500 hover:bg-slate-600 text-white font-bold px-6 py-2.5 rounded-xl shadow transition">
-                    지우기
-                </button>
-            </div>
+        <div class="gap-toolbar">
+            <label for="gapBaseSelect"><b>GAP 기준안</b></label>
+            <select id="gapBaseSelect" class="gap-select" onchange="handleGapBaseChange()"></select>
         </div>
 
-        <!-- 결과 출력 영역 (시뮬레이션) -->
-        <div id="resultContainer" class="hidden">
-            <h3 class="text-xl font-bold text-slate-800 mb-4">💡 견적 산출 결과</h3>
-            <div class="bg-slate-900 text-white p-6 rounded-2xl">
-                <p id="resultSummary" class="text-lg">데이터가 성공적으로 산출되었습니다.</p>
-            </div>
-        </div>
-
-    </div>
-
-    <!-- 로봇청소기 3자 비교 모달 -->
-    <div id="comparisonModal" class="fixed inset-0 modal-backdrop hidden flex items-center justify-center z-50 p-4">
-        <div class="bg-white w-full max-w-6xl rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
-            
-            <!-- 모달 헤더 -->
-            <div class="bg-slate-900 text-white px-6 py-4 flex justify-between items-center">
-                <h2 class="text-xl font-bold flex items-center gap-2">
-                    👑 프리미엄 로봇청소기 3자 비교 가이드 (LG RONi vs 로보락 vs 삼성)
-                </h2>
-                <button onclick="closeComparisonModal()" class="text-slate-400 hover:text-white text-2xl font-bold">&times;</button>
-            </div>
-
-            <!-- 모달 바디 (비교 테이블) -->
-            <div class="p-6 overflow-y-auto flex-1">
-                <table class="w-full border-collapse border border-slate-200">
-                    <thead>
-                        <tr class="bg-slate-100">
-                            <th class="border border-slate-200 p-3 text-slate-700 w-1/4">비교 포인트</th>
-                            <th class="border border-slate-200 p-3 text-red-700 bg-red-50 w-1/4">👑 LG RONi (로니) 대응 화법</th>
-                            <th class="border border-slate-200 p-3 text-slate-700 w-1/4">로보락 S10 MaxV Ultra</th>
-                            <th class="border border-slate-200 p-3 text-slate-700 w-1/4">삼성 비스포크 AI 스팀 울트라</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- 1. 바닥 청소/살균 -->
-                        <tr>
-                            <td class="border border-slate-200 p-3 font-bold text-slate-800 bg-slate-50">
-                                바닥 청소/살균<br><span class="text-xs text-red-500 font-normal">(가장 큰 차이)</span>
-                            </td>
-                            <td class="border border-slate-200 p-3 bg-red-50/50">
-                                <!-- 부등호 강조 배지 -->
-                                <div class="mb-2 inline-block bg-red-600 text-white text-xs font-bold px-2.5 py-1 rounded-full shadow-sm">
-                                    LG 100℃ 스팀살균 &gt;&gt; 타사 상온 물걸레
-                                </div>
-                                <ul class="text-sm text-slate-700 space-y-2">
-                                    <li>• <b>바닥에 직접 100℃ 스팀 분사하며 닦음</b></li>
-                                    <li>• <b>유해균 99.99% 완벽 살균!</b></li>
-                                    <li class="bg-blue-50 p-2.5 rounded-lg border border-blue-100 text-xs text-blue-900">
-                                        🗣️ <i>"고객님, 삼성이나 로보락이 스테이션 안에서 걸레를 뜨겁게 빠는 기술은 훌륭합니다. 하지만 바닥을 닦을 때는 결국 식어버린 상온 물걸레입니다. 찌든 때와 세균까지 진짜 '바닥 스팀 살균'을 원하신다면 거실 바닥에 직접 100도 스팀을 쏘는 로니를 하셔야 합니다."</i>
-                                    </li>
-                                </ul>
-                            </td>
-                            <td class="border border-slate-200 p-3 text-sm text-slate-600">
-                                <ul class="space-y-1">
-                                    <li>• 상온 물걸레질</li>
-                                    <li>• 내부에서 100℃로 걸레만 세척</li>
-                                </ul>
-                            </td>
-                            <td class="border border-slate-200 p-3 text-sm text-slate-600">
-                                <ul class="space-y-1">
-                                    <li>• 상온 물걸레질</li>
-                                    <li>• 내부에서 스팀 및 고온수 걸레 세척</li>
-                                </ul>
-                            </td>
-                        </tr>
-
-                        <!-- 2. 흡입력 & 주행 -->
-                        <tr>
-                            <td class="border border-slate-200 p-3 font-bold text-slate-800 bg-slate-50">흡입력 & 주행</td>
-                            <td class="border border-slate-200 p-3 bg-red-50/50">
-                                <div class="mb-2 inline-block bg-red-600 text-white text-xs font-bold px-2.5 py-1 rounded-full shadow-sm">
-                                    LG 30W 파워모터 &gt;&gt; 단순 수치경쟁 지양
-                                </div>
-                                <ul class="text-sm text-slate-700 space-y-2">
-                                    <li>• 30W 급 강력 모터 + AI 주행</li>
-                                    <li>• 한국 아파트 (마루/장판) 완벽 최적화</li>
-                                    <li class="bg-blue-50 p-2.5 rounded-lg border border-blue-100 text-xs text-blue-900">
-                                        🗣️ <i>"로보락의 높은 Pa 수치도 좋지만, 국내 마루 환경에서는 흡입력 이상으로 걸레질 압력과 주행 꼼꼼함이 청소 결과를 좌우합니다. 복잡한 기믹보다 기본기가 탄탄한 로니가 마루바닥엔 정답입니다."</i>
-                                    </li>
-                                </ul>
-                            </td>
-                            <td class="border border-slate-200 p-3 text-sm text-slate-600">
-                                <ul class="space-y-1">
-                                    <li>• 36,000Pa 초강력 흡입</li>
-                                    <li>• 8.8cm 등반 능력</li>
-                                </ul>
-                            </td>
-                            <td class="border border-slate-200 p-3 text-sm text-slate-600">
-                                <ul class="space-y-1">
-                                    <li>• 디지털 인버터 흡입 모터</li>
-                                    <li>• AI 사물 인식 및 3D 센서 주행</li>
-                                </ul>
-                            </td>
-                        </tr>
-
-                        <!-- 3. 사생활 보호 -->
-                        <tr>
-                            <td class="border border-slate-200 p-3 font-bold text-slate-800 bg-slate-50">사생활 보호<br><span class="text-xs text-red-500 font-normal">(해킹 안심)</span></td>
-                            <td class="border border-slate-200 p-3 bg-red-50/50">
-                                <div class="mb-2 inline-block bg-red-600 text-white text-xs font-bold px-2.5 py-1 rounded-full shadow-sm">
-                                    LG 물리적 차단 &gt;&gt; 타사 상시 노출 렌즈
-                                </div>
-                                <ul class="text-sm text-slate-700 space-y-2">
-                                    <li>• <b>물리적 도어 가림막 (충전 시 카메라 차단)</b></li>
-                                    <li>• LG Shield 글로벌 보안 인증</li>
-                                    <li class="bg-blue-50 p-2.5 rounded-lg border border-blue-100 text-xs text-blue-900">
-                                        🗣️ <i>"삼성의 녹스(Knox) 같은 훌륭한 S/W 보안 프로그램도 안심이 되지만, 가장 확실한 건 아예 물리적으로 문을 닫아 렌즈를 가려버리는 로니의 도어 가림막입니다. S/W는 뚫릴 수 있어도 물리적 가림막은 절대 해킹할 수 없습니다."</i>
-                                    </li>
-                                </ul>
-                            </td>
-                            <td class="border border-slate-200 p-3 text-sm text-slate-600">
-                                <ul class="space-y-1">
-                                    <li>• 전면 카메라 상시 노출</li>
-                                </ul>
-                            </td>
-                            <td class="border border-slate-200 p-3 text-sm text-slate-600">
-                                <ul class="space-y-1">
-                                    <li>• 전면 카메라 상시 노출</li>
-                                    <li>• 삼성 Knox 소프트웨어 보안</li>
-                                </ul>
-                            </td>
-                        </tr>
-
-                        <!-- 4. 스테이션 디자인 -->
-                        <tr>
-                            <td class="border border-slate-200 p-3 font-bold text-slate-800 bg-slate-50">스테이션 디자인</td>
-                            <td class="border border-slate-200 p-3 bg-red-50/50">
-                                <div class="mb-2 inline-block bg-red-600 text-white text-xs font-bold px-2.5 py-1 rounded-full shadow-sm">
-                                    LG 초슬림 빌트인 &gt;&gt; 거대 타워형
-                                </div>
-                                <ul class="text-sm text-slate-700 space-y-2">
-                                    <li>• <b>히든: 15cm 초슬림, 싱크대 밑 완벽 매립 가능</b></li>
-                                    <li>• <b>오브제: 가구 같은 세련된 협탁 디자인</b></li>
-                                </ul>
-                            </td>
-                            <td class="border border-slate-200 p-3 text-sm text-slate-600">
-                                <ul class="space-y-1">
-                                    <li>• 일반적인 거대 타워형 (자동급배수 옵션)</li>
-                                </ul>
-                            </td>
-                            <td class="border border-slate-200 p-3 text-sm text-slate-600">
-                                <ul class="space-y-1">
-                                    <li>• 일반적인 거대 타워형 (자동급배수 옵션)</li>
-                                </ul>
-                            </td>
-                        </tr>
-
-                        <!-- 5. 사후관리 & 유지보수 -->
-                        <tr>
-                            <td class="border border-slate-200 p-3 font-bold text-slate-800 bg-slate-50">사후관리(A/S)<br>& 유지보수</td>
-                            <td class="border border-slate-200 p-3 bg-red-50/50">
-                                <div class="mb-2 inline-block bg-red-600 text-white text-xs font-bold px-2.5 py-1 rounded-full shadow-sm">
-                                    LG 전문매니저 방문케어 &gt;&gt; 자가/택배 관리
-                                </div>
-                                <ul class="text-sm text-slate-700 space-y-2">
-                                    <li>• <b>전국망 방문 A/S (스트레스 제로)</b></li>
-                                    <li>• <b>매니저 정기 방문 케어 (분해 세척)</b></li>
-                                    <li class="bg-blue-50 p-2.5 rounded-lg border border-blue-100 text-xs text-blue-900">
-                                        🗣️ <i>"물과 먼지가 섞이는 기계는 반드시 부패하고 냄새가 납니다. 삼성도 전국망 A/S가 되지만, 스테이션 내부의 찌든 때를 분해 세척해 주는 건 오직 LG 매니저의 '정기 방문 케어'뿐입니다."</i>
-                                    </li>
-                                </ul>
-                            </td>
-                            <td class="border border-slate-200 p-3 text-sm text-slate-600">
-                                <ul class="space-y-1">
-                                    <li>• 택배 A/S 위주, 내부 오염 자가 관리</li>
-                                </ul>
-                            </td>
-                            <td class="border border-slate-200 p-3 text-sm text-slate-600">
-                                <ul class="space-y-1">
-                                    <li>• 전국망 A/S 가능, 내부 오염 자가 관리</li>
-                                </ul>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <!-- 모달 푸터 (하단 버튼 영역) -->
-            <div class="bg-slate-100 px-6 py-4 flex justify-between items-center border-t">
-                <div class="flex gap-2">
-                    <!-- RONi 구독 관리 버튼 (딥 틸 그린, 흰색 글씨) -->
-                    <button onclick="openSubscriptionModal()" class="bg-[#0f766e] hover:bg-[#115e59] text-white font-bold px-5 py-2.5 rounded-xl shadow transition flex items-center gap-2">
-                        🛡️ RONi 구독 관리
-                    </button>
-                    <!-- 핵심Point 버튼 (버건디 레드, 흰색 글씨) -->
-                    <button onclick="openVisualGuideModal()" class="bg-[#a50034] hover:bg-[#88002b] text-white font-bold px-5 py-2.5 rounded-xl shadow transition flex items-center gap-2">
-                        💎 핵심Point
-                    </button>
+        <div class="paste-area-container">
+            <p>📥 Data 붙여넣기 (Ctrl+V)</p>
+            <div class="sheet-shell">
+                <div class="sheet-toolbar">
+                    <div><b>엑셀 입력 영역</b></div>
+                    <div>셀을 클릭한 뒤 Ctrl+V 하면 표/엑셀 값을 셀 단위로 붙여넣습니다.</div>
                 </div>
-                <!-- 닫기 버튼 (슬레이트 그레이, 흰색 글씨) -->
-                <button onclick="closeComparisonModal()" class="bg-[#475569] hover:bg-[#334155] text-white font-bold px-6 py-2.5 rounded-xl transition">
-                    닫기
-                </button>
+                <div class="sheet-scroll">
+                    <table class="sheet-table" id="inputSheetTable">
+                        <thead id="inputSheetHead"></thead>
+                        <tbody id="inputSheetBody"></tbody>
+                    </table>
+                </div>
             </div>
+            <textarea id="rawPasteArea" class="hidden-raw" placeholder=""></textarea>
+            <div class="btn-row">
+                <button class="btn-calc" onclick="syncRawFromSheet(); parseExcelData();">견적 산출하기</button>
+                <button class="btn-clear" onclick="clearAllData(); clearInputSheet();">지우기</button>
+            </div>
+        </div>
 
+        <div class="result-toolbar">
+            <button type="button" class="btn-toggle-model" id="toggleModelBtn" onclick="toggleModelRowVisibility()">모델명 숨기기</button>
+        </div>
+        <div id="quoteTableWrap">
+            <table id="quoteTable">
+                <thead id="quoteThead"></thead>
+                <tbody id="quoteTbody"></tbody>
+            </table>
         </div>
     </div>
 
-    <!-- RONi 구독 관리 모달 (이미지 교체형) -->
-    <div id="subscriptionModal" class="fixed inset-0 modal-backdrop hidden flex items-center justify-center z-50 p-4">
-        <div class="bg-white w-full max-w-5xl rounded-2xl shadow-2xl overflow-hidden flex flex-col">
-            
-            <div class="bg-slate-900 text-white px-6 py-4 flex justify-between items-center">
-                <h2 class="text-xl font-bold flex items-center gap-2">
-                    🛡️ 로봇청소기 RONi 구독 케어 서비스
-                </h2>
-                <button onclick="closeSubscriptionModal()" class="text-slate-400 hover:text-white text-2xl font-bold">&times;</button>
+    <div class="right-column">
+        <div class="panel right-panel" id="carePanel">
+            <h2 id="dashboardTitle">✨ 구독 Care 비용</h2>
+            <div class="tab-container">
+                <button class="tab-btn active" onclick="changeTab('tvCare', 'TV 케어', this)">TV 케어</button>
+                <button class="tab-btn" onclick="changeTab('stem', 'STEM 베이직', this)">STEM 베이직</button>
+                <button class="tab-btn" onclick="changeTab('stemIce', 'STEM 얼음정수', this)">STEM 얼음정수</button>
+                <button class="tab-btn" onclick="changeTab('waterPurifier', '정수기', this)">정수기</button>
+                <button class="tab-btn" onclick="changeTab('refrigerator', '일반 냉장고', this)">일반 냉장고</button>
+                <button class="tab-btn" onclick="changeTab('kimchiRefrigerator', '김치 냉장고', this)">김치 냉장고</button>
+                <button class="tab-btn" onclick="changeTab('washTower', '워시타워', this)">워시타워</button>
+                <button class="tab-btn" onclick="changeTab('washCombo', '워시콤보', this)">워시콤보</button>
+                <button class="tab-btn" onclick="changeTab('trommStandard', '트롬(스탠다드)', this)">트롬(스탠다드)</button>
+                <button class="tab-btn" onclick="changeTab('trommLight', '트롬(라이트)', this)">트롬(라이트)</button>
+                <button class="tab-btn" onclick="changeTab('dryer', '건조기', this)">건조기</button>
+                <button class="tab-btn" onclick="changeTab('dishwasher', '식기세척기', this)">식기세척기</button>
+                <button class="tab-btn" onclick="changeTab('induction', '전기레인지', this)">전기레인지</button>
+                <button class="tab-btn" onclick="changeTab('airConditioner', '에어컨', this)">에어컨</button>
+                <button class="tab-btn" onclick="changeTab('stickVacuum', '스틱청소기', this)">스틱청소기</button>
+                <button class="tab-btn" onclick="changeTab('robotVacuum', '로봇청소기', this)">로봇청소기</button>
+                <button class="tab-btn" onclick="changeTab('airPurifier', '공기청정기', this)">공기청정기</button>
+                <button class="tab-btn" onclick="changeTab('bathAir', '바스에어', this)">바스에어</button>
+                <button class="tab-btn" onclick="changeTab('styler', '스타일러', this)">스타일러</button>
+                <button class="tab-btn" onclick="changeTab('massageChair', '안마의자', this)">안마의자</button>
             </div>
 
-            <div class="p-8 bg-slate-900 flex flex-col items-center justify-center">
-                <h3 id="subImageTitle" class="text-white text-xl font-bold mb-6">로봇청소기 로니 주요 케어서비스</h3>
-                
-                <!-- 인터랙티브 이미지 컨테이너 -->
-                <div class="relative w-full max-w-4xl bg-slate-900 rounded-2xl overflow-hidden flex items-center justify-center">
-                    <img id="activeSubImage" src="https://kwonsoonmin-ai.github.io/roni/2.png" alt="구독 서비스 안내" class="w-full h-auto object-contain rounded-xl shadow-lg">
+            <div class="table-scroll">
+                <table class="care-table">
+                    <thead>
+                        <tr>
+                            <th width="10%">선택</th>
+                            <th width="28%">케어서비스</th>
+                            <th width="20%">방문주기</th>
+                            <th width="17%">총액</th>
+                            <th width="25%">추정 기준</th>
+                        </tr>
+                    </thead>
+                    <tbody id="careTableBody"></tbody>
+                </table>
+            </div>
+
+            <div class="care-summary print-care-summary">
+                <div class="care-summary-left">
+                    <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:8px;">
+                        <div class="summary-title" style="margin-bottom:0;">선택 항목</div>
+                        <button type="button" class="btn-clear-select" onclick="clearSelectedItems()">선택초기화</button>
+                    </div>
+                    <div id="selectedItemsList" class="selected-items-list">선택된 항목 없음</div>
+                </div>
+                <div class="care-summary-right">
+                    <div>지불가치 총 합계</div>
+                    <div>약 <span id="totalValue">0</span>원</div>
+                </div>
+            </div>
+
+            <div class="print-selected-care-wrap">
+                <table class="care-table print-selected-care-table">
+                    <thead>
+                        <tr>
+                            <th width="28%">제품/케어서비스</th>
+                            <th width="20%">방문주기</th>
+                            <th width="17%">총액</th>
+                            <th width="35%">추정 기준</th>
+                        </tr>
+                    </thead>
+                    <tbody id="printSelectedCareBody">
+                        <tr><td colspan="4" style="text-align:center;">선택된 항목 없음</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="panel" id="installGuidePanel">
+            <h2>🛠️ 설치 가이드</h2>
+            <div class="tab-container" style="margin-bottom: 0;">
+                <button class="tab-btn video-btn" onclick="window.open('https://www.lge.co.kr/story/setup-guide/refrigerator-installation-guide', '_blank')">냉장고</button>
+                <button class="tab-btn video-btn" onclick="window.open('https://www.lge.co.kr/story/user-guide/lg-water-purifiers-install-guide', '_blank')">정수기</button>
+                <button class="tab-btn video-btn" onclick="window.open('https://www.lge.co.kr/story/user-guide/electric-ranges-install-guide', '_blank')">전기레인지</button>
+                <button class="tab-btn video-btn" onclick="window.open('https://www.lge.co.kr/story/user-guide/dishwashers-install-guide', '_blank')">식기세척기</button>
+                <button class="tab-btn video-btn" onclick="window.open('https://www.lge.co.kr/story/setup-guide/styler-installation-guide', '_blank')">스타일러</button>
+                <button class="tab-btn video-btn" onclick="window.open('https://www.lge.co.kr/story/setup-guide/washer-installation-guide', '_blank')">세탁기</button>
+                <button class="tab-btn video-btn" onclick="window.open('https://www.lge.co.kr/story/user-guide/robot-vacuum-cleaners-install-guide', '_blank')">청소 로봇</button>
+                <button class="tab-btn video-btn" onclick="window.open('https://www.lge.co.kr/story/user-guide/air-conditioners-install-guide', '_blank')">에어컨</button>
+            </div>
+        </div>
+
+        <div class="panel" id="videoPanel">
+            <h2>🎥 케어서비스 영상</h2>
+            <div class="tab-container" style="margin-bottom: 0;">
+                <button class="tab-btn video-btn" onclick="window.open('https://www.lge.co.kr/kr/main/caresolution/renew_2206/assets/rmsf2025/refrigerators_250804.mp4', '_blank')">STEM 얼정냉</button>
+                <button class="tab-btn video-btn" onclick="window.open('https://www.lge.co.kr/kr/main/caresolution/renew_2206/assets/rmsf2025/refrigerators_regular_250804.mp4', '_blank')">냉장고/김냉</button>
+                <button class="tab-btn video-btn" onclick="window.open('https://www.lge.co.kr/kr/main/caresolution/renew_2206/assets/rmsf2025/wash_tower_250804.mp4', '_blank')">워시타워</button>
+                <button class="tab-btn video-btn" onclick="window.open('https://www.lge.co.kr/kr/main/caresolution/renew_2206/assets/rmsf2025/wash_combo_250804.mp4', '_blank')">워시콤보</button>
+                <button class="tab-btn video-btn" onclick="window.open('https://www.youtube.com/watch?v=fnHNd4mml5A', '_blank')">트롬 스탠다드</button>
+                <button class="tab-btn video-btn" onclick="window.open('https://www.youtube.com/watch?v=v-VfQs1oM7s', '_blank')">건조기</button>
+                <button class="tab-btn video-btn" onclick="window.open('https://www.youtube.com/watch?v=vI3b0FjPE9Q', '_blank')">로봇청소기</button>
+                <button class="tab-btn video-btn" onclick="window.open('https://www.lge.co.kr/kr/main/caresolution/renew_2206/assets/rmsf2025/vacuum_cleaners_250804.mp4', '_blank')">A9</button>
+                <button class="tab-btn video-btn" onclick="window.open('https://www.lge.co.kr/kr/main/caresolution/renew_2206/assets/rmsf2025/dishwashers_250804.mp4', '_blank')">식기세척기</button>
+                <button class="tab-btn video-btn" onclick="window.open('https://www.lge.co.kr/kr/main/caresolution/renew_2206/assets/rmsf2025/electric_stoves_250819.mp4', '_blank')">전기레인지</button>
+                <button class="tab-btn video-btn" onclick="window.open('https://www.lge.co.kr/kr/main/caresolution/renew_2206/assets/rmsf2025/air_conditioners_stand_250804.mp4', '_blank')">스탠드 에어컨</button>
+                <button class="tab-btn video-btn" onclick="window.open('https://youtu.be/f4cuS6vpEnw?si=xvnX-AjqzR0iLkPZ', '_blank')">벽걸이 에어컨</button>
+                <button class="tab-btn video-btn" onclick="window.open('https://www.youtube.com/watch?v=A7xCNqU9zrc', '_blank')">공기청정기</button>
+                <button class="tab-btn video-btn" onclick="window.open('https://www.youtube.com/watch?v=bJsAYGe-jwg', '_blank')">스타일러</button>
+                <button class="tab-btn video-btn" onclick="window.open('https://www.lge.co.kr/kr/main/caresolution/renew_2206/assets/rmsf2025/bath_air_system_260310.mp4', '_blank')">바스에어</button>
+            </div>
+        </div>
+
+        <div class="panel" id="qrPanel">
+            <h2>💳 제휴카드 발급</h2>
+            <div class="tab-container" style="margin-bottom: 0;">
+                <button class="tab-btn" onclick="openCardQrModal('shinhan')">[신한] 더구독케어</button>
+                <button class="tab-btn" onclick="openCardQrModal('woori_plat')">[우리] 플래티넘</button>
+                <button class="tab-btn" onclick="openCardQrModal('woori')">[우리] LG전자</button>
+                <button class="tab-btn" onclick="openCardQrModal('lotte')">[롯데] 구독엔로카</button>
+                <button class="tab-btn" onclick="openCardQrModal('kb')">[KB] LG전자</button>
+                <button class="tab-btn" onclick="openCardQrModal('hyundai')">[현대] LG전자</button>
+                <button class="tab-btn" onclick="openCardQrModal('hana')">[하나] LG전자</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ================= 팝업 및 공지 영역 ================= -->
+<div class="print-subscription-notice" id="printSubscriptionNotice">
+    <h4>★구독 유의사항★</h4>
+    <ul>
+        <li><b>[제휴카드 자동이체]</b> 제휴카드 할인 혜택은 <b>자동이체 등록이 완료</b>되어야 적용됩니다. 카드 발급 <b>및 계약 제품 배송 완료 후</b> LG전자 홈페이지, ThinQ 앱 또는 콜센터(1544-7777)를 통해 결제 수단을 변경해 주시기 바랍니다. (※ 카드사별 전월 실적 제외 항목을 반드시 확인해 주세요.)</li>
+        <li><b>[멤버십 포인트 차감]</b> 보유하신 멤버십 포인트로 월 구독료 차감이 가능합니다. (월 5천 원 단위, 최대 4만 원 / LGE.COM 마이페이지에서 신청) 단, <b>포인트로 구독료 전액 차감을 신청하실 경우 제휴카드 할인 혜택은 적용되지 않습니다.</b></li>
+        <li><b>[계약 및 해지]</b> 구독 계약은 상품 인도/설치 후 성립되며, 계약 성립 후 고객의 임의 해지 시 해약금이 부과됩니다.</li>
+        <li><b>[결합 할인]</b> 결합상품 할인은 두 제품 이상 사용 시 적용되며, 제품의 일부 해지(명의변경, 만기 등 포함) 등으로 한 제품만 남을 경우 결합할인이 적용되지 않은 정상 요금이 차월부터 청구됩니다.</li>
+    </ul>
+</div>
+<div class="app-meta" id="appMeta"></div>
+<div class="print-footer" id="printFooter"></div>
+
+<div class="security-overlay" id="cardQrModalOverlay" style="display:none;" onclick="closeCardQrModal(event)">
+    <div class="security-card" style="text-align: center; max-width: 320px;" onclick="event.stopPropagation()">
+        <h3 id="cardQrModalTitle" style="margin-bottom: 5px; color: #2c3e50;">카드 발급</h3>
+        <p id="cardQrModalPhone" style="font-weight: bold; font-size: 18px; color: #0056b3; margin-top: 0;"></p>
+        <img id="cardQrImage" src="" alt="QR Code" style="margin: 15px auto; width: 160px; height: 160px; border: 1px solid #ddd; border-radius: 8px; display: block; box-shadow: 0 4px 12px rgba(0,0,0,0.05);" />
+        
+        <div id="cardQrModalBenefits" style="margin: 15px 0; background: #f8f9fa; padding: 12px; border-radius: 6px; font-size: 14px; color: #333; line-height: 1.6; text-align: left; border: 1px solid #e9edf3; font-weight: bold;"></div>
+        
+        <p style="font-size: 13px; color: #555; margin-bottom: 5px;">스마트폰 카메라로 스캔하세요.</p>
+        <div class="security-actions" style="margin-top:20px;">
+            <button type="button" class="btn-security btn-security-secondary" onclick="closeCardQrModal()">닫기</button>
+        </div>
+    </div>
+</div>
+
+<!-- ================= ✨ RONi vs 로보락 vs 삼성 완벽 비교 분석 모달 (업그레이드 됨) ================= -->
+<div class="security-overlay" id="roniFeatureOverlay" style="display:none;" onclick="closeRoniFeatureModal(event)">
+    <div class="security-card" style="max-width: 1400px; padding: 30px; max-height: 90vh; overflow-y: auto;" onclick="event.stopPropagation()">
+        
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h3 style="margin: 0; font-size: 22px; color: #1e293b; font-weight: bold;">🤖 로봇청소기 끝판왕 3자 비교 (LG RONi vs 로보락 vs 삼성)</h3>
+            <button type="button" onclick="closeRoniFeatureModal()" style="background: none; border: none; font-size: 24px; cursor: pointer; color: #64748b;">✖</button>
+        </div>
+
+        <!-- 스펙 요약 및 이미지 비교 영역 -->
+        <div style="display: flex; gap: 15px; margin-bottom: 20px;">
+            <!-- LG RONi 요약 -->
+            <div style="flex: 1; border: 2px solid #a50034; border-radius: 8px; overflow: hidden; background: #fff; box-shadow: 0 4px 10px rgba(165,0,52,0.15);">
+                <div style="background: #a50034; color: white; text-align: center; padding: 10px; font-weight: bold; font-size: 16px;">👑 LG RONi (로니)</div>
+                <div style="display: flex; flex-direction: column; padding: 15px; align-items: center;">
+                    <img src="https://www.lge.co.kr/kr/images/vacuum-cleaners/n95twu/gallery/medium01.jpg" onerror="this.src='https://placehold.co/300x300/f8f9fa/a50034?text=LG+RONi'" alt="LG RONi" style="width: 100%; max-width: 120px; border-radius: 6px; margin-bottom: 15px;">
+                    <div style="font-size: 12px; line-height: 1.5; color: #333; width: 100%;">
+                        <p style="margin: 0 0 5px 0; color: #a50034; font-weight: bold; font-size: 13px;">[핵심 Point]</p>
+                        <ul style="margin: 0; padding-left: 15px;">
+                            <li><span style="color:#d32f2f; font-weight:bold;">100℃ 무빙 스팀 직접 분사</span></li>
+                            <li>히든(15cm 슬림) / 오브제형</li>
+                            <li><span style="color:#d32f2f; font-weight:bold;">물리적 카메라 가림막</span></li>
+                            <li>3D dToF + AI 자율주행</li>
+                            <li>전국망 매니저 방문 케어</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 로보락 요약 -->
+            <div style="flex: 1; border: 2px solid #64748b; border-radius: 8px; overflow: hidden; background: #fff;">
+                <div style="background: #64748b; color: white; text-align: center; padding: 10px; font-weight: bold; font-size: 16px;">로보락 S10 MaxV Ultra</div>
+                <div style="display: flex; flex-direction: column; padding: 15px; align-items: center;">
+                    <img src="https://meet-roborock.com/data/item/1712217646/thumb-7IOB67O06529UzhNYXhW_300x300.jpg" onerror="this.src='https://placehold.co/300x300/f8f9fa/333333?text=Roborock'" alt="Roborock" style="width: 100%; max-width: 120px; border-radius: 6px; margin-bottom: 15px;">
+                    <div style="font-size: 12px; line-height: 1.5; color: #333; width: 100%;">
+                        <p style="margin: 0 0 5px 0; color: #475569; font-weight: bold; font-size: 13px;">[핵심 Point]</p>
+                        <ul style="margin: 0; padding-left: 15px;">
+                            <li>일반 상온 물걸레질</li>
+                            <li>일반 거치 타워형</li>
+                            <li>RGB 카메라 상시 노출</li>
+                            <li>LiDAR + RGB 비전</li>
+                            <li>고객 자가 관리 위주</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 삼성 비스포크 AI 스팀 요약 -->
+            <div style="flex: 1; border: 2px solid #0a58ca; border-radius: 8px; overflow: hidden; background: #fff;">
+                <div style="background: #0a58ca; color: white; text-align: center; padding: 10px; font-weight: bold; font-size: 16px;">삼성 비스포크 AI 스팀 울트라</div>
+                <div style="display: flex; flex-direction: column; padding: 15px; align-items: center;">
+                    <img src="https://images.samsung.com/is/image/samsung/p6pim/sec/vr90f01sag-d2c/gallery/sec-bespoke-jet-bot-combo-ai-steam-vr90f01sag-d2c-541578351?$650_519_PNG$" onerror="this.src='https://placehold.co/300x300/f8f9fa/0a58ca?text=Samsung+AI'" alt="Samsung" style="width: 100%; max-width: 120px; border-radius: 6px; margin-bottom: 15px;">
+                    <div style="font-size: 12px; line-height: 1.5; color: #333; width: 100%;">
+                        <p style="margin: 0 0 5px 0; color: #0a58ca; font-weight: bold; font-size: 13px;">[핵심 Point]</p>
+                        <ul style="margin: 0; padding-left: 15px;">
+                            <li>스테이션 내부 스팀 걸레 세척</li>
+                            <li>일반 거치 타워형 (자동급배수)</li>
+                            <li>전면 카메라 상시 노출 (Knox)</li>
+                            <li>AI 사물 인식 주행</li>
+                            <li>내부 오염은 고객 자가 관리</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 심층 비교 테이블 영역 (부등호 배지 추가됨) -->
+        <div style="overflow-x: auto; border: 1px solid #cbd5e1; border-radius: 8px;">
+            <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 13px;">
+                <thead>
+                    <tr>
+                        <th style="background: #f1f5f9; padding: 12px; border-bottom: 2px solid #cbd5e1; border-right: 1px solid #cbd5e1; width: 12%; text-align: center;">비교 포인트</th>
+                        <th style="background: #eff6ff; padding: 12px; border-bottom: 2px solid #cbd5e1; border-right: 1px solid #cbd5e1; width: 34%; color: #a50034; font-size: 16px; text-align: center;">👑 LG RONi (로니) 대응 화법</th>
+                        <th style="background: #f8fafc; padding: 12px; border-bottom: 2px solid #cbd5e1; border-right: 1px solid #cbd5e1; width: 27%; color: #334155; font-size: 15px; text-align: center;">로보락 S10 MaxV Ultra</th>
+                        <th style="background: #f0f8ff; padding: 12px; border-bottom: 2px solid #cbd5e1; width: 27%; color: #0a58ca; font-size: 15px; text-align: center;">삼성 비스포크 AI 스팀 울트라</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- 비교 1: 바닥 살균력 -->
+                    <tr>
+                        <td style="font-weight: bold; text-align: center; background: #f8fafc; border-right: 1px solid #cbd5e1; border-bottom: 1px solid #cbd5e1; padding: 10px;">바닥 청소/살균<br><span style="color:#d32f2f; font-size:11px;">(가장 큰 차이)</span></td>
+                        <td style="background: #eff6ff; border-right: 1px solid #cbd5e1; border-bottom: 1px solid #cbd5e1; padding: 12px;">
+                            <div class="win-badge-container">
+                                <span class="win-badge-lg">바닥 100℃ 스팀 직접 분사 👑</span>
+                                <span class="win-badge-arrow">&gt;&gt;</span>
+                                <span class="win-badge-other">단순 상온 물걸레</span>
+                            </div>
+                            <ul style="margin:0; padding-left: 15px; color:#1e3a8a;">
+                                <li style="margin-bottom: 4px;"><strong>바닥에 직접 100℃ 스팀 분사</strong>하며 닦음</li>
+                                <li><strong>유해균 99.99% 완벽 살균!</strong></li>
+                            </ul>
+                            <div style="background: #dbeafe; border-left: 3px solid #3b82f6; padding: 8px; margin-top: 8px; border-radius: 4px; font-size: 12px;">
+                                🗣️ "고객님, 삼성이나 로보락이 스테이션 안에서 걸레를 뜨겁게 빠는 기술은 훌륭합니다. 하지만 <strong>바닥을 닦을 때는 결국 식어버린 상온 물걸레입니다.</strong> 찌든 때와 세균까지 진짜 '바닥 스팀 살균'을 원하신다면 거실 바닥에 직접 100도 스팀을 쏘는 로니를 하셔야 합니다."
+                            </div>
+                        </td>
+                        <td style="background: #fff; border-right: 1px solid #cbd5e1; border-bottom: 1px solid #cbd5e1; padding: 12px;">
+                            <ul style="margin:0; padding-left: 15px; color:#475569;">
+                                <li>상온 물걸레질</li>
+                                <li>내부에서 100℃로 걸레만 세척</li>
+                            </ul>
+                        </td>
+                        <td style="background: #fff; border-bottom: 1px solid #cbd5e1; padding: 12px;">
+                            <ul style="margin:0; padding-left: 15px; color:#475569;">
+                                <li>상온 물걸레질</li>
+                                <li>내부에서 스팀 및 고온수 걸레 세척</li>
+                            </ul>
+                        </td>
+                    </tr>
                     
-                    <!-- 우측 메뉴 텍스트 영역에 맞춘 정확한 절대 좌표 투명 클릭 영역 -->
-                    <!-- 1. 위생 케어(스팀) -->
-                    <div onclick="switchSubImage('2.png', '위생 케어(스팀)')" class="absolute cursor-pointer hover:bg-white/10 transition rounded" style="top: 22%; right: 7%; width: 28%; height: 8%;"></div>
-                    <!-- 2. 로봇/오수관 클리닝 -->
-                    <div onclick="switchSubImage('3.png', '로봇/오수관 클리닝')" class="absolute cursor-pointer hover:bg-white/10 transition rounded" style="top: 33%; right: 7%; width: 28%; height: 8%;"></div>
-                    <!-- 3. 급배수통 스팀 클리닝 -->
-                    <div onclick="switchSubImage('4.png', '급배수통 스팀 클리닝')" class="absolute cursor-pointer hover:bg-white/10 transition rounded" style="top: 44%; right: 7%; width: 28%; height: 8%;"></div>
-                    <!-- 4. 소모품7종 교체 및 배터리 교체 -->
-                    <div onclick="switchSubImage('5.png', '소모품7종 교체 및 배터리 교체')" class="absolute cursor-pointer hover:bg-white/10 transition rounded" style="top: 55%; right: 7%; width: 28%; height: 8%;"></div>
-                    <!-- 5. 무상 철거/재설치 -->
-                    <div onclick="switchSubImage('6.png', '무상 철거/재설치')" class="absolute cursor-pointer hover:bg-white/10 transition rounded" style="top: 66%; right: 7%; width: 28%; height: 8%;"></div>
-                </div>
-                <p class="text-slate-400 text-xs mt-4">💡 우측 메뉴 글씨 부분을 클릭하시면 해당 서비스 상세 화면으로 즉시 전환됩니다.</p>
-            </div>
+                    <!-- 비교 2: 흡입력 및 주행 -->
+                    <tr>
+                        <td style="font-weight: bold; text-align: center; background: #f8fafc; border-right: 1px solid #cbd5e1; border-bottom: 1px solid #cbd5e1; padding: 10px;">흡입력 & 주행</td>
+                        <td style="background: #eff6ff; border-right: 1px solid #cbd5e1; border-bottom: 1px solid #cbd5e1; padding: 12px;">
+                            <div class="win-badge-container">
+                                <span class="win-badge-lg">한국형 마루 최적화 주행 👑</span>
+                                <span class="win-badge-arrow">&gt;&gt;</span>
+                                <span class="win-badge-other">단순 스펙(Pa) 경쟁</span>
+                            </div>
+                            <ul style="margin:0; padding-left: 15px; color:#1e3a8a;">
+                                <li style="margin-bottom: 4px;">30W 급 강력 모터 + AI 주행</li>
+                                <li>한국 아파트 (마루/장판) 완벽 최적화</li>
+                            </ul>
+                            <div style="background: #dbeafe; border-left: 3px solid #3b82f6; padding: 8px; margin-top: 8px; border-radius: 4px; font-size: 12px;">
+                                🗣️ "로보락의 높은 Pa 수치도 좋지만, 국내 마루 환경에서는 흡입력 이상으로 걸레질 압력과 주행 꼼꼼함이 청소 결과를 좌우합니다. 복잡한 기믹보다 기본기가 탄탄한 로니가 마루바닥엔 정답입니다."
+                            </div>
+                        </td>
+                        <td style="background: #fff; border-right: 1px solid #cbd5e1; border-bottom: 1px solid #cbd5e1; padding: 12px;">
+                            <ul style="margin:0; padding-left: 15px; color:#475569;">
+                                <li>36,000Pa 초강력 흡입</li>
+                                <li>8.8cm 등반 능력</li>
+                            </ul>
+                        </td>
+                        <td style="background: #fff; border-bottom: 1px solid #cbd5e1; padding: 12px;">
+                            <ul style="margin:0; padding-left: 15px; color:#475569;">
+                                <li>디지털 인버터 흡입 모터</li>
+                                <li>AI 사물 인식 및 3D 센서 주행</li>
+                            </ul>
+                        </td>
+                    </tr>
 
-            <div class="bg-slate-100 px-6 py-4 flex justify-end border-t">
-                <button onclick="closeSubscriptionModal()" class="bg-slate-700 hover:bg-slate-800 text-white font-bold px-6 py-2.5 rounded-xl transition">
-                    닫기
-                </button>
-            </div>
+                    <!-- 비교 3: 사생활 보호 -->
+                    <tr>
+                        <td style="font-weight: bold; text-align: center; background: #f8fafc; border-right: 1px solid #cbd5e1; border-bottom: 1px solid #cbd5e1; padding: 10px;">사생활 보호<br>(해킹 안심)</td>
+                        <td style="background: #eff6ff; border-right: 1px solid #cbd5e1; border-bottom: 1px solid #cbd5e1; padding: 12px;">
+                            <div class="win-badge-container">
+                                <span class="win-badge-lg">물리적 렌즈 완벽 차단 👑</span>
+                                <span class="win-badge-arrow">&gt;&gt;</span>
+                                <span class="win-badge-other">카메라 상시 노출</span>
+                            </div>
+                            <ul style="margin:0; padding-left: 15px; color:#1e3a8a;">
+                                <li style="margin-bottom: 4px;"><strong>물리적 도어 가림막 (충전 시 카메라 차단)</strong></li>
+                                <li>LG Shield 글로벌 보안 인증</li>
+                            </ul>
+                            <div style="background: #dbeafe; border-left: 3px solid #3b82f6; padding: 8px; margin-top: 8px; border-radius: 4px; font-size: 12px;">
+                                🗣️ "삼성의 녹스(Knox) 같은 훌륭한 S/W 보안 프로그램도 안심이 되지만, 가장 확실한 건 아예 <strong>물리적으로 문을 닫아 렌즈를 가려버리는 로니의 도어 가림막</strong>입니다. S/W는 뚫릴 수 있어도 물리적 가림막은 절대 해킹할 수 없습니다."
+                            </div>
+                        </td>
+                        <td style="background: #fff; border-right: 1px solid #cbd5e1; border-bottom: 1px solid #cbd5e1; padding: 12px;">
+                            <ul style="margin:0; padding-left: 15px; color:#475569;">
+                                <li>전면 카메라 상시 노출</li>
+                            </ul>
+                        </td>
+                        <td style="background: #fff; border-bottom: 1px solid #cbd5e1; padding: 12px;">
+                            <ul style="margin:0; padding-left: 15px; color:#475569;">
+                                <li>전면 카메라 상시 노출</li>
+                                <li>삼성 Knox 소프트웨어 보안</li>
+                            </ul>
+                        </td>
+                    </tr>
 
+                    <!-- 비교 4: 디자인 및 설치 -->
+                    <tr>
+                        <td style="font-weight: bold; text-align: center; background: #f8fafc; border-right: 1px solid #cbd5e1; border-bottom: 1px solid #cbd5e1; padding: 10px;">스테이션 디자인</td>
+                        <td style="background: #eff6ff; border-right: 1px solid #cbd5e1; border-bottom: 1px solid #cbd5e1; padding: 12px;">
+                            <div class="win-badge-container">
+                                <span class="win-badge-lg">15cm 초슬림 히든/오브제 👑</span>
+                                <span class="win-badge-arrow">&gt;&gt;</span>
+                                <span class="win-badge-other">일반적인 거대 타워형</span>
+                            </div>
+                            <ul style="margin:0; padding-left: 15px; color:#1e3a8a;">
+                                <li><strong>히든:</strong> 15cm 초슬림, 싱크대 밑 완벽 매립 가능</li>
+                                <li><strong>오브제:</strong> 가구 같은 세련된 협탁 디자인</li>
+                            </ul>
+                        </td>
+                        <td style="background: #fff; border-right: 1px solid #cbd5e1; border-bottom: 1px solid #cbd5e1; padding: 12px;">
+                            <ul style="margin:0; padding-left: 15px; color:#475569;">
+                                <li>일반적인 거대 타워형 (자동급배수 옵션)</li>
+                            </ul>
+                        </td>
+                        <td style="background: #fff; border-bottom: 1px solid #cbd5e1; padding: 12px;">
+                            <ul style="margin:0; padding-left: 15px; color:#475569;">
+                                <li>일반적인 거대 타워형 (자동급배수 옵션)</li>
+                            </ul>
+                        </td>
+                    </tr>
+
+                    <!-- 비교 5: 사후관리 -->
+                    <tr>
+                        <td style="font-weight: bold; text-align: center; background: #f8fafc; border-right: 1px solid #cbd5e1; padding: 10px;">사후관리(A/S)<br>& 유지보수</td>
+                        <td style="background: #eff6ff; border-right: 1px solid #cbd5e1; padding: 12px;">
+                            <div class="win-badge-container">
+                                <span class="win-badge-lg">LG 전문가 직접 방문 케어 👑</span>
+                                <span class="win-badge-arrow">&gt;&gt;</span>
+                                <span class="win-badge-other">고객 직접 자가 분해</span>
+                            </div>
+                            <ul style="margin:0; padding-left: 15px; color:#1e3a8a;">
+                                <li style="margin-bottom: 4px;"><strong>전국망 방문 A/S</strong> (스트레스 제로)</li>
+                                <li><strong>매니저 정기 방문 케어 (분해 세척)</strong></li>
+                            </ul>
+                            <div style="background: #dbeafe; border-left: 3px solid #3b82f6; padding: 8px; margin-top: 8px; border-radius: 4px; font-size: 12px;">
+                                🗣️ "물과 먼지가 섞이는 기계는 반드시 부패하고 냄새가 납니다. 삼성도 전국망 A/S가 되지만, 스테이션 내부의 찌든 때를 분해 세척해 주는 건 오직 LG 매니저의 '정기 방문 케어'뿐입니다."
+                            </div>
+                        </td>
+                        <td style="background: #fff; border-right: 1px solid #cbd5e1; padding: 12px;">
+                            <ul style="margin:0; padding-left: 15px; color:#475569;">
+                                <li>택배 A/S 위주, 내부 오염 자가 관리</li>
+                            </ul>
+                        </td>
+                        <td style="background: #fff; padding: 12px;">
+                            <ul style="margin:0; padding-left: 15px; color:#475569;">
+                                <li>전국망 A/S 가능, 내부 오염 자가 관리</li>
+                            </ul>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
-    </div>
 
-    <!-- 비주얼 세일즈 가이드 모달 -->
-    <div id="visualGuideModal" class="fixed inset-0 modal-backdrop hidden flex items-center justify-center z-50 p-4">
-        <div class="bg-white w-full max-w-5xl rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+        <!-- 하단 버튼 영역 -->
+        <div class="security-actions" style="margin-top:20px; text-align: center; display: flex; justify-content: center; gap: 10px;">
+            <button type="button" onclick="openRoniCareModal()" style="background:#0f766e; border:none; color:#ffffff; font-size: 14px; padding: 10px 30px; display: inline-block; flex: none; min-width: 120px; border-radius: 6px; cursor: pointer; font-weight: bold; transition: background 0.2s;" onmouseover="this.style.background='#0d5c56'" onmouseout="this.style.background='#0f766e'">🛡️ RONi 구독 관리</button>
             
-            <div class="bg-slate-900 text-white px-6 py-4 flex justify-between items-center">
-                <h2 class="text-xl font-bold flex items-center gap-2">
-                    💎 프리미엄 로봇청소기 핵심 포인트 가이드
-                </h2>
-                <button onclick="closeVisualGuideModal()" class="text-slate-400 hover:text-white text-2xl font-bold">&times;</button>
-            </div>
+            <button type="button" onclick="openVisualGuideModal()" style="background:#a50034; border:none; color:#ffffff; font-size: 14px; padding: 10px 30px; display: inline-block; flex: none; min-width: 120px; border-radius: 6px; cursor: pointer; font-weight: bold; transition: background 0.2s;" onmouseover="this.style.background='#820028'" onmouseout="this.style.background='#a50034'">💎 핵심Point</button>
+            
+            <button type="button" onclick="closeRoniFeatureModal()" style="background:#475569; border:none; color:#ffffff; font-size: 14px; padding: 10px 30px; display: inline-block; flex: none; min-width: 120px; border-radius: 6px; cursor: pointer; font-weight: bold; transition: background 0.2s;" onmouseover="this.style.background='#334155'" onmouseout="this.style.background='#475569'">닫기</button>
+        </div>
+        
+    </div>
+</div>
 
-            <div class="p-8 overflow-y-auto flex-1 bg-slate-50">
-                <div class="text-center mb-10">
-                    <h2 class="text-2xl font-light text-slate-800 mb-2">후회 없는 로봇청소기 선택을 위한 <strong class="font-black">핵심 체크포인트 3</strong></h2>
-                    <p class="text-sm text-slate-500">디자인과 스펙을 넘어, 본질적인 '청결'과 '안전'의 차이를 확인하세요.</p>
+<!-- ================= 💎 프리미엄 비주얼 세일즈 가이드 모달 ================= -->
+<div class="security-overlay" id="visualGuideOverlay" style="display:none;" onclick="closeVisualGuideModal(event)">
+    <div class="security-card vg-container" style="max-width: 900px; padding: 0; max-height: 90vh; overflow-y: auto; position: relative;" onclick="event.stopPropagation()">
+        <button type="button" class="vg-close-btn-top btn-close-visual" onclick="closeVisualGuideModal()">✖</button>
+        
+        <div class="vg-hero-section">
+            <h1 class="vg-hero-title">후회 없는 로봇청소기 선택을 위한<br><strong>핵심 체크포인트 3</strong></h1>
+            <p class="vg-hero-subtitle">디자인과 스펙을 넘어, 본질적인 '청결'과 '안전'의 차이를 확인하세요.</p>
+        </div>
+
+        <div class="vg-content-body">
+            <!-- POINT 1 -->
+            <div class="vg-visual-block">
+                <div class="vg-block-header">
+                    <div class="vg-block-num">1</div>
+                    <h2 class="vg-block-title">바닥 청소의 본질, 살균의 방식</h2>
                 </div>
-
-                <div class="space-y-8">
-                    <!-- Point 1 -->
-                    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
-                        <div class="flex items-center gap-3 mb-4 border-b pb-3">
-                            <span class="bg-red-600 text-white w-8 h-8 rounded-full flex items-center justify-center font-bold">1</span>
-                            <h3 class="text-lg font-bold text-slate-800">바닥 청소의 본질, 살균의 방식</h3>
-                        </div>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div class="bg-red-50 border border-red-200 p-5 rounded-xl">
-                                <span class="bg-red-600 text-white text-xs font-bold px-2.5 py-1 rounded">LG RONi</span>
-                                <h4 class="text-base font-bold text-red-900 mt-3 mb-2">100℃ 무빙 스팀 직접 분사</h4>
-                                <p class="text-sm text-slate-700 leading-relaxed">스테이션에서만 걸레를 데우는 것이 아닙니다. <strong>실제 거실 바닥에 100℃ 스팀을 직접 쏘면서</strong> 닦아냅니다. 눈에 보이지 않는 바닥 세균까지 99.99% 살균하는 진정한 '스팀 청소'를 경험하세요.</p>
-                            </div>
-                            <div class="bg-slate-50 border border-slate-200 p-5 rounded-xl">
-                                <span class="bg-slate-600 text-white text-xs font-bold px-2.5 py-1 rounded">타사 플래그십 (S사, 로보락)</span>
-                                <h4 class="text-base font-bold text-slate-800 mt-3 mb-2">상온 물걸레질 & 내부 세척</h4>
-                                <p class="text-sm text-slate-600 leading-relaxed">스테이션 내부에서 걸레를 빨 때는 고온수나 스팀을 사용하지만, <strong>실제 바닥을 닦을 때는 식어버린 상온의 물걸레질</strong>입니다. 오래된 찌든 때 제거나 완벽한 살균에는 한계가 존재합니다.</p>
-                            </div>
-                        </div>
+                <div class="vg-comparison-grid">
+                    <div class="vg-compare-card vg-card-lg">
+                        <div class="vg-card-badge">LG RONi</div>
+                        <div class="vg-visual-element"><i class="fa-solid fa-temperature-arrow-up"></i></div>
+                        <h3 class="vg-card-title">100℃ 무빙 스팀 직접 분사</h3>
+                        <p class="vg-card-desc">스테이션에서만 걸레를 데우는 것이 아닙니다. <strong>실제 거실 바닥에 100℃ 스팀을 직접 쏘면서</strong> 닦아냅니다. 눈에 보이지 않는 바닥 세균까지 99.99% 살균하는 진정한 '스팀 청소'를 경험하세요.</p>
                     </div>
-
-                    <!-- Point 2 -->
-                    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
-                        <div class="flex items-center gap-3 mb-4 border-b pb-3">
-                            <span class="bg-red-600 text-white w-8 h-8 rounded-full flex items-center justify-center font-bold">2</span>
-                            <h3 class="text-lg font-bold text-slate-800">공간의 프라이버시, 완벽한 보안</h3>
-                        </div>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div class="bg-red-50 border border-red-200 p-5 rounded-xl">
-                                <span class="bg-red-600 text-white text-xs font-bold px-2.5 py-1 rounded">LG RONi</span>
-                                <h4 class="text-base font-bold text-red-900 mt-3 mb-2">물리적 렌즈 차단 (도어 가림막)</h4>
-                                <p class="text-sm text-slate-700 leading-relaxed">청소를 마치고 스테이션으로 돌아오면 <strong>물리적인 도어가 닫혀 카메라 렌즈 자체를 완벽하게 차단</strong>합니다. 소프트웨어 해킹 우려를 원천 차단하여, 개인적인 공간에서도 365일 안심하고 생활할 수 있습니다.</p>
-                            </div>
-                            <div class="bg-slate-50 border border-slate-200 p-5 rounded-xl">
-                                <span class="bg-slate-600 text-white text-xs font-bold px-2.5 py-1 rounded">타사 플래그십 (S사, 로보락)</span>
-                                <h4 class="text-base font-bold text-slate-800 mt-3 mb-2">카메라 상시 노출 및 S/W 보안</h4>
-                                <p class="text-sm text-slate-600 leading-relaxed">뛰어난 소프트웨어 보안 체계를 갖추고 있으나, <strong>카메라 렌즈는 거실을 향해 항상 개방</strong>되어 있습니다. 만에 하나 발생할 수 있는 S/W 해킹의 불안감에서 완전히 자유롭기는 어렵습니다.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Point 3 -->
-                    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
-                        <div class="flex items-center gap-3 mb-4 border-b pb-3">
-                            <span class="bg-red-600 text-white w-8 h-8 rounded-full flex items-center justify-center font-bold">3</span>
-                            <h3 class="text-lg font-bold text-slate-800">위생 가전의 생명, 유지 관리의 차이</h3>
-                        </div>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div class="bg-red-50 border border-red-200 p-5 rounded-xl">
-                                <span class="bg-red-600 text-white text-xs font-bold px-2.5 py-1 rounded">LG RONi</span>
-                                <h4 class="text-base font-bold text-red-900 mt-3 mb-2">가전 전문가의 정기 방문 케어</h4>
-                                <p class="text-sm text-slate-700 leading-relaxed">물과 오물이 닿는 스테이션 내부는 반드시 오염됩니다. 고객이 직접 손댈 필요 없이, <strong>LG전자 전문 매니저가 주기적으로 방문하여 스테이션 내부까지 분해 세척</strong>해 드립니다. 처음 샀을 때의 청결함이 유지됩니다.</p>
-                            </div>
-                            <div class="bg-slate-50 border border-slate-200 p-5 rounded-xl">
-                                <span class="bg-slate-600 text-white text-xs font-bold px-2.5 py-1 rounded">타사 플래그십 (S사, 로보락)</span>
-                                <h4 class="text-base font-bold text-slate-800 mt-3 mb-2">고객 직접 분해 및 자가 관리</h4>
-                                <p class="text-sm text-slate-600 leading-relaxed">자동 세척 기능이 있더라도 기기 내부 안쪽의 찌든 오염이나 트레이 청소는 <strong>결국 고객이 직접 쪼그려 앉아 분해하고 닦아내야 하는 번거로움</strong>이 뒤따릅니다.</p>
-                            </div>
-                        </div>
+                    <div class="vg-compare-card vg-card-other">
+                        <div class="vg-card-badge">타사 플래그십 (S사, R사)</div>
+                        <div class="vg-visual-element"><i class="fa-solid fa-water"></i></div>
+                        <h3 class="vg-card-title">상온 물걸레질 & 내부 세척</h3>
+                        <p class="vg-card-desc">스테이션 내부에서 걸레를 빨 때는 고온수나 스팀을 사용하지만, <strong>실제 바닥을 닦을 때는 식어버린 상온의 물걸레질</strong>입니다. 오래된 찌든 때 제거나 완벽한 살균에는 한계가 존재합니다.</p>
                     </div>
                 </div>
             </div>
 
-            <div class="bg-slate-100 px-6 py-4 flex justify-end border-t">
-                <button onclick="closeVisualGuideModal()" class="bg-slate-700 hover:bg-slate-800 text-white font-bold px-6 py-2.5 rounded-xl transition">
-                    닫기
-                </button>
+            <!-- POINT 2 -->
+            <div class="vg-visual-block">
+                <div class="vg-block-header">
+                    <div class="vg-block-num">2</div>
+                    <h2 class="vg-block-title">공간의 프라이버시, 완벽한 보안</h2>
+                </div>
+                <div class="vg-comparison-grid">
+                    <div class="vg-compare-card vg-card-lg">
+                        <div class="vg-card-badge">LG RONi</div>
+                        <div class="vg-visual-element"><i class="fa-solid fa-shield-halved"></i></div>
+                        <h3 class="vg-card-title">물리적 렌즈 차단 (도어 가림막)</h3>
+                        <p class="vg-card-desc">청소를 마치고 스테이션으로 돌아오면 <strong>물리적인 도어가 닫혀 카메라 렌즈 자체를 완벽하게 차단</strong>합니다. 소프트웨어 해킹 우려를 원천 차단하여, 개인적인 공간에서도 365일 안심하고 생활할 수 있습니다.</p>
+                    </div>
+                    <div class="vg-compare-card vg-card-other">
+                        <div class="vg-card-badge">타사 플래그십 (S사, R사)</div>
+                        <div class="vg-visual-element"><i class="fa-solid fa-eye"></i></div>
+                        <h3 class="vg-card-title">카메라 상시 노출 및 S/W 보안</h3>
+                        <p class="vg-card-desc">뛰어난 소프트웨어 보안 체계(Knox 등)를 갖추고 있으나, <strong>카메라 렌즈는 거실을 향해 항상 개방</strong>되어 있습니다. 만에 하나 발생할 수 있는 S/W 해킹의 불안감에서 완전히 자유롭기는 어렵습니다.</p>
+                    </div>
+                </div>
             </div>
 
+            <!-- POINT 3 -->
+            <div class="vg-visual-block">
+                <div class="vg-block-header">
+                    <div class="vg-block-num">3</div>
+                    <h2 class="vg-block-title">위생 가전의 생명, 유지 관리의 차이</h2>
+                </div>
+                <div class="vg-comparison-grid">
+                    <div class="vg-compare-card vg-card-lg">
+                        <div class="vg-card-badge">LG RONi</div>
+                        <div class="vg-visual-element"><i class="fa-solid fa-user-gear"></i></div>
+                        <h3 class="vg-card-title">가전 전문가의 정기 방문 케어</h3>
+                        <p class="vg-card-desc">물과 오물이 닿는 스테이션 내부는 반드시 오염됩니다. 고객이 직접 손댈 필요 없이, <strong>LG전자 전문 매니저가 주기적으로 방문하여 스테이션 내부까지 분해 세척</strong>해 드립니다. 처음 샀을 때의 청결함이 유지됩니다.</p>
+                    </div>
+                    <div class="vg-compare-card vg-card-other">
+                        <div class="vg-card-badge">타사 플래그십 (S사, R사)</div>
+                        <div class="vg-visual-element"><i class="fa-solid fa-hands-bubbles"></i></div>
+                        <h3 class="vg-card-title">고객 직접 분해 및 자가 관리</h3>
+                        <p class="vg-card-desc">자동 세척 기능이 있더라도 기기 내부 안쪽의 찌든 오염이나 트레이 청소는 <strong>결국 고객이 직접 쪼그려 앉아 분해하고 닦아내야 하는 번거로움</strong>이 뒤따릅니다.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 10px;">
+                <button type="button" class="btn-security btn-security-primary btn-close-visual" style="background:#475569; border:none; color:white; font-size: 14px; padding: 10px 30px; display: inline-block; min-width: 120px; border-radius: 6px; cursor: pointer; font-weight: bold; transition: background 0.2s;" onmouseover="this.style.background='#334155'" onmouseout="this.style.background='#475569'" onclick="closeVisualGuideModal()">가이드 닫기</button>
+            </div>
         </div>
     </div>
+</div>
 
-    <script>
-        // 초기 엑셀 입력용 가상 테이블 생성 (5행 6열)
-        window.onload = function() {
-            const tbody = document.querySelector('#inputTable tbody');
-            for (let i = 1; i <= 5; i++) {
-                let tr = document.createElement('tr');
-                let tdNum = document.createElement('td');
-                tdNum.className = 'font-bold bg-slate-50 text-slate-500';
-                tdNum.innerText = i;
-                tr.appendChild(tdNum);
+<!-- ================= 🛡️ RONi 구독 관리 탭 (인터랙티브 이미지 모달) ================= -->
+<div class="security-overlay" id="roniCareOverlay" style="display:none;" onclick="closeRoniCareModal(event)">
+    <div class="security-card vg-container" style="max-width: 1000px; padding: 30px; max-height: 90vh; overflow-y: auto; position: relative;" onclick="event.stopPropagation()">
+        
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h3 style="margin: 0; font-size: 22px; color: #1e293b; font-weight: bold;">🛡️ 로봇청소기 RONi 구독 케어 서비스</h3>
+            <button type="button" onclick="closeRoniCareModal()" style="background: none; border: none; font-size: 24px; cursor: pointer; color: #64748b;">✖</button>
+        </div>
 
-                for (let j = 0; j < 6; j++) {
-                    let td = document.createElement('td');
-                    td.contentEditable = true;
-                    td.className = 'bg-white hover:bg-slate-50 focus:bg-blue-50 focus:outline-blue-500 h-10';
-                    tr.appendChild(td);
+        <!-- 상단 1.png (구독 주기 안내) : 깃허브 다이렉트 절대 경로 적용 -->
+        <img src="https://raw.githubusercontent.com/kwonsoonmin-ai/roni/main/1.png" alt="로니 구독 케어서비스 주기" style="width: 100%; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
+
+        <!-- 하단 2~6 상세 케어 인터랙티브 영역 (절대 위치 고정값 적용) -->
+        <div style="position: relative; width: 100%; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.05); background: #f8f9fa;">
+            <img id="roniCareMainImage" src="https://raw.githubusercontent.com/kwonsoonmin-ai/roni/main/2.png" alt="케어 서비스 상세" style="width: 100%; display: block;">
+            
+            <!-- 글씨가 있는 위치에 정확하게 맞춘 투명 클릭 존 -->
+            <div class="care-click-zone" style="position: absolute; top: 11%; right: 2%; width: 30%; height: 9%; z-index: 10; margin: 0;" onclick="changeCareImage('https://raw.githubusercontent.com/kwonsoonmin-ai/roni/main/2.png')" title="위생 케어(스팀)"></div>
+            
+            <div class="care-click-zone" style="position: absolute; top: 22%; right: 2%; width: 30%; height: 9%; z-index: 10; margin: 0;" onclick="changeCareImage('https://raw.githubusercontent.com/kwonsoonmin-ai/roni/main/3.png')" title="로봇/오수관 클리닝"></div>
+            
+            <div class="care-click-zone" style="position: absolute; top: 32.5%; right: 2%; width: 30%; height: 9%; z-index: 10; margin: 0;" onclick="changeCareImage('https://raw.githubusercontent.com/kwonsoonmin-ai/roni/main/4.png')" title="급배수통 스팀 클리닝"></div>
+            
+            <div class="care-click-zone" style="position: absolute; top: 43.5%; right: 2%; width: 30%; height: 9%; z-index: 10; margin: 0;" onclick="changeCareImage('https://raw.githubusercontent.com/kwonsoonmin-ai/roni/main/5.png')" title="소모품7종 교체 및 배터리 교체"></div>
+            
+            <div class="care-click-zone" style="position: absolute; top: 54.5%; right: 2%; width: 30%; height: 9%; z-index: 10; margin: 0;" onclick="changeCareImage('https://raw.githubusercontent.com/kwonsoonmin-ai/roni/main/6.png')" title="무상 철거/재설치"></div>
+        </div>
+
+        <div class="security-actions" style="margin-top:30px; text-align: center;">
+            <button type="button" class="btn-security btn-security-primary" style="background:#475569; border:none; color:white; font-size: 14px; padding: 10px 30px; min-width: 120px; border-radius: 6px; cursor: pointer; font-weight: bold; transition: background 0.2s;" onmouseover="this.style.background='#334155'" onmouseout="this.style.background='#475569'" onclick="closeRoniCareModal()">닫기</button>
+        </div>
+        
+    </div>
+</div>
+
+<script>
+    // =========================================================
+    // 🚨 자바스크립트 스크립트 시작
+    // =========================================================
+    
+    const APP_CONFIG = {
+        version: 'v2.1', 
+        notice: '경남담당 전용플래너'
+    };
+
+    function getNowStamp() {
+        const now = new Date();
+        const y = now.getFullYear();
+        const m = String(now.getMonth() + 1).padStart(2, '0');
+        const d = String(now.getDate()).padStart(2, '0');
+        const hh = String(now.getHours()).padStart(2, '0');
+        const mm = String(now.getMinutes()).padStart(2, '0');
+        return `${y}-${m}-${d} ${hh}:${mm}`;
+    }
+
+    function updateAppMeta() {
+        const metaText = `${APP_CONFIG.notice} / 버전 ${APP_CONFIG.version}`;
+        const printText = `출력일시: ${getNowStamp()}`;
+
+        const meta = document.getElementById('appMeta');
+        const footer = document.getElementById('printFooter');
+        if (meta) meta.innerText = metaText;
+        if (footer) footer.innerText = printText;
+    }
+
+    function initSecurity() {
+        // 보안 검사 없이 무조건 대시보드 화면을 보이게 함
+        document.getElementById('mainAppContainer').style.display = 'flex'; 
+        updateAppMeta();
+    }
+
+    function fn(num) {
+        if (isNaN(num) || num === "" || num === null || num === undefined) return "0";
+        return Number(num).toLocaleString('ko-KR');
+    }
+
+    function cleanNumber(str) {
+        if (str === null || str === undefined) return 0;
+        const s = String(str).replace(/,/g, '').replace(/원/g, '').trim();
+        if (s === '' || s === '-') return 0;
+        const m = s.match(/-?\d+(?:\.\d+)?/);
+        return m ? Number(m[0]) : 0;
+    }
+
+    function parseExcelTSV(text) {
+        let rows = [];
+        let currentRow = [];
+        let currentCell = '';
+        let inQuotes = false;
+
+        for (let i = 0; i < text.length; i++) {
+            let char = text[i];
+
+            if (inQuotes) {
+                if (char === '"' && text[i + 1] === '"') {
+                    currentCell += '"';
+                    i++;
+                } else if (char === '"') {
+                    inQuotes = false;
+                } else {
+                    currentCell += char;
                 }
-                tbody.appendChild(tr);
+            } else {
+                if (char === '"') {
+                    inQuotes = true;
+                } else if (char === '\t') {
+                    currentRow.push(currentCell.trim());
+                    currentCell = '';
+                } else if (char === '\n') {
+                    currentRow.push(currentCell.trim());
+                    rows.push(currentRow);
+                    currentRow = [];
+                    currentCell = '';
+                } else if (char === '\r') {
+                } else {
+                    currentCell += char;
+                }
             }
+        }
+
+        if (currentCell || currentRow.length > 0) {
+            currentRow.push(currentCell.trim());
+            rows.push(currentRow);
+        }
+
+        return rows;
+    }
+
+    function extractTextFromHtml(htmlString) {
+        if (!htmlString) return '';
+        let processedHtml = String(htmlString)
+            .replace(/<br\s*[\/]?>/gi, '\n')                  
+            .replace(/<\/p>/gi, '\n')                      
+            .replace(/<\/div>/gi, '\n')
+            .replace(/<\/li>/gi, '\n')
+            .replace(/<li[^>]*>/gi, '\n');                 
+        
+        let tempDiv = document.createElement('div');
+        tempDiv.innerHTML = processedHtml;
+        let text = tempDiv.innerText || tempDiv.textContent || '';
+        return text.replace(/[ \t]*\n[ \t]*/g, '\n').replace(/\n{2,}/g, '\n').trim();
+    }
+
+    function parseClipboardHtmlToMatrix(htmlText) {
+        try {
+            const doc = new DOMParser().parseFromString(htmlText, 'text/html');
+            const table = doc.querySelector('table');
+            if (table) {
+                const rows = Array.from(table.querySelectorAll('tr')).map(tr =>
+                    Array.from(tr.querySelectorAll('th,td')).map(td => extractTextFromHtml(td.innerHTML))
+                ).filter(r => r.some(v => v));
+                if (rows.length) return rows;
+            }
+            const bodyText = extractTextFromHtml(doc.body.innerHTML);
+            if (bodyText) return parseTextToMatrix(bodyText);
+        } catch (e) {}
+        return [];
+    }
+
+    function parseClipboardHtmlTable(htmlText) {
+        try {
+            const doc = new DOMParser().parseFromString(htmlText, 'text/html');
+            const table = doc.querySelector('table');
+            if (!table) return [];
+            return Array.from(table.querySelectorAll('tr')).map(tr =>
+                Array.from(tr.querySelectorAll('th,td')).map(td => extractTextFromHtml(td.innerHTML))
+            ).filter(row => row.some(v => v !== ''));
+        } catch (e) {
+            return [];
+        }
+    }
+
+    function parseTextToMatrix(text) {
+        const lines = String(text || '').replace(/\r/g, '').split('\n');
+        return lines.map(line => {
+            if (line.includes('\t')) return line.split('\t').map(v => v.trim());
+            return [line.trim()];
+        }).filter(row => row.some(v => v !== ''));
+    }
+
+    function parseClipboardTextToMatrix(text) {
+        return String(text || '')
+            .replace(/\r/g, '')
+            .split('\n')
+            .map(line => line.split('\t'))
+            .filter(row => row.some(v => String(v).trim() !== ''));
+    }
+
+    const SHEET_ROWS = 60;
+    const SHEET_COLS = 12;
+    let activeSheetCell = { row: 0, col: 0 };
+
+    function colLabel(n) {
+        let s = '';
+        let x = n + 1;
+        while (x > 0) {
+            const m = (x - 1) % 26;
+            s = String.fromCharCode(65 + m) + s;
+            x = Math.floor((x - 1) / 26);
+        }
+        return s;
+    }
+
+    function initInputSheet() {
+        const head = document.getElementById('inputSheetHead');
+        const body = document.getElementById('inputSheetBody');
+        if (!head || !body) return;
+
+        let headHtml = '<tr><th class="corner"></th>';
+        for (let c = 0; c < SHEET_COLS; c++) headHtml += `<th>${colLabel(c)}</th>`;
+        headHtml += '</tr>';
+        head.innerHTML = headHtml;
+
+        let bodyHtml = '';
+        for (let r = 0; r < SHEET_ROWS; r++) {
+            bodyHtml += `<tr><th>${r + 1}</th>`;
+            for (let c = 0; c < SHEET_COLS; c++) {
+                bodyHtml += `<td contenteditable="true" data-row="${r}" data-col="${c}"></td>`;
+            }
+            bodyHtml += '</tr>';
+        }
+        body.innerHTML = bodyHtml;
+
+        body.querySelectorAll('td').forEach(td => {
+            td.addEventListener('focus', () => setActiveSheetCell(td));
+            td.addEventListener('click', () => setActiveSheetCell(td));
+            td.addEventListener('input', syncRawFromSheet);
+            td.addEventListener('paste', handleSheetPaste);
+        });
+    }
+
+    function setActiveSheetCell(td) {
+        document.querySelectorAll('#inputSheetBody td.active-cell').forEach(el => el.classList.remove('active-cell'));
+        td.classList.add('active-cell');
+        activeSheetCell = {
+            row: parseInt(td.dataset.row || '0', 10),
+            col: parseInt(td.dataset.col || '0', 10)
         };
+    }
 
-        // 모달 제어 함수들
-        function openComparisonModal() {
-            document.getElementById('comparisonModal').classList.remove('hidden');
-        }
-        function closeComparisonModal() {
-            document.getElementById('comparisonModal').classList.add('hidden');
-        }
+    function getSheetCell(r, c) {
+        return document.querySelector(`#inputSheetBody td[data-row="${r}"][data-col="${c}"]`);
+    }
 
-        function openSubscriptionModal() {
-            document.getElementById('subscriptionModal').classList.remove('hidden');
-        }
-        function closeSubscriptionModal() {
-            document.getElementById('subscriptionModal').classList.add('hidden');
-        }
+    function handleSheetPaste(e) {
+        const textData = e.clipboardData ? e.clipboardData.getData('text/plain') : '';
+        const htmlData = e.clipboardData ? e.clipboardData.getData('text/html') : '';
+        let matrix = htmlData ? parseClipboardHtmlTable(htmlData) : [];
+        if (!matrix.length) matrix = parseClipboardTextToMatrix(textData);
+        if (!matrix.length) return;
 
-        function openVisualGuideModal() {
-            document.getElementById('visualGuideModal').classList.remove('hidden');
-        }
-        function closeVisualGuideModal() {
-            document.getElementById('visualGuideModal').classList.add('hidden');
-        }
+        e.preventDefault();
 
-        // 구독 이미지 동적 전환 함수 (절대경로 방식)
-        function switchSubImage(filename, titleText) {
-            const imgElement = document.getElementById('activeSubImage');
-            imgElement.src = `https://kwonsoonmin-ai.github.io/roni/${filename}`;
-            document.getElementById('subImageTitle').innerText = `로봇청소기 로니 주요 케어서비스 - ${titleText}`;
-        }
+        const startRow = activeSheetCell.row || 0;
+        const startCol = activeSheetCell.col || 0;
 
-        // 견적 산출 시뮬레이션 및 데이터 파싱 로직 (캐시백/선납캐시백 분리 및 합산 반영 완료)
-        function calculateEstimates() {
-            const rows = document.querySelectorAll('#inputTable tbody tr');
-            let parsedData = {};
+        matrix.forEach((row, rIdx) => {
+            row.forEach((val, cIdx) => {
+                const cell = getSheetCell(startRow + rIdx, startCol + cIdx);
+                if (cell) cell.innerText = String(val || '').trim();
+            });
+        });
 
-            rows.forEach(row => {
-                const cells = row.querySelectorAll('td');
-                let rowText = Array.from(cells).map(c => c.innerText.trim()).join(' ');
-                if (!rowText) return;
+        syncRawFromSheet();
+    }
 
-                let firstCell = cells[1].innerText.trim();
-                let norm = firstCell.replace(/\s+/g, '').toLowerCase();
+    function syncRawFromSheet() {
+        const raw = document.getElementById('rawPasteArea');
+        if (!raw) return;
 
-                let identifiedKey = '';
-                // [수정된 핵심 파싱 로직] 선납 캐시백을 일반 캐시백보다 우선 검사하여 덮어쓰기 방지
-                if (norm.includes('선납캐시백') || norm.includes('선납시캐시백') || norm.includes('선납시카드') || norm.includes('선납카드')) {
-                    identifiedKey = '선납시카드혜택';
-                } else if (norm.includes('캐시백') || norm.includes('캐쉬백') || norm.includes('현금지원')) {
-                    identifiedKey = '캐시백';
-                } else if (norm.includes('정상가')) {
-                    identifiedKey = '정상가';
-                } else if (norm.includes('멤버십')) {
-                    identifiedKey = '멤버십';
-                } else if (norm.includes('제휴카드')) {
-                    identifiedKey = '제휴카드';
+        const lines = [];
+        for (let r = 0; r < SHEET_ROWS; r++) {
+            const rowVals = [];
+            let lastUsed = -1;
+            for (let c = 0; c < SHEET_COLS; c++) {
+                const cell = getSheetCell(r, c);
+                let val = cell ? (cell.innerText || cell.textContent).replace(/\u00a0/g, ' ').trim() : '';
+                
+                if (val.includes('\n') || val.includes('\r') || val.includes('"') || val.includes('\t')) {
+                    val = '"' + val.replace(/"/g, '""') + '"';
                 }
+                
+                rowVals.push(val);
+                if (val !== '' && val !== '""') lastUsed = c;
+            }
+            if (lastUsed >= 0) lines.push(rowVals.slice(0, lastUsed + 1).join('\t'));
+        }
+        raw.value = lines.join('\n');
+    }
 
-                if (identifiedKey) {
-                    let nums = Array.from(cells).slice(2, 5).map(c => {
-                        let val = c.innerText.replace(/,/g, '').trim();
-                        return val ? parseInt(val, 10) || 0 : 0;
-                    });
+    function clearInputSheet() {
+        for (let r = 0; r < SHEET_ROWS; r++) {
+            for (let c = 0; c < SHEET_COLS; c++) {
+                const cell = getSheetCell(r, c);
+                if (cell) {
+                    cell.innerText = '';
+                    cell.classList.remove('active-cell');
+                }
+            }
+        }
+        const raw = document.getElementById('rawPasteArea');
+        if (raw) raw.value = '';
+    }
 
-                    // 중복 항목 발생 시 기존 값에 합산 처리
-                    if (parsedData[identifiedKey]) {
-                        nums.forEach((num, idx) => {
-                            parsedData[identifiedKey][idx] = (parsedData[identifiedKey][idx] || 0) + num;
-                        });
-                    } else {
-                        parsedData[identifiedKey] = nums;
+    document.addEventListener('DOMContentLoaded', function() {
+        initInputSheet();
+        
+        const raw = document.getElementById('rawPasteArea');
+        if (raw) {
+            raw.addEventListener('paste', function(e) {
+                const htmlData = e.clipboardData ? e.clipboardData.getData('text/html') : '';
+                if (htmlData) {
+                    const matrix = parseClipboardHtmlToMatrix(htmlData);
+                    if (matrix && matrix.length > 0) {
+                        e.preventDefault();
+                        const tsv = matrix.map(row => row.map(val => {
+                            if (val.includes('\n') || val.includes('\r') || val.includes('"') || val.includes('\t')) {
+                                return '"' + val.replace(/"/g, '""') + '"';
+                            }
+                            return val;
+                        }).join('\t')).join('\n');
+                        
+                        const start = this.selectionStart;
+                        const end = this.selectionEnd;
+                        this.value = this.value.substring(0, start) + tsv + this.value.substring(end);
+                        this.selectionStart = this.selectionEnd = start + tsv.length;
                     }
                 }
             });
+        }
+    });
 
-            document.getElementById('resultContainer').classList.remove('hidden');
-            document.getElementById('resultSummary').innerHTML = `
-                ✅ 엑셀 데이터 분석 완료!<br>
-                - 캐시백 합산 값: ${JSON.stringify(parsedData['캐시백'] || [0,0,0])}<br>
-                - 선납 캐시백 합산 값: ${JSON.stringify(parsedData['선납시카드혜택'] || [0,0,0])}
-            `;
+    let parsedData = {};
+    let parsedModels = [];
+    let optionCount = 0;
+    let optionLabels = [];
+    let gapBaseIndex = 0;
+    let latestResults = [];
+
+    function getKnownKey(text) {
+        const norm = String(text).replace(/\s+/g, '');
+        if (!norm) return null;
+
+        if (norm.includes('체감구독료')) return '체감구독료(월)';
+        if (norm.includes('정상구독료') || norm.includes('월구독료')) return '정상구독료(월)';
+        if (norm.includes('프로모션할인')) return '프로모션할인(월)';
+        if (norm.includes('결합할인')) return '결합할인(월)';
+        if (norm.includes('선납할인')) return '선납할인(월)';
+        if (norm.includes('캐시백') || norm.includes('캐쉬백') || norm.includes('현금지원')) return '캐시백';
+        if (norm.includes('제휴카드월') || norm.includes('제휴카드할인') || norm.includes('카드할인월') || (norm.includes('제휴카드') && norm.includes('월'))) return '제휴카드(월)';
+        if (norm.includes('제휴카드')) return '제휴카드';
+        if (norm.includes('선납금액')) return '선납금액';
+        if (norm.includes('선납시카드') || norm.includes('선납카드')) return '선납시카드혜택';
+        
+        if (norm.includes('정상가') || norm.includes('정상판매가') || norm.includes('정상가격')) return '정상가';
+        if (norm.includes('행사가') || norm.includes('행사판매가') || (norm.includes('판매가') && !norm.includes('정상'))) return '행사가';
+        if (norm.includes('특별할인') || norm.includes('즉시할인')) return '특별할인';
+        if (norm.includes('결제금액') || norm.includes('최종결제')) return '결제금액';
+        if (norm.includes('상품권')) return '상품권';
+        if (norm.includes('멤버십') || norm.includes('멤버쉽') || norm.includes('포인트')) return '멤버십';
+        
+        if (norm.includes('특별혜택')) return '특별혜택';
+        
+        if (norm.includes('최종혜택금액') || norm.includes('최종혜택가') || norm.includes('최종혜택')) return '최종혜택금액';
+        if (norm.includes('혜택합계') || norm.includes('총혜택') || norm.includes('총혜택금액')) return '혜택합계';
+        if (norm.includes('계약개월') || norm.includes('계약기간') || norm.includes('개월수')) return '계약개월수';
+
+        return null;
+    }
+
+    function populateGapBaseOptions() {
+        const select = document.getElementById('gapBaseSelect');
+        if (!select) return;
+        select.innerHTML = Array.from({ length: optionCount }, (_, idx) =>
+            `<option value="${idx}" ${idx === gapBaseIndex ? 'selected' : ''}>${idx + 1}안</option>`
+        ).join('');
+        select.value = String(gapBaseIndex);
+    }
+
+    function handleGapBaseChange() {
+        const select = document.getElementById('gapBaseSelect');
+        if (!select) return;
+        gapBaseIndex = Number(select.value) || 0;
+        gapBaseIndex = Math.min(gapBaseIndex, Math.max(0, optionCount - 1));
+        populateGapBaseOptions();
+        calculateAndRender();
+    }
+
+    function normalizeModelLine(text) {
+        return String(text || '')
+            .replace(/\s+/g, ' ')                
+            .replace(/\s*\[구독\]/gi, ' [구독]') 
+            .trim();
+    }
+
+    function formatModelCellBlock(text) {
+        if (!text) return '-';
+        const lines = String(text).split(/\r?\n/);
+        
+        const processed = lines.map(normalizeModelLine).filter(Boolean);
+        return processed.length > 0 ? processed.join('\n') : '-';
+    }
+
+    function groupModelLines(lines, optionCount) {
+        const cleaned = lines.map(normalizeModelLine).filter(Boolean);
+        if (!cleaned.length) return Array.from({ length: optionCount }, () => '-');
+        if (optionCount === 1) return [cleaned.join('\n')];
+
+        const result = Array.from({ length: optionCount }, () => '-');
+        const firstSubIdx = cleaned.findIndex(v => /\[구독\]/.test(v));
+
+        if (firstSubIdx > 0) {
+            result[0] = cleaned.slice(0, firstSubIdx).join('\n');
+            const rest = cleaned.slice(firstSubIdx);
+
+            if (optionCount === 2) {
+                result[1] = rest.join('\n');
+                return result;
+            }
+
+            const a = rest[0] || '';
+            const b = rest[1] || '';
+            const starts = [0];
+            for (let i = 1; i < rest.length - 1; i++) {
+                if (starts.length >= optionCount - 1) break;
+                if (rest[i] === a && rest[i + 1] === b) starts.push(i);
+            }
+
+            if (starts.length === optionCount - 1) {
+                for (let i = 0; i < optionCount - 1; i++) {
+                    const s = starts[i];
+                    const e = i + 1 < starts.length ? starts[i + 1] : rest.length;
+                    result[i + 1] = rest.slice(s, e).join('\n');
+                }
+                return result;
+            }
+
+            const starts2 = [0];
+            for (let i = 1; i < rest.length; i++) {
+                if (starts2.length >= optionCount - 1) break;
+                if (rest[i] === a) starts2.push(i);
+            }
+            if (starts2.length === optionCount - 1) {
+                for (let i = 0; i < optionCount - 1; i++) {
+                    const s = starts2[i];
+                    const e = i + 1 < starts2.length ? starts2[i + 1] : rest.length;
+                    result[i + 1] = rest.slice(s, e).join('\n');
+                }
+                return result;
+            }
+
+            let cursor = 0;
+            for (let i = 1; i < optionCount; i++) {
+                const remainingLines = rest.length - cursor;
+                const remainingGroups = optionCount - i;
+                const take = Math.max(1, Math.ceil(remainingLines / remainingGroups));
+                result[i] = rest.slice(cursor, cursor + take).join('\n');
+                cursor += take;
+            }
+            return result;
         }
 
-        function clearTable() {
-            const cells = document.querySelectorAll('#inputTable tbody td[contenteditable="true"]');
-            cells.forEach(c => c.innerText = '');
-            document.getElementById('resultContainer').classList.add('hidden');
+        const a = cleaned[0] || '';
+        const b = cleaned[1] || '';
+        const starts = [0];
+        for (let i = 1; i < cleaned.length - 1; i++) {
+            if (starts.length >= optionCount) break;
+            if (cleaned[i] === a && cleaned[i + 1] === b) starts.push(i);
         }
-    </script>
+        if (starts.length === optionCount) {
+            for (let i = 0; i < optionCount; i++) {
+                const s = starts[i];
+                const e = i + 1 < starts.length ? starts[i + 1] : cleaned.length;
+                result[i] = cleaned.slice(s, e).join('\n');
+            }
+            return result;
+        }
 
+        const chunk = Math.ceil(cleaned.length / optionCount);
+        for (let i = 0; i < cleaned.length; i++) {
+            const idx = Math.min(optionCount - 1, Math.floor(i / chunk));
+            const prev = result[idx] === '-' ? '' : result[idx] + '\n';
+            result[idx] = prev + cleaned[i];
+        }
+        return result;
+    }
+
+    function iSKnownValueRow(text) {
+        const known = [
+            '정상가','행사가','특별할인','결제금액','캐시백','상품권','멤버십',
+            '특별혜택','제휴카드','선택결제카드','선택결제카드명','선택결제카드설명',
+            '혜택합계','최종혜택금액','정상구독료(월)','프로모션할인(월)','결합할인(월)',
+            '선납할인(월)','제휴카드(월)','선납금액','선납시카드혜택','체감구독료(월)'
+        ];
+        const key = getKnownKey(String(text || ''));
+        return !!key && known.includes(key);
+    }
+
+    function parseExcelData() {
+        const rawText = document.getElementById("rawPasteArea").value;
+        if (rawText.trim() === "") {
+            alert("Data를 먼저 붙여넣어 주세요.");
+            return;
+        }
+
+        const rows = parseExcelTSV(rawText).filter(r => r.some(c => String(c || '').trim() !== ''));
+        parsedData = {};
+        parsedModels = [];
+        optionCount = 0;
+        optionLabels = [];
+        latestResults = [];
+
+        if (!rows.length) {
+            alert("붙여넣은 Data가 비어 있습니다.");
+            return;
+        }
+
+        const headerTokens = rows[0].join(' ').match(/\d+안/g) || [];
+        optionCount = headerTokens.length >= 2 ? headerTokens.length : Math.max(...rows.map(r => Math.max(0, r.length - 1)));
+
+        let modelStart = -1;
+        let modelEnd = -1;
+        let modelRowIndex = -1;
+        let detectedLastValueCol = 0;
+
+        for (let i = 0; i < rows.length; i++) {
+            const row = rows[i];
+            const rowText = row.join(' ').trim().replace(/\s+/g, '');
+            const firstCellNorm = String(row[0] || '').trim().replace(/\s+/g, '');
+            if (rowText.includes('선택모델') || rowText.includes('모델명') || firstCellNorm.includes('선택모델')) {
+                modelRowIndex = i;
+                modelStart = i + 1;
+                continue;
+            }
+            const identifiedKey = getKnownKey(String(row[0] || '').trim()) || getKnownKey(rowText);
+            if (identifiedKey && row.length > 1) {
+                let lastUsed = 0;
+                row.slice(1).forEach((v, idx) => {
+                    if (String(v || '').trim() !== '') lastUsed = idx + 1;
+                });
+                detectedLastValueCol = Math.max(detectedLastValueCol, lastUsed);
+            }
+            if (modelStart !== -1 && rowText && iSKnownValueRow(rows[i][0] || rowText)) {
+                modelEnd = i;
+                break;
+            }
+        }
+
+        if (detectedLastValueCol > 0) optionCount = Math.min(optionCount, detectedLastValueCol);
+        if (optionCount === 0) {
+            alert("안(옵션) 열 데이터를 찾지 못했습니다.");
+            return;
+        }
+
+        optionLabels = Array.from({ length: optionCount }, (_, i) => `${i + 1}안`);
+        parsedModels = Array.from({ length: optionCount }, () => '-');
+
+        if (modelRowIndex !== -1) {
+            const modelRow = rows[modelRowIndex] || [];
+            let directMapped = 0;
+
+            if (modelRow.length > 1) {
+                for (let c = 1; c <= optionCount; c++) {
+                    const v = String(modelRow[c] || '').trim();
+                    if (v) {
+                        parsedModels[c - 1] = formatModelCellBlock(v);
+                        directMapped++;
+                    }
+                }
+            }
+
+            if (directMapped === 0) {
+                if (modelEnd === -1) modelEnd = rows.length;
+                const modelLines = [];
+
+                for (let i = modelStart; i < modelEnd; i++) {
+                    const row = rows[i];
+                    const nonEmpty = row.map(v => String(v || '').trim()).filter(Boolean);
+
+                    if (row.length >= optionCount + 1) {
+                        for (let c = 1; c <= optionCount; c++) {
+                            const v = String(row[c] || '').trim();
+                            if (v) {
+                                const merged = parsedModels[c - 1] === '-' ? v : (parsedModels[c - 1] + '\n' + v);
+                                parsedModels[c - 1] = formatModelCellBlock(merged);
+                            }
+                        }
+                    } else if (nonEmpty.length) {
+                        modelLines.push(...nonEmpty);
+                    }
+                }
+
+                const directCount = parsedModels.filter(v => v !== '-' && v.trim()).length;
+                if (directCount === 0 && modelLines.length) {
+                    parsedModels = groupModelLines(modelLines, optionCount);
+                }
+            }
+        }
+
+        const valueStart = modelEnd !== -1 ? modelEnd : 0;
+        for (let i = valueStart; i < rows.length; i++) {
+            const row = rows[i];
+            const firstCell = String(row[0] || '').trim();
+            const rowText = row.join(' ').trim();
+            if (!rowText) continue;
+
+            const identifiedKey = getKnownKey(firstCell) || getKnownKey(rowText);
+            if (!identifiedKey) continue;
+
+            let nums = [];
+            if (row.length > 1) {
+                nums = row.slice(1, optionCount + 1).map(v => cleanNumber(v));
+            } else {
+                const pureText = rowText.replace(firstCell, '').trim();
+                const extracted = pureText.match(/-?\d{1,3}(?:,\d{3})*(?:\.\d+)?/g) || [];
+                nums = extracted.map(v => cleanNumber(v)).slice(0, optionCount);
+            }
+            parsedData[identifiedKey] = nums;
+        }
+
+        gapBaseIndex = Math.min(gapBaseIndex, Math.max(0, optionCount - 1));
+        populateGapBaseOptions();
+        calculateAndRender();
+    }
+
+    function getVal(key, idx) {
+        return parsedData[key] && parsedData[key][idx] !== undefined ? parsedData[key][idx] : 0;
+    }
+
+    function hasVal(key, idx) {
+        return parsedData[key] !== undefined && parsedData[key].length > idx;
+    }
+
+    function calculateAndRender() {
+        let results = [];
+
+        for (let i = 0; i < optionCount; i++) {
+            const modelText = String(parsedModels[i] || '').trim();
+            const modelHasSubscriptionTag = /\[구독\]/.test(modelText);
+
+            const normalPrice = getVal('정상가', i);
+            const eventPrice = getVal('행사가', i);
+            const specialDc = getVal('특별할인', i);
+            const cashback = getVal('캐시백', i);
+            const voucher = getVal('상품권', i);
+            const membership = getVal('멤버십', i);
+            const specialBenefit = getVal('특별혜택', i);
+            const cardBenefit = getVal('제휴카드', i);
+
+            let subFee = getVal('정상구독료(월)', i);
+            let promoDc = getVal('프로모션할인(월)', i);
+            let comboDc = getVal('결합할인(월)', i);
+            let preDc = getVal('선납할인(월)', i);
+            let cardDcMonthly = getVal('제휴카드(월)', i);
+            let preAmt = getVal('선납금액', i);
+            let preCard = getVal('선납시카드혜택', i);
+            const contractMonth = getVal('계약개월수', i) || 72;
+
+            const payRaw = getVal('결제금액', i);
+            const pay = hasVal('결제금액', i) ? payRaw : Math.max(0, eventPrice - specialDc);
+
+            const benefitSumRaw = getVal('혜택합계', i);
+            const benefitSum = hasVal('혜택합계', i) ? benefitSumRaw : (cashback + voucher + membership + specialBenefit + cardBenefit);
+
+            const finalBenefitRaw = getVal('최종혜택금액', i);
+            const finalBenefit = hasVal('최종혜택금액', i) ? finalBenefitRaw : Math.max(0, pay - benefitSum);
+
+            let realSubRaw = getVal('체감구독료(월)', i);
+            const realSub = hasVal('체감구독료(월)', i) ? realSubRaw : Math.max(0, subFee - promoDc - comboDc - preDc - cardDcMonthly);
+
+            const sourceHasContent = (modelText && modelText !== '-') || 
+                [normalPrice, eventPrice, specialDc, payRaw, cashback, voucher, membership, specialBenefit, cardBenefit, benefitSumRaw, finalBenefitRaw, subFee, promoDc, comboDc, preDc, cardDcMonthly, preAmt, preCard, realSubRaw].some(v => v !== 0);
+
+            if (!modelHasSubscriptionTag) {
+                subFee = 0; promoDc = 0; comboDc = 0; preDc = 0; cardDcMonthly = 0; preAmt = 0; preCard = 0; realSubRaw = 0;
+            }
+
+            const hasSubscription = modelHasSubscriptionTag && 
+                (subFee > 0 || promoDc > 0 || comboDc > 0 || preDc > 0 || cardDcMonthly > 0 || preAmt > 0 || preCard > 0 || realSub > 0 || realSub < 0);
+
+            const subscriptionAmount = hasSubscription ? Math.max(0, preAmt - preCard + (realSub * contractMonth)) : 0;
+            const total = hasSubscription ? finalBenefit + subscriptionAmount : finalBenefit;
+            const subscriptionShare = total > 0 ? (subscriptionAmount / total) : 0;
+            const subscriptionDominant = subscriptionShare >= 0.7;
+
+            results.push({
+                header: optionLabels[i],
+                model: modelText || '-',
+                normalPrice, eventPrice, specialDc, pay, cashback, voucher,
+                membership, specialBenefit, cardBenefit, benefitSum, finalBenefit, subFee,
+                promoDc, comboDc, preDc, cardDcMonthly, preAmt, preCard,
+                realSub, total, contractMonth, hasSubscription, sourceHasContent,
+                subscriptionAmount, subscriptionShare, subscriptionDominant
+            });
+        }
+
+        results = results.filter(item => item.sourceHasContent);
+
+        if (!results.length) {
+            results = [{
+                header: '1안', model: '-', normalPrice: 0, eventPrice: 0, specialDc: 0, pay: 0,
+                cashback: 0, voucher: 0, membership: 0, cardBenefit: 0, benefitSum: 0,
+                finalBenefit: 0, subFee: 0, promoDc: 0, comboDc: 0, preDc: 0,
+                cardDcMonthly: 0, preAmt: 0, preCard: 0, realSub: 0, total: 0,
+                contractMonth: 72, hasSubscription: false
+            }];
+        }
+
+        optionCount = results.length;
+        optionLabels = results.map((_, idx) => `${idx + 1}안`);
+        results = results.map((item, idx) => ({ ...item, header: optionLabels[idx] }));
+
+        if (gapBaseIndex >= optionCount) gapBaseIndex = 0;
+        populateGapBaseOptions();
+
+        latestResults = results;
+        renderQuoteTable(results);
+        applyModelRowVisibility();
+    }
+
+    function renderQuoteTable(results) {
+        const thead = document.getElementById('quoteThead');
+        const tbody = document.getElementById('quoteTbody');
+
+        thead.innerHTML = '';
+        tbody.innerHTML = '';
+
+        const headerRow = document.createElement('tr');
+        let headerHtml = `<th style="width:180px;">구분</th>`;
+        
+        results.forEach((item, idx) => {
+            const dominantClass = item.subscriptionDominant ? 'subscription-dominant-header' : '';
+            headerHtml += `<th class="${dominantClass}">${item.header}</th>`;
+        });
+        
+        headerRow.innerHTML = headerHtml;
+        thead.appendChild(headerRow);
+
+        const gapLabel = 'GAP (vs 기준안)';
+        const subscriptionKeys = [
+            'subFee', 'promoDc', 'comboDc', 'preDc',
+            'cardDcMonthly', 'preAmt', 'preCard', 'realSub'
+        ];
+
+        const rowDefs = [
+            { label: '선택 모델', key: 'model', type: 'model' },
+            { label: '정상가', key: 'normalPrice' },
+            { label: '행사가', key: 'eventPrice' },
+            { label: '특별할인', key: 'specialDc' },
+            { label: '결제금액', key: 'pay' },
+            { label: '캐시백', key: 'cashback' },
+            { label: '상품권', key: 'voucher' },
+            { label: '멤버십', key: 'membership' },
+            { label: '특별혜택', key: 'specialBenefit' },
+            { label: '제휴카드', key: 'cardBenefit' },
+            { label: '혜택합계', key: 'benefitSum' },
+            { label: '최종혜택금액', key: 'finalBenefit', rowClass: 'highlight-dark' },
+            { label: '정상구독료(월)', key: 'subFee' },
+            { label: '프로모션할인(월)', key: 'promoDc' },
+            { label: '결합할인(월)', key: 'comboDc' },
+            { label: '선납할인(월)', key: 'preDc' },
+            { label: '제휴카드(월)', key: 'cardDcMonthly' },
+            { label: '선납금액', key: 'preAmt' },
+            { label: '선납 시 카드 혜택', key: 'preCard' },
+            { label: '체감구독료(월)', key: 'realSub', rowClass: 'highlight-dark' },
+            { label: '혜택가(총 체감가)', key: 'total', rowClass: 'highlight-yellow' },
+            { label: gapLabel, key: 'gap', rowClass: 'gap-row' }
+        ];
+
+        rowDefs.forEach(def => {
+            const tr = document.createElement('tr');
+            if (def.rowClass) tr.className = def.rowClass;
+            if (def.type === 'model') tr.classList.add('model-row');
+
+            let html = '';
+            if (def.key === 'gap') {
+                html = `<td class="label-cell"><span id="gapLabelText">${def.label}</span></td>`;
+            } else {
+                html = `<td class="label-cell">${def.label}</td>`;
+            }
+
+            if (def.key === 'gap') {
+                const baseTotal = results[gapBaseIndex] ? results[gapBaseIndex].total : 0;
+                html += results.map((item, idx) => {
+                    const dominantClass = item.subscriptionDominant ? ' subscription-dominant-cell' : '';
+                    if (idx === gapBaseIndex) return `<td class="number-cell${dominantClass}">기준안</td>`;
+                    return `<td class="number-cell${dominantClass}">${fn(item.total - baseTotal)}</td>`;
+                }).join('');
+            } else if (def.type === 'model') {
+                html += results.map((item, idx) => {
+                    const dominantClass = item.subscriptionDominant ? ' subscription-dominant-cell' : '';
+                    return `<td class="model-cell${dominantClass}">${item.model}</td>`;
+                }).join('');
+            } else {
+                html += results.map((item, idx) => {
+                    const baseClass = idx === gapBaseIndex ? ' base-col-cell' : '';
+                    if (!item.hasSubscription && subscriptionKeys.includes(def.key)) {
+                        return `<td class="number-cell${baseClass}">0</td>`;
+                    }
+                    return `<td class="number-cell${baseClass}">${fn(item[def.key])}</td>`;
+                }).join('');
+            }
+
+            tr.innerHTML = html;
+            tbody.appendChild(tr);
+        });
+    }
+
+    function clearAllData() {
+        document.getElementById('rawPasteArea').value = '';
+        parsedData = {};
+        parsedModels = [];
+        optionCount = 0;
+        optionLabels = [];
+        document.getElementById('quoteThead').innerHTML = '';
+        document.getElementById('quoteTbody').innerHTML = '';
+    }
+
+    const careData = {
+        stem: [
+            { id: 's1', name: '워터필터 교체서비스', period: '12개월 / 6회', price: 507000, desc: '중금속 7종 흡착 필터 : 84,500원 x 6회' },
+            { id: 's2', name: '퓨어프레쉬필터 교체', period: '12개월 / 6회', price: 174000, desc: '퓨어프레시 필터 29,000원 x 6회' },
+            { id: 's3', name: '세척 케어 및 점검', period: '12개월 / 6회', price: 180000, desc: '소모품(1만) + 인건비(2만) x 6회' },
+            { id: 's4', name: '기계실 분해세척', period: '36개월 차 1회', price: 85000, desc: '분해세척 서비스 비용 총합' },
+            { id: 's5', name: '설치/철거 무상 제공', period: '계약기간 內 1회', price: 111000, desc: '판토스 무상 재설치 요금' },
+            { id: 's6', name: '무상 A/S 제공', period: '계약기간', price: 147000, desc: '냉장고 평균 수리 비용 기준' },
+            { id: 'sx', name: '위생 관리, 시간 절약 등', period: '-', price: 0, desc: '기회비용 (최저시급 x 케어 시간)' }
+        ],
+        stemIce: [
+            { id: 'si1', name: '워터필터 교체 (프리필터 포함)', period: '12개월 / 6회', price: 1332000, desc: '중금속(12EA)+박테리아(6EA)+바이러스(6EA) 필터 총합' },
+            { id: 'si2', name: '퓨어프레쉬필터 교체', period: '12개월 / 6회', price: 174000, desc: '회당 29,000원 x 6회' },
+            { id: 'si3', name: '세척 케어 및 성능 점검', period: '3개월 / 24회', price: 720000, desc: '회당 30,000원 x 24회' },
+            { id: 'si4', name: '기계실 분해세척', period: '36개월 차 1회', price: 85000, desc: '분해세척 서비스 비용 총합' },
+            { id: 'si5', name: '설치/철거 무상 제공', period: '계약기간 內 1회', price: 111000, desc: '판토스 무상 재설치 요금' },
+            { id: 'si6', name: '무상 A/S 제공', period: '계약기간', price: 147000, desc: '냉장고 평균 수리 비용 기준' },
+            { id: 'six', name: '위생 관리, 시간 절약 등', period: '-', price: 0, desc: '기회비용 (최저시급 x 케어 시간)' }
+        ],
+        waterPurifier: [
+            { id: 'wp1', name: '중금속9 흡착필터(6개월 주기)/바이러스 클리어 필터(12개월 주기)', period: '6개월 / 12회', price: 1104000, desc: '필터비용' }
+        ],
+        refrigerator: [
+            { id: 'rf1', name: '퓨어프레쉬필터 교체', period: '12개월 / 6회', price: 174000, desc: '회당 29,000원 x 6회' },
+            { id: 'rf2', name: '기본 외관/얼음통 & 고무패킹 케어', period: '12개월 / 6회', price: 180000, desc: '방문당 30,000원 x 6회' },
+            { id: 'rf3', name: '기계실 세척 (성능점검 포함)', period: '36개월 차 1회', price: 85000, desc: '기계실 분해세척 서비스 비용 총합' },
+            { id: 'rf4', name: '무상 A/S 제공', period: '계약기간', price: 147000, desc: '냉장고 평균 수리 비용 기준' },
+            { id: 'rfx', name: '위생 관리, 시간 절약 등', period: '-', price: 0, desc: '기회비용 (최저시급 x 케어 시간)' }
+        ],
+        kimchiRefrigerator: [
+            { id: 'krf1', name: '퓨어프레쉬필터 교체', period: '12개월 / 6회', price: 174000, desc: '회당 29,000원 x 6회' },
+            { id: 'krf2', name: '기본 외관/얼음통 & 고무패킹 케어', period: '12개월 / 6회', price: 180000, desc: '방문당 30,000원 x 6회' },
+            { id: 'krf3', name: '기계실 세척 (성능점검 포함)', period: '36개월 차 1회', price: 85000, desc: '기계실 분해세척 서비스 비용 총합' },
+            { id: 'krf4', name: '무상 A/S 제공', period: '계약기간', price: 147000, desc: '냉장고 평균 수리 비용 기준' },
+            { id: 'krfx', name: '위생 관리, 시간 절약 등', period: '-', price: 0, desc: '기회비용 (최저시급 x 케어 시간)' }
+        ],
+        induction: [
+            { id: 'e1', name: '전용 클리너 제공', period: '12개월 / 6회', price: 32700, desc: '전용클리너 6EA' },
+            { id: 'e2', name: '상판 클리닝, 하부 이물제거', period: '12개월 / 6회', price: 153096, desc: '최저시급 + 출장비 x 6회' },
+            { id: 'e3', name: '상판 교체 서비스', period: '36~48개월 1회', price: 245000, desc: '상판 교체 서비스 요금' },
+            { id: 'e4', name: '설치/철거 무상 제공', period: '계약기간 內 1회', price: 50000, desc: '판토스 무상 재설치 요금' },
+            { id: 'e5', name: '무상 A/S 제공', period: '계약기간', price: 70000, desc: '전기레인지 평균 수리 비용 기준' },
+            { id: 'ex', name: '위생 관리, 시간 절약 등', period: '-', price: 0, desc: '기회비용 (최저시급 x 케어 시간)' }
+        ],
+        dishwasher: [
+            { id: 'd1', name: '음식물 거름망 교체', period: '12개월 / 6회', price: 102000, desc: '거름필터 12EA' },
+            { id: 'd2', name: '내/외부 세척 및 통살균', period: '12개월 / 6회', price: 360000, desc: '클리닝(1만) + 출장비(2만) x 12회' },
+            { id: 'd3', name: '전용 소금 충전', period: '12개월 / 6회', price: 114000, desc: '정제소금 12EA' },
+            { id: 'd4', name: '연수장치 점검/수질 측정', period: '12개월 / 6회', price: 22800, desc: '경도 키트 12EA' },
+            { id: 'd5', name: '에어필터 교체', period: '12개월 / 6회', price: 75000, desc: '에어필터 6EA' },
+            { id: 'd6', name: '설치/철거 무상 제공', period: '계약기간 內 1회', price: 130000, desc: '판토스 무상 재설치 요금' },
+            { id: 'd7', name: '무상 A/S 제공', period: '계약기간', price: 70000, desc: '식기세척기 평균 수리 비용 기준' },
+            { id: 'dx', name: '위생 관리, 시간 절약 등', period: '-', price: 0, desc: '기회비용 (최저시급 x 케어 시간)' }
+        ],
+        stickVacuum: [
+            { id: 'v1', name: '분해세척 서비스 (에어/초음파 세척)', period: '12개월 / 6회', price: 396000, desc: '회당 66,000원 x 6회' },
+            { id: 'v2', name: '성능 점검 & 스팀 케어', period: '12개월 / 6회', price: 124000, desc: '최저시급 + 성능/스팀케어 출장비' },
+            { id: 'v3', name: '소모품 배송 (배터리 36개월 1회)', period: '12개월 / 6회', price: 912000, desc: '필터류, 배터리, 올인원타워 소모품 총합' },
+            { id: 'v4', name: '무상 A/S 제공', period: '계약 기간', price: 91300, desc: '청소기 평균 수리 비용 기준' },
+            { id: 'vx', name: '위생 관리, 시간 절약 등', period: '-', price: 0, desc: '기회비용 (최저시급 x 케어 시간)' }
+        ],
+        robotVacuum: [
+            { id: 'r1', name: '7종 소모품 교체 서비스', period: '12개월 / 6회', price: 1287300, desc: '6년 소모품 비용 합계 + 출장 서비스' },
+            { id: 'r2', name: '로봇/스테이션/스팀 클리닝', period: '12개월 / 6회', price: 134000, desc: '회당 22,340원 x 6회' },
+            { id: 'r3', name: '무상 A/S 제공', period: '계약 기간', price: 91300, desc: '청소기 평균 수리 비용 기준' },
+            { id: 'rx', name: '위생 관리, 시간 절약 등', period: '-', price: 0, desc: '기회비용 (최저시급 x 케어 시간)' }
+        ],
+        airConditioner: [
+            { id: 'a1', name: '완전분해 케어 서비스(프리미엄)', period: '36개월 / 2회', price: 610000, desc: '회당 305,000원 x 2회' },
+            { id: 'a1_2', name: '부분분해 케어 서비스(라이트)', period: '36개월 / 2회', price: 80000, desc: '회당 40,000원 x 2회, 타 가전 부분분해세척 비용기준 참고 추정비용' },
+            { id: 'a2', name: '공기청정 필터 교체', period: '12개월 / 6회', price: 600000, desc: '뷰 집진필터 100,000원 x 6회' },
+            { id: 'a3', name: '성능점검 & 내/외부 토탈클리닝', period: '12개월 / 6회', price: 510000, desc: '회당 85,000원 x 6회' },
+            { id: 'a4', name: '무상 철거&재설치 서비스', period: '계약기간 內 1회', price: 388000, desc: '2in1 재설치 기준 388,000원' },
+            { id: 'a5', name: '무상 A/S 제공', period: '계약기간', price: 266000, desc: '에어컨 평균 수리 비용 기준' },
+            { id: 'ax', name: '위생 관리, 시간 절약 등', period: '-', price: 0, desc: '기회비용 (최저시급 x 케어 시간)' }
+        ],
+        airPurifier: [
+            { id: 'p1', name: '복합 필터 교체', period: '12개월 / 6회', price: 1548000, desc: '회당 258,000원 x 6회' },
+            { id: 'p2', name: '극세 필터 교체', period: '6개월 / 12회', price: 128000, desc: '회당 10,666원 x 12회' },
+            { id: 'p3', name: '클린부스터 분해/클리닝', period: '6개월 / 12회', price: 480000, desc: '회당 40,000원 x 12회' },
+            { id: 'p4', name: '분해 / 스팀 케어', period: '30개월 / 2회', price: 210000, desc: '기계실 분해세척 서비스 총합' },
+            { id: 'p5', name: '무상 A/S 제공', period: '계약기간', price: 91000, desc: '공기청정기 평균 수리 비용' },
+            { id: 'px', name: '위생 관리, 시간 절약 등', period: '-', price: 0, desc: '기회비용 (최저시급 x 케어 시간)' }
+        ],
+        bathAir: [
+            { id: 'b1', name: '극세필터/팬/위생(UV/피톤치드) 케어', period: '12개월 / 6회', price: 858000, desc: '회당 143,000원 x 6회' },
+            { id: 'b2', name: '극세 필터 교체 서비스', period: '24개월 / 3회', price: 60000, desc: '세트당 20,000원 x 3회' },
+            { id: 'b3', name: '무상 A/S 제공', period: '계약기간', price: 174000, desc: '평균 수리비용 기준' },
+            { id: 'bx', name: '위생 관리, 시간 절약 등', period: '-', price: 0, desc: '기회비용 (최저시급 x 케어 시간)' }
+        ],
+        styler: [
+            { id: 'st1', name: '클리닝 & 스팀케어 & 센서점검', period: '12개월 / 6회', price: 510000, desc: '회당 85,000원 x 6회' },
+            { id: 'st2', name: '인산염 키트 / 향기 시트 제공', period: '12개월 / 6회', price: 83500, desc: '회당 13,917원 x 6회' },
+            { id: 'st3', name: '급 / 배수통 교체 서비스', period: '36개월 / 1회', price: 39900, desc: '스타일러 통 가격 총합' },
+            { id: 'st4', name: '무상 A/S 제공', period: '계약기간', price: 110000, desc: '평균 수리비용 기준' },
+            { id: 'stx', name: '위생 관리, 시간 절약 등', period: '-', price: 0, desc: '기회비용 (최저시급 x 케어 시간)' }
+        ],
+        washTower: [
+            { id: 'wt1', name: '센서/패킹/필터 세척 & 드럼/스팀케어', period: '6개월 / 12회', price: 630000, desc: '[세탁부] 회당 6.5만x6회 + [건조부] 회당 4만x6회' },
+            { id: 'wt2', name: '배수필터 교체 서비스', period: '24개월 / 3회', price: 15600, desc: '회당 5,200원 x 3회' },
+            { id: 'wt3', name: '2중 안심필터 무상교체', period: '최초 방문 시 1회', price: 36500, desc: '2중 안심필터 가격' },
+            { id: 'wt4', name: '설치/철거 무상 제공', period: '계약기간 內 1회', price: 220000, desc: '무상 철거 및 재설치 총합' },
+            { id: 'wt5', name: '무상 A/S 제공', period: '계약기간', price: 110000, desc: '세탁기 평균 수리비용 기준' },
+            { id: 'wtx', name: '위생 관리, 시간 절약 등', period: '-', price: 0, desc: '기회비용 (최저시급 x 케어 시간)' }
+        ],
+        washCombo: [
+            { id: 'wc1', name: '센서/패킹/필터 세척 & 드럼/스팀케어', period: '6개월 / 12회', price: 390000, desc: '회당 65,000원 x 6회' },
+            { id: 'wc2', name: '배수필터 교체 서비스', period: '24개월 / 3회', price: 15600, desc: '회당 5,200원 x 3회' },
+            { id: 'wc3', name: '건조필터 무상교체', period: '최초 방문 시 1회', price: 44500, desc: '건조필터 가격' },
+            { id: 'wc4', name: '무상 A/S 제공', period: '계약기간', price: 110000, desc: '세탁기 평균 수리비용 기준' },
+            { id: 'wcx', name: '위생 관리, 시간 절약 등', period: '-', price: 0, desc: '기회비용 (최저시급 x 케어 시간)' }
+        ],
+        trommStandard: [
+            { id: 'ts1', name: '배수필터/고무패킹/내외부 클리닝/성능 작동 점검/수평 확인', period: '24개월 / 3회', price: 120000, desc: '세척 소모품 및 인건비' },
+            { id: 'ts2', name: '배수필터/고무패킹 교체', period: '48개월 / 1회', price: 64500, desc: '배수필터 + 고무패킹 가격' },
+            { id: 'ts3', name: '세척조 클리너 제공', period: '48개월 / 1회', price: 7000, desc: '클리너 가격' },
+            { id: 'ts4', name: '분해 세척(스팀 및 UV 관리)', period: '48개월 / 1회', price: 195000, desc: '서비스 비용' },
+            { id: 'ts5', name: '무상 A/S 제공', period: '계약기간', price: 110000, desc: '세탁기 평균 수리비용 기준' },
+            { id: 'tsx', name: '위생 관리, 시간 절약 등', period: '-', price: 0, desc: '기회비용(최저시급 x 셀프케어 시간)' }
+        ],
+        trommLight: [
+            { id: 'tl1', name: '배수필터/고무패킹/내외부 클리닝/스팀 관리/', period: '6개월 / 12회', price: 480000, desc: '세척 소모품 및 인건비' },
+            { id: 'tl2', name: '배수필터/고무패킹/내외부 클리닝/스팀 관리/', period: '12개월 / 6회', price: 240000, desc: '세척 소모품 및 인건비' },
+            { id: 'tl3', name: '배수필터교체', period: '24개월 / 1회', price: 15000, desc: '배수필터 가격' },
+            { id: 'tl4', name: '무상 A/S 제공', period: '계약기간', price: 110000, desc: '세탁기 평균 수리비용 기준' },
+            { id: 'tlx', name: '위생 관리, 시간 절약 등', period: '-', price: 0, desc: '기회비용(최저시급 x 셀프케어 시간)' }
+        ],
+        dryer: [
+            { id: 'dr1', name: '먼지/배수물통 세척 & 내외부 클리닝', period: '6개월 / 12회', price: 240000, desc: '세척 소모품 및 인건비' },
+            { id: 'dr2', name: '2중 안심필터 제공', period: '최초 방문 1회', price: 36500, desc: '2중 안심필터 가격' },
+            { id: 'dr3', name: '무상 A/S 제공', period: '계약기간', price: 110000, desc: '세탁기 평균 수리비용 기준' },
+            { id: 'drx', name: '위생 관리, 시간 절약 등', period: '-', price: 0, desc: '기회비용 (최저시급 x 케어 시간)' }
+        ],
+        tvCare: [
+            { id: 'tv1', name: 'QNED 86형/85시리즈(패널 고장 무상A/S)', period: '계약기간 내 고장시', price: 2060000, desc: '패널 교체 기준가 약 206만원' },
+            { id: 'tv2', name: 'OLED 83형/G시리즈(패널 고장 무상A/S)', period: '계약기간 내 고장시', price: 3770000, desc: '패널 교체 기준가 약 377만원' },
+            { id: 'tv3', name: 'OLED 77형/G시리즈(패널 고장 무상A/S)', period: '계약기간 내 고장시', price: 2990000, desc: '패널 교체 기준가 약 299만원' },
+            { id: 'tv4', name: 'OLED 77형/B시리즈(패널 고장 무상A/S)', period: '계약기간 내 고장시', price: 2300000, desc: '패널 교체 기준가 약 230만원' },
+            { id: 'tv5', name: 'OLED 65형(패널 고장 무상A/S)', period: '계약기간 내 고장시', price: 1500000, desc: '패널 교체 기준가 약 150만원' },
+            { id: 'tv6', name: 'OLED 55형(패널 고장 무상A/S)', period: '계약기간 내 고장시', price: 1200000, desc: '패널 교체 기준가 약 120만원' },
+            { id: 'tv7', name: '70인치 이상 무상 설치지원', period: '계약기간 內 1회', price: 128000, desc: '70형대 벽걸이 설치 기준 (철거비/운송비 제외)' },
+            { id: 'tv8', name: '80인치 이상 무상 설치지원', period: '계약기간 內 1회', price: 204000, desc: '80형대 벽걸이 설치 기준 (철거비/운송비 제외)' }
+        ],
+        massageChair: [
+            { id: 'mc1', name: '가죽 교체 서비스', period: '12개월 / 6회', price: 278500, desc: '발 가죽 교체(30,000원) x 3회 + 베개, 등, 엉덩이 가죽교체(188,500원) x 1회' },
+            { id: 'mc2', name: '제품 토탈 클리닝 / 동작 및 제품 성능점검', period: '12개월 / 6회', price: 345600, desc: '케어십 요금 4,800원 x 72개월' },
+            { id: 'mc3', name: '무상 A/S 제공', period: '계약기간', price: 250000, desc: '안마의자 1회 평균 수리 비용 기준' },
+            { id: 'mcx', name: '위생 관리, 시간 절약 등', period: '-', price: 0, desc: '기회비용 (최저시급 x 케어 시간)' }
+        ]
+    };
+
+    let checkedState = {};
+    let currentCareTitle = '';
+
+    function renderPrintSelectedCareTable() {
+        const tbody = document.getElementById('printSelectedCareBody');
+        const selectedItems = [];
+
+        for (const key in checkedState) {
+            const item = checkedState[key];
+            if (item && item.checked) selectedItems.push(item);
+        }
+
+        if (!selectedItems.length) {
+            tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;">선택된 항목 없음</td></tr>';
+            return;
+        }
+
+        tbody.innerHTML = selectedItems.map(item => `
+            <tr>
+                <td class="text-left">${item.category ? item.category + ' : ' : ''}${item.name}</td>
+                <td>${item.period || '-'}</td>
+                <td class="text-right">${item.price === 0 ? '별도 산정' : fn(item.price) + '원'}</td>
+                <td class="text-left">${item.desc || '-'}</td>
+            </tr>
+        `).join('');
+    }
+
+    function calculateCareTotal() {
+        let totalVal = 0;
+        const selectedLines = [];
+
+        for (const key in checkedState) {
+            const item = checkedState[key];
+            if (item && item.checked) {
+                totalVal += item.price;
+                const prefix = item.category ? `${item.category} : ` : '';
+                selectedLines.push(`• ${prefix}${item.name} ${item.price === 0 ? '(별도 산정)' : '(' + fn(item.price) + '원)'}`);
+            }
+        }
+
+        document.getElementById('selectedItemsList').innerText = selectedLines.length ? selectedLines.join('\n') : '선택된 항목 없음';
+        document.getElementById('totalValue').innerText = fn(totalVal);
+        renderPrintSelectedCareTable();
+    }
+
+    function toggleCheck(id, price, name, category, period, desc, cb, row) {
+        checkedState[id] = cb.checked ? { checked: true, price: price, name: name, category: category, period: period, desc: desc } : false;
+        if (cb.checked) row.classList.remove('disabled-row');
+        else row.classList.add('disabled-row');
+        calculateCareTotal();
+    }
+
+    function clearSelectedItems() {
+        checkedState = {};
+        document.querySelectorAll('#careTableBody input[type="checkbox"]').forEach(cb => {
+            cb.checked = false;
+            const row = cb.closest('tr');
+            if (row) row.classList.add('disabled-row');
+        });
+        calculateCareTotal();
+    }
+
+    function changeTab(category, titleName, btn) {
+        document.querySelectorAll('.tab-btn:not(.video-btn)').forEach(b => b.classList.remove('active'));
+        if (btn) btn.classList.add('active');
+
+        currentCareTitle = titleName;
+        document.getElementById('dashboardTitle').innerText = '✨ 구독 Care 비용';
+
+        const tbody = document.getElementById('careTableBody');
+        tbody.innerHTML = '';
+
+        careData[category].forEach(item => {
+            const isChecked = !!(checkedState[item.id] && checkedState[item.id].checked);
+            const tr = document.createElement('tr');
+            if (!isChecked) tr.classList.add('disabled-row');
+
+            const safeName = String(item.name).replace(/'/g, "\'");
+            const safeTitle = String(titleName).replace(/'/g, "\'");
+            const safePeriod = String(item.period).replace(/'/g, "\\'");
+            const safeDesc = String(item.desc).replace(/'/g, "\\'");
+            tr.innerHTML = `<td class="checkbox-cell"><input type="checkbox" style="width:18px;height:18px; cursor:pointer;" onchange="toggleCheck('${item.id}', ${item.price}, '${safeName}', '${safeTitle}', '${safePeriod}', '${safeDesc}', this, this.parentElement.parentElement)" ${isChecked ? 'checked' : ''}></td>
+                <td class="text-left" style="color:#0056b3; font-weight:bold;">${item.name}</td><td>${item.period}</td>
+                <td class="text-right" style="font-weight:bold;">${item.price === 0 ? "별도 산정" : fn(item.price) + "원"}</td><td class="text-left" style="font-size:11px; color:#555;">${item.desc}</td>`;
+            tbody.appendChild(tr);
+        });
+    }
+
+    function resetPrintModes() {
+        document.body.classList.remove('print-estimate');
+        document.body.classList.remove('print-care');
+        document.body.classList.remove('print-all');
+    }
+
+    function applyAutoFitZoom() {
+        const panel = document.getElementById('estimatePanel');
+        const table = document.getElementById('quoteTable');
+        if (!panel || !table) return;
+
+        panel.style.zoom = '1'; 
+
+        const A4_MAX_HEIGHT = 980;
+        const printContentHeight = table.offsetHeight + 150;
+
+        if (printContentHeight > A4_MAX_HEIGHT) {
+            const zoomRatio = (A4_MAX_HEIGHT / printContentHeight) * 0.98;
+            panel.style.zoom = zoomRatio;
+        }
+    }
+
+    function removeAutoFitZoom() {
+        const panel = document.getElementById('estimatePanel');
+        if (panel) panel.style.zoom = '1'; 
+    }
+
+    function printEstimate() {
+        updateAppMeta();
+        resetPrintModes();
+        document.body.classList.add('print-estimate');
+        
+        applyAutoFitZoom(); 
+
+        setTimeout(() => {
+            window.print();
+            setTimeout(() => {
+                resetPrintModes();
+                removeAutoFitZoom(); 
+            }, 300);
+        }, 50);
+    }
+
+    function printCare() {
+        updateAppMeta();
+        resetPrintModes();
+        document.body.classList.add('print-care');
+        window.print();
+        setTimeout(() => resetPrintModes(), 300);
+    }
+
+    function printAllPage() {
+        updateAppMeta();
+        resetPrintModes();
+        document.body.classList.add('print-all');
+        
+        applyAutoFitZoom(); 
+
+        setTimeout(() => {
+            window.print();
+            setTimeout(() => {
+                resetPrintModes();
+                removeAutoFitZoom(); 
+            }, 300);
+        }, 50);
+    }
+
+    const cardData = {
+        'shinhan': { 
+            title: '[신한] 더구독케어', 
+            phone: '080-850-0117', 
+            url: 'https://www.shinhancard.com/pconts/html/card/apply/credit/1234346_2207.html?EntryLoc2=4441&btnApp=dp1',
+            benefits: '30만 ↑ 1.7만<br>70만 ↑ 2.7만<br>130만 ↑ 3.0만<br><span style="font-size:11px; color:#888;">*70만/130만 혜택은 7만원 이상 자동이체시 적용</span>'
+        },
+        'woori_plat': { 
+            title: '[우리] 플래티넘', 
+            phone: '1800-0864', 
+            url: 'https://m.wooricard.com/dcmw/yh1/crd/crd01/M1CRD101S02.do?recomNo=104169',
+            benefits: '100만 ↑ 3.5만<br>150만 ↑ 3.9만<br>200만 ↑ 4.2만'
+        },
+        'woori': { 
+            title: '[우리] LG전자', 
+            phone: '1800-4137', 
+            url: 'https://m.wooricard.com/dcmw/yh1/crd/crd01/M1CRD101S02.do?recomNo=102535',
+            benefits: '30만 ↑ 1.8만<br>70만 ↑ 2.2만<br>120만 ↑ 2.4만'
+        },
+        'lotte': { 
+            title: '[롯데] 구독엔로카', 
+            phone: '1577-9469', 
+            url: 'https://m.lottecard.co.kr/spa/card/booth?bId=96417&vtCdKndC=P15666-A15666',
+            benefits: '40만 ↑ 2.0만<br>80만 ↑ 2.3만<br>160만 ↑ 2.6만'
+        },
+        'kb': { 
+            title: '[KB국민] LG전자 KB국민', 
+            phone: '1644-8639', 
+            url: 'https://m.kbcard.com/CRD/DVIEW/MCAMCXHIACRC0002?mainCC=b&allianceCode=04425',
+            benefits: '<b>[프로모션 운영 / 36개월간]</b><br>30만 ↑ 2.0만<br>80만 ↑ 2.5만<br><span style="font-size:11px; color:#888;">* 37회차부터는 기본 혜택(1.0만/1.5만)만 적용</span>'
+        },
+        'hyundai': { 
+            title: '[현대] LG전자 현대', 
+            phone: '1670-0442', 
+            url: 'https://www.hyundaicard.com/cpc/cr/CPCCR0201_01.hc?cardWcd=LGEHC&eventCode=LGR03#cardDetailHash',
+            benefits: '<b>[프로모션 운영 / 60개월간]</b><br>40만 ↑ 0.8만<br>80만 ↑ 1.2만<br>120만 ↑ 1.6만'
+        },
+        'hana': { 
+            title: '[하나] LG전자', 
+            phone: '1800-1264', 
+            url: 'https://m.hanacard.co.kr/MKCDCM1010M.web?CD_PD_SEQ=16959',
+            benefits: '30만 ↑ 1.3만<br>70만 ↑ 1.7만<br>100만 ↑ 2.0만'
+        }
+    };
+
+    function openCardQrModal(cardKey) {
+        const data = cardData[cardKey];
+        if(!data) return;
+        
+        document.getElementById('cardQrModalTitle').innerText = data.title;
+        document.getElementById('cardQrModalPhone').innerText = '발급 ARS: ' + data.phone;
+        document.getElementById('cardQrModalBenefits').innerHTML = data.benefits;
+        
+        const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=160x160&margin=0&data=${encodeURIComponent(data.url)}`;
+        document.getElementById('cardQrImage').src = qrUrl;
+        
+        document.getElementById('cardQrModalOverlay').style.display = 'flex';
+    }
+
+    function closeCardQrModal(event) {
+        if (event && event.target !== document.getElementById('cardQrModalOverlay') && event.target.tagName !== 'BUTTON') {
+            return;
+        }
+        document.getElementById('cardQrModalOverlay').style.display = 'none';
+        document.getElementById('cardQrImage').src = ''; 
+    }
+
+    window.onload = function() {
+        const firstBtn = document.querySelector('.tab-btn');
+        changeTab('tvCare', 'TV 케어', firstBtn);
+        initSecurity();
+    };
+
+    let modelRowVisible = true;
+    function applyModelRowVisibility() {
+        const table = document.getElementById('quoteTable');
+        const btn = document.getElementById('toggleModelBtn');
+        if (!table || !btn) return;
+        if (modelRowVisible) {
+            table.classList.remove('hide-model-row');
+            btn.textContent = '모델명 숨기기';
+        } else {
+            table.classList.add('hide-model-row');
+            btn.textContent = '모델명 보이기';
+        }
+    }
+    function toggleModelRowVisibility() {
+        modelRowVisible = !modelRowVisible;
+        applyModelRowVisibility();
+    }
+
+    // [RONi 특장점 팝업]
+    function openRoniFeatureModal() {
+        document.getElementById('roniFeatureOverlay').style.display = 'flex';
+    }
+    function closeRoniFeatureModal(event) {
+        if (event && event.target !== document.getElementById('roniFeatureOverlay') && event.target.tagName !== 'BUTTON' && event.type !== 'click') return;
+        document.getElementById('roniFeatureOverlay').style.display = 'none';
+    }
+
+    // [프리미엄 비주얼 세일즈 가이드 팝업]
+    function openVisualGuideModal() {
+        // 기존 3자 비교 팝업은 놔둔 채로 위에 띄웁니다.
+        document.getElementById('visualGuideOverlay').style.display = 'flex';
+    }
+    function closeVisualGuideModal(event) {
+        if (event && event.target !== document.getElementById('visualGuideOverlay') && event.target.tagName !== 'BUTTON' && !event.target.classList.contains('btn-close-visual') && event.type !== 'click') return;
+        document.getElementById('visualGuideOverlay').style.display = 'none';
+    }
+
+    // [🛡️ RONi 구독 관리 팝업 및 이미지 전환 로직]
+    function openRoniCareModal() {
+        document.getElementById('roniCareOverlay').style.display = 'flex';
+        // 모달 열 때 기본 첫 이미지(2.png)로 초기화 - 절대 경로 적용
+        document.getElementById('roniCareMainImage').src = 'https://raw.githubusercontent.com/kwonsoonmin-ai/roni/main/2.png';
+    }
+    
+    function closeRoniCareModal(event) {
+        if (event && event.target !== document.getElementById('roniCareOverlay') && event.target.tagName !== 'BUTTON' && event.type !== 'click') return;
+        document.getElementById('roniCareOverlay').style.display = 'none';
+    }
+    
+    function changeCareImage(imageName) {
+        // 클릭한 영역에 맞춰 이미지를 즉시 변경합니다.
+        document.getElementById('roniCareMainImage').src = imageName;
+    }
+</script>
 </body>
 </html>
