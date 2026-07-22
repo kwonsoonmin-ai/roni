@@ -523,6 +523,24 @@
         .care-click-zone { flex: 1; cursor: pointer; transition: background 0.2s; border-radius: 6px; margin: 2px 0; }
         .care-click-zone:hover { background: rgba(0, 0, 0, 0.04); }
 
+        /* 부등호 강조 배지 스타일 */
+        .win-badge-container {
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 10px; 
+            margin-bottom: 12px; 
+            background: #fff; 
+            border: 2px solid #a50034; 
+            padding: 8px 12px; 
+            border-radius: 8px; 
+            text-align: center;
+            box-shadow: 0 2px 6px rgba(165,0,52,0.1);
+        }
+        .win-badge-lg { color: #a50034; font-weight: 900; font-size: 14px; }
+        .win-badge-arrow { font-size: 18px; color: #e11d48; font-weight: 900; letter-spacing: -2px; }
+        .win-badge-other { color: #94a3b8; font-weight: normal; font-size: 13px; text-decoration: line-through; }
+
         @media (max-width: 768px) { .vg-comparison-grid { grid-template-columns: 1fr; gap: 15px; } .vg-content-body { padding: 25px 20px; } .vg-hero-section { padding: 30px 20px; } .vg-hero-title { font-size: 22px; } }
     </style>
 </head>
@@ -540,7 +558,7 @@
             <button type="button" class="btn-print btn-planner" onclick="window.open('https://akohw1003.github.io/kangnam/kyowon3', '_blank')">교원 플래너</button>
             <button type="button" class="btn-print btn-youtube" onclick="window.open('https://www.youtube.com/watch?v=x4Wvf-2LCBY', '_blank')">📺 RONi 귀곰 유튜브</button>
             <!-- ✨ RONi vs 로보락 비교 팝업 버튼 -->
-            <button type="button" class="btn-print btn-roni" onclick="openRoniFeatureModal()">✨ RONi와 타사 로봇청소기 비교</button>
+            <button type="button" class="btn-print btn-roni" onclick="openRoniFeatureModal()">✨ RONi 타사 비교</button>
         </div>
 
         <div class="gap-toolbar">
@@ -730,7 +748,7 @@
     </div>
 </div>
 
-<!-- ================= ✨ RONi vs 로보락 완벽 비교 분석 모달 (업그레이드 됨) ================= -->
+<!-- ================= ✨ RONi vs 로보락 vs 삼성 완벽 비교 분석 모달 (업그레이드 됨) ================= -->
 <div class="security-overlay" id="roniFeatureOverlay" style="display:none;" onclick="closeRoniFeatureModal(event)">
     <div class="security-card" style="max-width: 1400px; padding: 30px; max-height: 90vh; overflow-y: auto;" onclick="event.stopPropagation()">
         
@@ -749,11 +767,11 @@
                     <div style="font-size: 12px; line-height: 1.5; color: #333; width: 100%;">
                         <p style="margin: 0 0 5px 0; color: #a50034; font-weight: bold; font-size: 13px;">[핵심 Point]</p>
                         <ul style="margin: 0; padding-left: 15px;">
-                            <li><span style="color:#d32f2f; font-weight:bold;">100℃ 무빙 스팀 분사</span></li>
+                            <li><span style="color:#d32f2f; font-weight:bold;">100℃ 무빙 스팀 직접 분사</span></li>
                             <li>히든(15cm 슬림) / 오브제형</li>
                             <li><span style="color:#d32f2f; font-weight:bold;">물리적 카메라 가림막</span></li>
-                            <li>3D 3d ToF + AI 자율주행</li>
-                            <li>헬스케어 매니저 방문 관리</li>
+                            <li>3D dToF + AI 자율주행</li>
+                            <li>전국망 매니저 방문 케어</li>
                         </ul>
                     </div>
                 </div>
@@ -796,7 +814,7 @@
             </div>
         </div>
 
-        <!-- 심층 비교 테이블 영역 -->
+        <!-- 심층 비교 테이블 영역 (부등호 배지 추가됨) -->
         <div style="overflow-x: auto; border: 1px solid #cbd5e1; border-radius: 8px;">
             <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 13px;">
                 <thead>
@@ -812,6 +830,11 @@
                     <tr>
                         <td style="font-weight: bold; text-align: center; background: #f8fafc; border-right: 1px solid #cbd5e1; border-bottom: 1px solid #cbd5e1; padding: 10px;">바닥 청소/살균<br><span style="color:#d32f2f; font-size:11px;">(가장 큰 차이)</span></td>
                         <td style="background: #eff6ff; border-right: 1px solid #cbd5e1; border-bottom: 1px solid #cbd5e1; padding: 12px;">
+                            <div class="win-badge-container">
+                                <span class="win-badge-lg">바닥 100℃ 스팀 직접 분사 👑</span>
+                                <span class="win-badge-arrow">&gt;&gt;</span>
+                                <span class="win-badge-other">단순 상온 물걸레</span>
+                            </div>
                             <ul style="margin:0; padding-left: 15px; color:#1e3a8a;">
                                 <li style="margin-bottom: 4px;"><strong>바닥에 직접 100℃ 스팀 분사</strong>하며 닦음</li>
                                 <li><strong>유해균 99.99% 완벽 살균!</strong></li>
@@ -838,6 +861,11 @@
                     <tr>
                         <td style="font-weight: bold; text-align: center; background: #f8fafc; border-right: 1px solid #cbd5e1; border-bottom: 1px solid #cbd5e1; padding: 10px;">흡입력 & 주행</td>
                         <td style="background: #eff6ff; border-right: 1px solid #cbd5e1; border-bottom: 1px solid #cbd5e1; padding: 12px;">
+                            <div class="win-badge-container">
+                                <span class="win-badge-lg">한국형 마루 최적화 주행 👑</span>
+                                <span class="win-badge-arrow">&gt;&gt;</span>
+                                <span class="win-badge-other">단순 스펙(Pa) 경쟁</span>
+                            </div>
                             <ul style="margin:0; padding-left: 15px; color:#1e3a8a;">
                                 <li style="margin-bottom: 4px;">30W 급 강력 모터 + AI 주행</li>
                                 <li>한국 아파트 (마루/장판) 완벽 최적화</li>
@@ -864,6 +892,11 @@
                     <tr>
                         <td style="font-weight: bold; text-align: center; background: #f8fafc; border-right: 1px solid #cbd5e1; border-bottom: 1px solid #cbd5e1; padding: 10px;">사생활 보호<br>(해킹 안심)</td>
                         <td style="background: #eff6ff; border-right: 1px solid #cbd5e1; border-bottom: 1px solid #cbd5e1; padding: 12px;">
+                            <div class="win-badge-container">
+                                <span class="win-badge-lg">물리적 렌즈 완벽 차단 👑</span>
+                                <span class="win-badge-arrow">&gt;&gt;</span>
+                                <span class="win-badge-other">카메라 상시 노출</span>
+                            </div>
                             <ul style="margin:0; padding-left: 15px; color:#1e3a8a;">
                                 <li style="margin-bottom: 4px;"><strong>물리적 도어 가림막 (충전 시 카메라 차단)</strong></li>
                                 <li>LG Shield 글로벌 보안 인증</li>
@@ -889,6 +922,11 @@
                     <tr>
                         <td style="font-weight: bold; text-align: center; background: #f8fafc; border-right: 1px solid #cbd5e1; border-bottom: 1px solid #cbd5e1; padding: 10px;">스테이션 디자인</td>
                         <td style="background: #eff6ff; border-right: 1px solid #cbd5e1; border-bottom: 1px solid #cbd5e1; padding: 12px;">
+                            <div class="win-badge-container">
+                                <span class="win-badge-lg">15cm 초슬림 히든/오브제 👑</span>
+                                <span class="win-badge-arrow">&gt;&gt;</span>
+                                <span class="win-badge-other">일반적인 거대 타워형</span>
+                            </div>
                             <ul style="margin:0; padding-left: 15px; color:#1e3a8a;">
                                 <li><strong>히든:</strong> 15cm 초슬림, 싱크대 밑 완벽 매립 가능</li>
                                 <li><strong>오브제:</strong> 가구 같은 세련된 협탁 디자인</li>
@@ -910,6 +948,11 @@
                     <tr>
                         <td style="font-weight: bold; text-align: center; background: #f8fafc; border-right: 1px solid #cbd5e1; padding: 10px;">사후관리(A/S)<br>& 유지보수</td>
                         <td style="background: #eff6ff; border-right: 1px solid #cbd5e1; padding: 12px;">
+                            <div class="win-badge-container">
+                                <span class="win-badge-lg">LG 전문가 직접 방문 케어 👑</span>
+                                <span class="win-badge-arrow">&gt;&gt;</span>
+                                <span class="win-badge-other">고객 직접 자가 분해</span>
+                            </div>
                             <ul style="margin:0; padding-left: 15px; color:#1e3a8a;">
                                 <li style="margin-bottom: 4px;"><strong>전국망 방문 A/S</strong> (스트레스 제로)</li>
                                 <li><strong>매니저 정기 방문 케어 (분해 세척)</strong></li>
@@ -933,10 +976,13 @@
             </table>
         </div>
 
+        <!-- 하단 버튼 영역 -->
         <div class="security-actions" style="margin-top:20px; text-align: center; display: flex; justify-content: center; gap: 10px;">
-            <button type="button" class="btn-security btn-security-primary" style="background:#0f766e; border-color:#0f766e; font-size: 14px; padding: 8px 30px; display: inline-block; flex: none; min-width: 120px;" onclick="openRoniCareModal()">🛡️ RONi 구독 관리</button>
-            <button type="button" class="btn-security btn-security-primary" style="background:#a50034; border-color:#a50034; font-size: 14px; padding: 8px 30px; display: inline-block; flex: none; min-width: 120px;" onclick="openVisualGuideModal()">💎 핵심Point</button>
-            <button type="button" class="btn-security btn-security-primary" style="background:#475569; border-color:#475569; font-size: 14px; padding: 8px 30px; display: inline-block; flex: none; min-width: 120px;" onclick="closeRoniFeatureModal()">닫기</button>
+            <button type="button" onclick="openRoniCareModal()" style="background:#0f766e; border:none; color:#ffffff; font-size: 14px; padding: 10px 30px; display: inline-block; flex: none; min-width: 120px; border-radius: 6px; cursor: pointer; font-weight: bold; transition: background 0.2s;" onmouseover="this.style.background='#0d5c56'" onmouseout="this.style.background='#0f766e'">🛡️ RONi 구독 관리</button>
+            
+            <button type="button" onclick="openVisualGuideModal()" style="background:#a50034; border:none; color:#ffffff; font-size: 14px; padding: 10px 30px; display: inline-block; flex: none; min-width: 120px; border-radius: 6px; cursor: pointer; font-weight: bold; transition: background 0.2s;" onmouseover="this.style.background='#820028'" onmouseout="this.style.background='#a50034'">💎 핵심Point</button>
+            
+            <button type="button" onclick="closeRoniFeatureModal()" style="background:#475569; border:none; color:#ffffff; font-size: 14px; padding: 10px 30px; display: inline-block; flex: none; min-width: 120px; border-radius: 6px; cursor: pointer; font-weight: bold; transition: background 0.2s;" onmouseover="this.style.background='#334155'" onmouseout="this.style.background='#475569'">닫기</button>
         </div>
         
     </div>
@@ -1020,7 +1066,7 @@
             </div>
             
             <div style="text-align: center; margin-top: 10px;">
-                <button type="button" class="btn-security btn-security-primary btn-close-visual" style="background:#475569; border-color:#475569; font-size: 14px; padding: 8px 30px; display: inline-block; min-width: 120px;" onclick="closeVisualGuideModal()">가이드 닫기</button>
+                <button type="button" class="btn-security btn-security-primary btn-close-visual" style="background:#475569; border:none; color:white; font-size: 14px; padding: 10px 30px; display: inline-block; min-width: 120px; border-radius: 6px; cursor: pointer; font-weight: bold; transition: background 0.2s;" onmouseover="this.style.background='#334155'" onmouseout="this.style.background='#475569'" onclick="closeVisualGuideModal()">가이드 닫기</button>
             </div>
         </div>
     </div>
@@ -1038,21 +1084,24 @@
         <!-- 상단 1.png (구독 주기 안내) : 깃허브 다이렉트 절대 경로 적용 -->
         <img src="https://raw.githubusercontent.com/kwonsoonmin-ai/roni/main/1.png" alt="로니 구독 케어서비스 주기" style="width: 100%; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
 
-        <!-- 하단 2~6 상세 케어 인터랙티브 영역 (투명 클릭 존 매핑) -->
+        <!-- 하단 2~6 상세 케어 인터랙티브 영역 (절대 위치 고정값 적용) -->
         <div style="position: relative; width: 100%; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.05); background: #f8f9fa;">
             <img id="roniCareMainImage" src="https://raw.githubusercontent.com/kwonsoonmin-ai/roni/main/2.png" alt="케어 서비스 상세" style="width: 100%; display: block;">
             
-            <!-- 우측 텍스트 메뉴 위에 덧씌우는 투명 클릭 영역 (위치 정밀 보정 완료) -->
-            <!-- 이 영역을 클릭하면 해당 메뉴에 맞는 이미지로 src가 즉시 변경됩니다 -->
-            <div class="care-click-zone" style="position: absolute; top: 7%; right: 2%; width: 33%; height: 11%; z-index: 10; margin: 0;" onclick="changeCareImage('https://raw.githubusercontent.com/kwonsoonmin-ai/roni/main/2.png')" title="위생 케어(스팀)"></div>
-            <div class="care-click-zone" style="position: absolute; top: 19.5%; right: 2%; width: 33%; height: 11%; z-index: 10; margin: 0;" onclick="changeCareImage('https://raw.githubusercontent.com/kwonsoonmin-ai/roni/main/3.png')" title="로봇/오수관 클리닝"></div>
-            <div class="care-click-zone" style="position: absolute; top: 32%; right: 2%; width: 33%; height: 11%; z-index: 10; margin: 0;" onclick="changeCareImage('https://raw.githubusercontent.com/kwonsoonmin-ai/roni/main/4.png')" title="급배수통 스팀 클리닝"></div>
-            <div class="care-click-zone" style="position: absolute; top: 44.5%; right: 2%; width: 33%; height: 11%; z-index: 10; margin: 0;" onclick="changeCareImage('https://raw.githubusercontent.com/kwonsoonmin-ai/roni/main/5.png')" title="소모품7종 교체 및 배터리 교체"></div>
-            <div class="care-click-zone" style="position: absolute; top: 57%; right: 2%; width: 33%; height: 11%; z-index: 10; margin: 0;" onclick="changeCareImage('https://raw.githubusercontent.com/kwonsoonmin-ai/roni/main/6.png')" title="무상 철거/재설치"></div>
+            <!-- 글씨가 있는 위치에 정확하게 맞춘 투명 클릭 존 -->
+            <div class="care-click-zone" style="position: absolute; top: 11%; right: 2%; width: 30%; height: 9%; z-index: 10; margin: 0;" onclick="changeCareImage('https://raw.githubusercontent.com/kwonsoonmin-ai/roni/main/2.png')" title="위생 케어(스팀)"></div>
+            
+            <div class="care-click-zone" style="position: absolute; top: 22%; right: 2%; width: 30%; height: 9%; z-index: 10; margin: 0;" onclick="changeCareImage('https://raw.githubusercontent.com/kwonsoonmin-ai/roni/main/3.png')" title="로봇/오수관 클리닝"></div>
+            
+            <div class="care-click-zone" style="position: absolute; top: 32.5%; right: 2%; width: 30%; height: 9%; z-index: 10; margin: 0;" onclick="changeCareImage('https://raw.githubusercontent.com/kwonsoonmin-ai/roni/main/4.png')" title="급배수통 스팀 클리닝"></div>
+            
+            <div class="care-click-zone" style="position: absolute; top: 43.5%; right: 2%; width: 30%; height: 9%; z-index: 10; margin: 0;" onclick="changeCareImage('https://raw.githubusercontent.com/kwonsoonmin-ai/roni/main/5.png')" title="소모품7종 교체 및 배터리 교체"></div>
+            
+            <div class="care-click-zone" style="position: absolute; top: 54.5%; right: 2%; width: 30%; height: 9%; z-index: 10; margin: 0;" onclick="changeCareImage('https://raw.githubusercontent.com/kwonsoonmin-ai/roni/main/6.png')" title="무상 철거/재설치"></div>
         </div>
 
         <div class="security-actions" style="margin-top:30px; text-align: center;">
-            <button type="button" class="btn-security btn-security-primary" style="background:#475569; border-color:#475569; font-size: 14px; padding: 8px 30px; min-width: 120px;" onclick="closeRoniCareModal()">닫기</button>
+            <button type="button" class="btn-security btn-security-primary" style="background:#475569; border:none; color:white; font-size: 14px; padding: 10px 30px; min-width: 120px; border-radius: 6px; cursor: pointer; font-weight: bold; transition: background 0.2s;" onmouseover="this.style.background='#334155'" onmouseout="this.style.background='#475569'" onclick="closeRoniCareModal()">닫기</button>
         </div>
         
     </div>
@@ -1522,7 +1571,6 @@
     }
 
     function parseExcelData() {
-        // 로그인 체크 제거됨
         const rawText = document.getElementById("rawPasteArea").value;
         if (rawText.trim() === "") {
             alert("Data를 먼저 붙여넣어 주세요.");
