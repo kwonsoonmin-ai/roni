@@ -1035,21 +1035,21 @@
             <button type="button" onclick="closeRoniCareModal()" style="background: none; border: none; font-size: 24px; cursor: pointer; color: #64748b;">✖</button>
         </div>
 
-        <!-- 상단 1.png (구독 주기 안내) -->
-        <img src="1.png" alt="로니 구독 케어서비스 주기" style="width: 100%; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
+        <!-- 상단 1.png (구독 주기 안내) : 깃허브 다이렉트 절대 경로 적용 -->
+        <img src="https://raw.githubusercontent.com/kwonsoonmin-ai/roni/main/1.png" alt="로니 구독 케어서비스 주기" style="width: 100%; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
 
         <!-- 하단 2~6 상세 케어 인터랙티브 영역 (투명 클릭 존 매핑) -->
         <div style="position: relative; width: 100%; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.05); background: #f8f9fa;">
-            <img id="roniCareMainImage" src="2.png" alt="케어 서비스 상세" style="width: 100%; display: block;">
+            <img id="roniCareMainImage" src="https://raw.githubusercontent.com/kwonsoonmin-ai/roni/main/2.png" alt="케어 서비스 상세" style="width: 100%; display: block;">
             
             <!-- 우측 텍스트 메뉴 위에 덧씌우는 투명 클릭 영역 -->
             <!-- 이 영역을 클릭하면 해당 메뉴에 맞는 이미지로 src가 즉시 변경됩니다 -->
             <div style="position: absolute; top: 10%; right: 2%; width: 33%; height: 80%; display: flex; flex-direction: column; z-index: 10;">
-                <div class="care-click-zone" onclick="changeCareImage('2.png')" title="위생 케어(스팀)"></div>
-                <div class="care-click-zone" onclick="changeCareImage('3.png')" title="로봇/오수관 클리닝"></div>
-                <div class="care-click-zone" onclick="changeCareImage('4.png')" title="급배수통 스팀 클리닝"></div>
-                <div class="care-click-zone" onclick="changeCareImage('5.png')" title="소모품7종 교체 및 배터리 교체"></div>
-                <div class="care-click-zone" onclick="changeCareImage('6.png')" title="무상 철거/재설치"></div>
+                <div class="care-click-zone" onclick="changeCareImage('https://raw.githubusercontent.com/kwonsoonmin-ai/roni/main/2.png')" title="위생 케어(스팀)"></div>
+                <div class="care-click-zone" onclick="changeCareImage('https://raw.githubusercontent.com/kwonsoonmin-ai/roni/main/3.png')" title="로봇/오수관 클리닝"></div>
+                <div class="care-click-zone" onclick="changeCareImage('https://raw.githubusercontent.com/kwonsoonmin-ai/roni/main/4.png')" title="급배수통 스팀 클리닝"></div>
+                <div class="care-click-zone" onclick="changeCareImage('https://raw.githubusercontent.com/kwonsoonmin-ai/roni/main/5.png')" title="소모품7종 교체 및 배터리 교체"></div>
+                <div class="care-click-zone" onclick="changeCareImage('https://raw.githubusercontent.com/kwonsoonmin-ai/roni/main/6.png')" title="무상 철거/재설치"></div>
             </div>
         </div>
 
@@ -2263,8 +2263,8 @@
     // [🛡️ RONi 구독 관리 팝업 및 이미지 전환 로직]
     function openRoniCareModal() {
         document.getElementById('roniCareOverlay').style.display = 'flex';
-        // 모달 열 때 기본 첫 이미지(2.png)로 초기화
-        document.getElementById('roniCareMainImage').src = '2.png';
+        // 모달 열 때 기본 첫 이미지(2.png)로 초기화 - 절대 경로 적용
+        document.getElementById('roniCareMainImage').src = 'https://raw.githubusercontent.com/kwonsoonmin-ai/roni/main/2.png';
     }
     
     function closeRoniCareModal(event) {
