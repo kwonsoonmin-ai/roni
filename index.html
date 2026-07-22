@@ -518,6 +518,11 @@
         .vg-card-desc strong { color: #212529; background: linear-gradient(180deg, rgba(255,255,255,0) 50%, rgba(165, 0, 52, 0.1) 50%); }
         .vg-close-btn-top { position: absolute; top: 15px; right: 15px; background: rgba(0,0,0,0.3); color: #fff; border: none; width: 32px; height: 32px; border-radius: 50%; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10; transition: background 0.2s;}
         .vg-close-btn-top:hover { background: rgba(0,0,0,0.7); }
+        
+        /* 추가: 구독 관리 모달용 클릭 존 스타일 */
+        .care-click-zone { flex: 1; cursor: pointer; transition: background 0.2s; border-radius: 6px; margin: 2px 0; }
+        .care-click-zone:hover { background: rgba(0, 0, 0, 0.04); }
+
         @media (max-width: 768px) { .vg-comparison-grid { grid-template-columns: 1fr; gap: 15px; } .vg-content-body { padding: 25px 20px; } .vg-hero-section { padding: 30px 20px; } .vg-hero-title { font-size: 22px; } }
     </style>
 </head>
@@ -535,7 +540,7 @@
             <button type="button" class="btn-print btn-planner" onclick="window.open('https://akohw1003.github.io/kangnam/kyowon3', '_blank')">교원 플래너</button>
             <button type="button" class="btn-print btn-youtube" onclick="window.open('https://www.youtube.com/watch?v=x4Wvf-2LCBY', '_blank')">📺 RONi 귀곰 유튜브</button>
             <!-- ✨ RONi vs 로보락 비교 팝업 버튼 -->
-            <button type="button" class="btn-print btn-roni" onclick="openRoniFeatureModal()">✨ RONi와 타사 비교</button>
+            <button type="button" class="btn-print btn-roni" onclick="openRoniFeatureModal()">✨ RONi와 로보락 비교</button>
         </div>
 
         <div class="gap-toolbar">
@@ -929,6 +934,7 @@
         </div>
 
         <div class="security-actions" style="margin-top:20px; text-align: center; display: flex; justify-content: center; gap: 10px;">
+            <button type="button" class="btn-security btn-security-primary" style="background:#0f766e; border-color:#0f766e; font-size: 14px; padding: 8px 30px; display: inline-block; flex: none; min-width: 120px;" onclick="openRoniCareModal()">🛡️ RONi 구독 관리</button>
             <button type="button" class="btn-security btn-security-primary" style="background:#a50034; border-color:#a50034; font-size: 14px; padding: 8px 30px; display: inline-block; flex: none; min-width: 120px;" onclick="openVisualGuideModal()">💎 핵심Point</button>
             <button type="button" class="btn-security btn-security-primary" style="background:#475569; border-color:#475569; font-size: 14px; padding: 8px 30px; display: inline-block; flex: none; min-width: 120px;" onclick="closeRoniFeatureModal()">닫기</button>
         </div>
@@ -1017,6 +1023,40 @@
                 <button type="button" class="btn-security btn-security-primary btn-close-visual" style="background:#475569; border-color:#475569; font-size: 14px; padding: 8px 30px; display: inline-block; min-width: 120px;" onclick="closeVisualGuideModal()">가이드 닫기</button>
             </div>
         </div>
+    </div>
+</div>
+
+<!-- ================= 🛡️ RONi 구독 관리 탭 (인터랙티브 이미지 모달) ================= -->
+<div class="security-overlay" id="roniCareOverlay" style="display:none;" onclick="closeRoniCareModal(event)">
+    <div class="security-card vg-container" style="max-width: 1000px; padding: 30px; max-height: 90vh; overflow-y: auto; position: relative;" onclick="event.stopPropagation()">
+        
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h3 style="margin: 0; font-size: 22px; color: #1e293b; font-weight: bold;">🛡️ 로봇청소기 RONi 구독 케어 서비스</h3>
+            <button type="button" onclick="closeRoniCareModal()" style="background: none; border: none; font-size: 24px; cursor: pointer; color: #64748b;">✖</button>
+        </div>
+
+        <!-- 상단 1.png (구독 주기 안내) -->
+        <img src="1.png" alt="로니 구독 케어서비스 주기" style="width: 100%; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
+
+        <!-- 하단 2~6 상세 케어 인터랙티브 영역 (투명 클릭 존 매핑) -->
+        <div style="position: relative; width: 100%; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.05); background: #f8f9fa;">
+            <img id="roniCareMainImage" src="2.jpg" alt="케어 서비스 상세" style="width: 100%; display: block;">
+            
+            <!-- 우측 텍스트 메뉴 위에 덧씌우는 투명 클릭 영역 -->
+            <!-- 이 영역을 클릭하면 해당 메뉴에 맞는 이미지로 src가 즉시 변경됩니다 -->
+            <div style="position: absolute; top: 10%; right: 2%; width: 33%; height: 80%; display: flex; flex-direction: column; z-index: 10;">
+                <div class="care-click-zone" onclick="changeCareImage('2.jpg')" title="위생 케어(스팀)"></div>
+                <div class="care-click-zone" onclick="changeCareImage('3.jpg')" title="로봇/오수관 클리닝"></div>
+                <div class="care-click-zone" onclick="changeCareImage('4.jpg')" title="급배수통 스팀 클리닝"></div>
+                <div class="care-click-zone" onclick="changeCareImage('5.jpg')" title="소모품7종 교체 및 배터리 교체"></div>
+                <div class="care-click-zone" onclick="changeCareImage('6.jpg')" title="무상 철거/재설치"></div>
+            </div>
+        </div>
+
+        <div class="security-actions" style="margin-top:30px; text-align: center;">
+            <button type="button" class="btn-security btn-security-primary" style="background:#475569; border-color:#475569; font-size: 14px; padding: 8px 30px; min-width: 120px;" onclick="closeRoniCareModal()">닫기</button>
+        </div>
+        
     </div>
 </div>
 
@@ -2218,6 +2258,23 @@
     function closeVisualGuideModal(event) {
         if (event && event.target !== document.getElementById('visualGuideOverlay') && event.target.tagName !== 'BUTTON' && !event.target.classList.contains('btn-close-visual') && event.type !== 'click') return;
         document.getElementById('visualGuideOverlay').style.display = 'none';
+    }
+
+    // [🛡️ RONi 구독 관리 팝업 및 이미지 전환 로직]
+    function openRoniCareModal() {
+        document.getElementById('roniCareOverlay').style.display = 'flex';
+        // 모달 열 때 기본 첫 이미지(2.jpg)로 초기화
+        document.getElementById('roniCareMainImage').src = '2.jpg';
+    }
+    
+    function closeRoniCareModal(event) {
+        if (event && event.target !== document.getElementById('roniCareOverlay') && event.target.tagName !== 'BUTTON' && event.type !== 'click') return;
+        document.getElementById('roniCareOverlay').style.display = 'none';
+    }
+    
+    function changeCareImage(imageName) {
+        // 클릭한 영역에 맞춰 이미지를 즉시 변경합니다.
+        document.getElementById('roniCareMainImage').src = imageName;
     }
 </script>
 </body>
