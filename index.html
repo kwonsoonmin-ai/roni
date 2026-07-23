@@ -556,7 +556,7 @@
             <button type="button" class="btn-print btn-print-secondary" onclick="printCare()">구독 Care 출력</button>
             <button type="button" class="btn-print btn-print-secondary" onclick="printAllPage()">전체 출력</button>
             <button type="button" class="btn-print btn-planner" onclick="window.open('https://akohw1003.github.io/kangnam/kyowon3', '_blank')">교원 플래너</button>
-            <button type="button" class="btn-print btn-youtube" onclick="window.open('https://www.youtube.com/watch?v=x4Wvf-2LCBY', '_blank')">📺 RONi 귀곰 유튜브</button>
+            <button type="button" class="btn-print btn-youtube" onclick="openYoutubeReviewModal()">📺 RONi 유튜브 리뷰</button>
             <!-- ✨ RONi vs 로보락 비교 팝업 버튼 -->
             <button type="button" class="btn-print btn-roni" onclick="openRoniFeatureModal()">✨ RONi 타사 비교</button>
         </div>
@@ -763,7 +763,7 @@
             <div style="flex: 1; border: 2px solid #a50034; border-radius: 8px; overflow: hidden; background: #fff; box-shadow: 0 4px 10px rgba(165,0,52,0.15);">
                 <div style="background: #a50034; color: white; text-align: center; padding: 10px; font-weight: bold; font-size: 16px;">👑 LG RONi (로니)</div>
                 <div style="display: flex; flex-direction: column; padding: 15px; align-items: center;">
-                    <img src="https://www.lge.co.kr/kr/images/vacuum-cleaners/n95twu/gallery/medium01.jpg" onerror="this.src='https://placehold.co/300x300/f8f9fa/a50034?text=LG+RONi'" alt="LG RONi" style="width: 100%; max-width: 120px; border-radius: 6px; margin-bottom: 15px;">
+                    <img src="(1)LG 로니 메인 이미지.png" onerror="this.onerror=null; this.src='(1)LG 로니 메인 이미지.jpg';" alt="LG RONi" style="width: 100%; max-width: 160px; height: 160px; object-fit: contain; border-radius: 6px; margin-bottom: 15px;">
                     <div style="font-size: 12px; line-height: 1.5; color: #333; width: 100%;">
                         <p style="margin: 0 0 5px 0; color: #a50034; font-weight: bold; font-size: 13px;">[핵심 Point]</p>
                         <ul style="margin: 0; padding-left: 15px;">
@@ -781,7 +781,7 @@
             <div style="flex: 1; border: 2px solid #64748b; border-radius: 8px; overflow: hidden; background: #fff;">
                 <div style="background: #64748b; color: white; text-align: center; padding: 10px; font-weight: bold; font-size: 16px;">로보락 S10 MaxV Ultra</div>
                 <div style="display: flex; flex-direction: column; padding: 15px; align-items: center;">
-                    <img src="https://meet-roborock.com/data/item/1712217646/thumb-7IOB67O06529UzhNYXhW_300x300.jpg" onerror="this.src='https://placehold.co/300x300/f8f9fa/333333?text=Roborock'" alt="Roborock" style="width: 100%; max-width: 120px; border-radius: 6px; margin-bottom: 15px;">
+                    <img src="(2)로보락 메인 이미지.png" onerror="this.onerror=null; this.src='(2)로보락 메인 이미지.jpg';" alt="Roborock" style="width: 100%; max-width: 160px; height: 160px; object-fit: contain; border-radius: 6px; margin-bottom: 15px;">
                     <div style="font-size: 12px; line-height: 1.5; color: #333; width: 100%;">
                         <p style="margin: 0 0 5px 0; color: #475569; font-weight: bold; font-size: 13px;">[핵심 Point]</p>
                         <ul style="margin: 0; padding-left: 15px;">
@@ -799,7 +799,7 @@
             <div style="flex: 1; border: 2px solid #0a58ca; border-radius: 8px; overflow: hidden; background: #fff;">
                 <div style="background: #0a58ca; color: white; text-align: center; padding: 10px; font-weight: bold; font-size: 16px;">삼성 비스포크 AI 스팀 울트라</div>
                 <div style="display: flex; flex-direction: column; padding: 15px; align-items: center;">
-                    <img src="https://images.samsung.com/is/image/samsung/p6pim/sec/vr90f01sag-d2c/gallery/sec-bespoke-jet-bot-combo-ai-steam-vr90f01sag-d2c-541578351?$650_519_PNG$" onerror="this.src='https://placehold.co/300x300/f8f9fa/0a58ca?text=Samsung+AI'" alt="Samsung" style="width: 100%; max-width: 120px; border-radius: 6px; margin-bottom: 15px;">
+                    <img src="(3)삼성 스팀 울트라 메인 이미지.png" onerror="this.onerror=null; this.src='(3)삼성 스팀 울트라 메인 이미지.jpg';" alt="Samsung" style="width: 100%; max-width: 160px; height: 160px; object-fit: contain; border-radius: 6px; margin-bottom: 15px;">
                     <div style="font-size: 12px; line-height: 1.5; color: #333; width: 100%;">
                         <p style="margin: 0 0 5px 0; color: #0a58ca; font-weight: bold; font-size: 13px;">[핵심 Point]</p>
                         <ul style="margin: 0; padding-left: 15px;">
@@ -826,9 +826,9 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- 비교 1: 바닥 살균력 -->
+                    <!-- 비교 1: 바닥 살균 및 물걸레 스펙 -->
                     <tr>
-                        <td style="font-weight: bold; text-align: center; background: #f8fafc; border-right: 1px solid #cbd5e1; border-bottom: 1px solid #cbd5e1; padding: 10px;">바닥 청소/살균<br><span style="color:#d32f2f; font-size:11px;">(가장 큰 차이)</span></td>
+                        <td style="font-weight: bold; text-align: center; background: #f8fafc; border-right: 1px solid #cbd5e1; border-bottom: 1px solid #cbd5e1; padding: 10px;">물걸레 & 바닥 살균<br><span style="color:#d32f2f; font-size:11px;">(가장 큰 차이)</span></td>
                         <td style="background: #eff6ff; border-right: 1px solid #cbd5e1; border-bottom: 1px solid #cbd5e1; padding: 12px;">
                             <div class="win-badge-container">
                                 <span class="win-badge-lg">바닥 100℃ 스팀 직접 분사 👑</span>
@@ -836,59 +836,90 @@
                                 <span class="win-badge-other">단순 상온 물걸레</span>
                             </div>
                             <ul style="margin:0; padding-left: 15px; color:#1e3a8a;">
-                                <li style="margin-bottom: 4px;"><strong>바닥에 직접 100℃ 스팀 분사</strong>하며 닦음</li>
+                                <li style="margin-bottom: 4px;"><strong>바닥 직접 100℃ 스팀 분사</strong> + 회전형(180rpm)</li>
+                                <li style="margin-bottom: 4px;">열기를 보존하는 특수 재질 물걸레 적용</li>
+                                <li style="margin-bottom: 4px;"><strong>걸레 세척/건조:</strong> 100℃ 스팀+온수 세척 / 60℃→40℃ 열풍건조(총 3시간)</li>
                                 <li><strong>유해균 99.99% 완벽 살균!</strong></li>
                             </ul>
                             <div style="background: #dbeafe; border-left: 3px solid #3b82f6; padding: 8px; margin-top: 8px; border-radius: 4px; font-size: 12px;">
-                                🗣️ "고객님, 삼성이나 로보락이 스테이션 안에서 걸레를 뜨겁게 빠는 기술은 훌륭합니다. 하지만 <strong>바닥을 닦을 때는 결국 식어버린 상온 물걸레입니다.</strong> 찌든 때와 세균까지 진짜 '바닥 스팀 살균'을 원하신다면 거실 바닥에 직접 100도 스팀을 쏘는 로니를 하셔야 합니다."
+                                🗣️ "고객님, 타사는 스테이션 안에서만 물을 데웁니다. 바닥을 닦을 때는 결국 식어버린 상온 물걸레예요. 찌든 때와 세균까지 진짜 '바닥 스팀 살균'을 원하신다면 무조건 로니를 선택하셔야 합니다."
                             </div>
                         </td>
                         <td style="background: #fff; border-right: 1px solid #cbd5e1; border-bottom: 1px solid #cbd5e1; padding: 12px;">
                             <ul style="margin:0; padding-left: 15px; color:#475569;">
-                                <li>상온 물걸레질</li>
-                                <li>내부에서 100℃로 걸레만 세척</li>
+                                <li>상온 물걸레질 + 진동형 (4,000회/분, VibraRise 5.0)</li>
+                                <li>압력: 14N</li>
+                                <li>걸레 세척: 최대 100℃ 온수</li>
+                                <li>건조: 55℃ 열풍건조</li>
                             </ul>
                         </td>
                         <td style="background: #fff; border-bottom: 1px solid #cbd5e1; padding: 12px;">
                             <ul style="margin:0; padding-left: 15px; color:#475569;">
-                                <li>상온 물걸레질</li>
-                                <li>내부에서 스팀 및 고온수 걸레 세척</li>
+                                <li>상온 물걸레질 + 회전형 (200rpm)</li>
+                                <li>압력: 8N</li>
+                                <li>걸레 세척: 100℃ 스팀</li>
+                                <li>건조: 온풍 + 스팀 살균</li>
                             </ul>
                         </td>
                     </tr>
                     
-                    <!-- 비교 2: 흡입력 및 주행 -->
+                    <!-- 비교 2: 흡입력 및 꼼꼼한 청소 -->
                     <tr>
-                        <td style="font-weight: bold; text-align: center; background: #f8fafc; border-right: 1px solid #cbd5e1; border-bottom: 1px solid #cbd5e1; padding: 10px;">흡입력 & 주행</td>
+                        <td style="font-weight: bold; text-align: center; background: #f8fafc; border-right: 1px solid #cbd5e1; border-bottom: 1px solid #cbd5e1; padding: 10px;">흡입력 & 브러시</td>
                         <td style="background: #eff6ff; border-right: 1px solid #cbd5e1; border-bottom: 1px solid #cbd5e1; padding: 12px;">
                             <div class="win-badge-container">
-                                <span class="win-badge-lg">한국형 마루 최적화 주행 👑</span>
+                                <span class="win-badge-lg">사각지대 제로 밀착 청소 👑</span>
                                 <span class="win-badge-arrow">&gt;&gt;</span>
                                 <span class="win-badge-other">단순 스펙(Pa) 경쟁</span>
                             </div>
                             <ul style="margin:0; padding-left: 15px; color:#1e3a8a;">
-                                <li style="margin-bottom: 4px;">30W 급 강력 모터 + AI 주행</li>
-                                <li>한국 아파트 (마루/장판) 완벽 최적화</li>
+                                <li style="margin-bottom: 4px;"><strong>30W 급 강력 모터</strong> (30,000Pa 급)</li>
+                                <li style="margin-bottom: 4px;"><strong>듀얼 안티탱글 브러시</strong> (머리카락 엉킴 완벽 방지)</li>
+                                <li><strong>모서리 밀착 청소:</strong> 최대 46mm까지 확장되는 사이드 브러시 & 물걸레</li>
                             </ul>
                             <div style="background: #dbeafe; border-left: 3px solid #3b82f6; padding: 8px; margin-top: 8px; border-radius: 4px; font-size: 12px;">
-                                🗣️ "로보락의 높은 Pa 수치도 좋지만, 국내 마루 환경에서는 흡입력 이상으로 걸레질 압력과 주행 꼼꼼함이 청소 결과를 좌우합니다. 복잡한 기믹보다 기본기가 탄탄한 로니가 마루바닥엔 정답입니다."
+                                🗣️ "숫자만 높은 흡입력보다, 실제 구석구석을 얼마나 잘 파고들고 머리카락이 안 엉키는지가 중요합니다. 로니의 듀얼 브러시와 확장 물걸레가 마루바닥 사각지대를 완벽하게 해결해 줍니다."
                             </div>
                         </td>
                         <td style="background: #fff; border-right: 1px solid #cbd5e1; border-bottom: 1px solid #cbd5e1; padding: 12px;">
                             <ul style="margin:0; padding-left: 15px; color:#475569;">
-                                <li>36,000Pa 초강력 흡입</li>
-                                <li>8.8cm 등반 능력</li>
+                                <li>흡입력: 36,000Pa</li>
+                                <li>일반 브러시</li>
                             </ul>
                         </td>
                         <td style="background: #fff; border-bottom: 1px solid #cbd5e1; padding: 12px;">
                             <ul style="margin:0; padding-left: 15px; color:#475569;">
-                                <li>디지털 인버터 흡입 모터</li>
-                                <li>AI 사물 인식 및 3D 센서 주행</li>
+                                <li>흡입력: 22,000Pa (최대 10W 흡입력)</li>
+                                <li>엉킴방지 브러시</li>
                             </ul>
                         </td>
                     </tr>
 
-                    <!-- 비교 3: 사생활 보호 -->
+                    <!-- 비교 3: 주행 및 스펙 -->
+                    <tr>
+                        <td style="font-weight: bold; text-align: center; background: #f8fafc; border-right: 1px solid #cbd5e1; border-bottom: 1px solid #cbd5e1; padding: 10px;">주행 성능 & 배터리</td>
+                        <td style="background: #eff6ff; border-right: 1px solid #cbd5e1; border-bottom: 1px solid #cbd5e1; padding: 12px;">
+                            <ul style="margin:0; padding-left: 15px; color:#1e3a8a;">
+                                <li style="margin-bottom: 4px;"><strong>주행:</strong> 3D dToF + AI 주행 (한국 아파트 최적화)</li>
+                                <li style="margin-bottom: 4px;">등반 능력: 2cm</li>
+                                <li>배터리: 비공개</li>
+                            </ul>
+                        </td>
+                        <td style="background: #fff; border-right: 1px solid #cbd5e1; border-bottom: 1px solid #cbd5e1; padding: 12px;">
+                            <ul style="margin:0; padding-left: 15px; color:#475569;">
+                                <li>등반 능력: 4.5cm (이중턱 최대 8.8cm)</li>
+                                <li>배터리: 6,400mAh (고속충전 지원)</li>
+                            </ul>
+                        </td>
+                        <td style="background: #fff; border-bottom: 1px solid #cbd5e1; padding: 12px;">
+                            <ul style="margin:0; padding-left: 15px; color:#475569;">
+                                <li>등반 능력: 4.5cm (이중턱 최대 6cm)</li>
+                                <li>배터리: 5,000mAh (배터리 짧은 편)</li>
+                            </ul>
+                        </td>
+                    </tr>
+
+                    <!-- 비교 4: 사생활 보호 -->
                     <tr>
                         <td style="font-weight: bold; text-align: center; background: #f8fafc; border-right: 1px solid #cbd5e1; border-bottom: 1px solid #cbd5e1; padding: 10px;">사생활 보호<br>(해킹 안심)</td>
                         <td style="background: #eff6ff; border-right: 1px solid #cbd5e1; border-bottom: 1px solid #cbd5e1; padding: 12px;">
@@ -902,7 +933,7 @@
                                 <li>LG Shield 글로벌 보안 인증</li>
                             </ul>
                             <div style="background: #dbeafe; border-left: 3px solid #3b82f6; padding: 8px; margin-top: 8px; border-radius: 4px; font-size: 12px;">
-                                🗣️ "삼성의 녹스(Knox) 같은 훌륭한 S/W 보안 프로그램도 안심이 되지만, 가장 확실한 건 아예 <strong>물리적으로 문을 닫아 렌즈를 가려버리는 로니의 도어 가림막</strong>입니다. S/W는 뚫릴 수 있어도 물리적 가림막은 절대 해킹할 수 없습니다."
+                                🗣️ "삼성의 녹스(Knox) 같은 S/W 보안도 좋지만, 가장 확실한 건 아예 <strong>물리적으로 문을 닫아 렌즈를 가려버리는 로니의 도어 가림막</strong>입니다. 물리적 가림막은 절대 해킹당할 수 없습니다."
                             </div>
                         </td>
                         <td style="background: #fff; border-right: 1px solid #cbd5e1; border-bottom: 1px solid #cbd5e1; padding: 12px;">
@@ -918,18 +949,19 @@
                         </td>
                     </tr>
 
-                    <!-- 비교 4: 디자인 및 설치 -->
+                    <!-- 비교 5: 디자인 및 설치 -->
                     <tr>
-                        <td style="font-weight: bold; text-align: center; background: #f8fafc; border-right: 1px solid #cbd5e1; border-bottom: 1px solid #cbd5e1; padding: 10px;">스테이션 디자인</td>
+                        <td style="font-weight: bold; text-align: center; background: #f8fafc; border-right: 1px solid #cbd5e1; border-bottom: 1px solid #cbd5e1; padding: 10px;">스테이션 디자인<br>& 특수기능</td>
                         <td style="background: #eff6ff; border-right: 1px solid #cbd5e1; border-bottom: 1px solid #cbd5e1; padding: 12px;">
                             <div class="win-badge-container">
-                                <span class="win-badge-lg">15cm 초슬림 히든/오브제 👑</span>
+                                <span class="win-badge-lg">15cm 빌트인 / 오브제 디자인 👑</span>
                                 <span class="win-badge-arrow">&gt;&gt;</span>
-                                <span class="win-badge-other">일반적인 거대 타워형</span>
+                                <span class="win-badge-other">일반 거대 타워형</span>
                             </div>
                             <ul style="margin:0; padding-left: 15px; color:#1e3a8a;">
-                                <li><strong>히든:</strong> 15cm 초슬림, 싱크대 밑 완벽 매립 가능</li>
-                                <li><strong>오브제:</strong> 가구 같은 세련된 협탁 디자인</li>
+                                <li style="margin-bottom: 4px;"><strong>히든:</strong> 15cm 초슬림, 싱크대 밑 완벽 빌트인 (직배수 지원)</li>
+                                <li style="margin-bottom: 4px;"><strong>오브제:</strong> 가구 같은 세련된 협탁 디자인</li>
+                                <li><strong>본체+스테이션 100℃ 투웨이 스팀</strong> 설계</li>
                             </ul>
                         </td>
                         <td style="background: #fff; border-right: 1px solid #cbd5e1; border-bottom: 1px solid #cbd5e1; padding: 12px;">
@@ -940,11 +972,13 @@
                         <td style="background: #fff; border-bottom: 1px solid #cbd5e1; padding: 12px;">
                             <ul style="margin:0; padding-left: 15px; color:#475569;">
                                 <li>일반적인 거대 타워형 (자동급배수 옵션)</li>
+                                <li>AI 사물, 액체 인식</li>
+                                <li>분리형 자동세척 트레이</li>
                             </ul>
                         </td>
                     </tr>
 
-                    <!-- 비교 5: 사후관리 -->
+                    <!-- 비교 6: 사후관리 -->
                     <tr>
                         <td style="font-weight: bold; text-align: center; background: #f8fafc; border-right: 1px solid #cbd5e1; padding: 10px;">사후관리(A/S)<br>& 유지보수</td>
                         <td style="background: #eff6ff; border-right: 1px solid #cbd5e1; padding: 12px;">
@@ -958,7 +992,7 @@
                                 <li><strong>매니저 정기 방문 케어 (분해 세척)</strong></li>
                             </ul>
                             <div style="background: #dbeafe; border-left: 3px solid #3b82f6; padding: 8px; margin-top: 8px; border-radius: 4px; font-size: 12px;">
-                                🗣️ "물과 먼지가 섞이는 기계는 반드시 부패하고 냄새가 납니다. 삼성도 전국망 A/S가 되지만, 스테이션 내부의 찌든 때를 분해 세척해 주는 건 오직 LG 매니저의 '정기 방문 케어'뿐입니다."
+                                🗣️ "물과 먼지가 섞이는 기계는 반드시 부패하고 냄새가 납니다. 스테이션 내부의 찌든 때를 분해 세척해 주는 건 오직 LG 매니저의 '정기 방문 케어'뿐입니다."
                             </div>
                         </td>
                         <td style="background: #fff; border-right: 1px solid #cbd5e1; padding: 12px;">
@@ -1102,6 +1136,70 @@
 
         <div class="security-actions" style="margin-top:30px; text-align: center;">
             <button type="button" class="btn-security btn-security-primary" style="background:#475569; border:none; color:white; font-size: 14px; padding: 10px 30px; min-width: 120px; border-radius: 6px; cursor: pointer; font-weight: bold; transition: background 0.2s;" onmouseover="this.style.background='#334155'" onmouseout="this.style.background='#475569'" onclick="closeRoniCareModal()">닫기</button>
+        </div>
+        
+    </div>
+</div>
+
+<!-- ================= 📺 RONi 유튜브 리뷰 탭 (3개 영상 모달) ================= -->
+<div class="security-overlay" id="youtubeReviewOverlay" style="display:none;" onclick="closeYoutubeReviewModal(event)">
+    <div class="security-card vg-container" style="max-width: 1000px; padding: 30px; max-height: 90vh; overflow-y: auto; position: relative;" onclick="event.stopPropagation()">
+        
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+            <h3 style="margin: 0; font-size: 22px; color: #1e293b; font-weight: bold;">📺 로봇청소기 RONi 인플루언서 리뷰</h3>
+            <button type="button" onclick="closeYoutubeReviewModal()" style="background: none; border: none; font-size: 24px; cursor: pointer; color: #64748b;">✖</button>
+        </div>
+
+        <!-- 3개 썸네일 그리드 배열 -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
+            
+            <!-- 1. 에이트 -->
+            <div style="cursor: pointer; border-radius: 12px; overflow: hidden; box-shadow: 0 6px 15px rgba(0,0,0,0.08); transition: transform 0.2s, box-shadow 0.2s; background: #fff;" onclick="window.open('https://www.youtube.com/watch?v=CNJf8r_7DlQ&t=420s', '_blank')" onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 12px 20px rgba(0,0,0,0.15)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 15px rgba(0,0,0,0.08)';">
+                <div style="position: relative; width: 100%; padding-top: 56.25%; background: #000;">
+                    <!-- 고화질 썸네일 (maxresdefault) -->
+                    <img src="https://img.youtube.com/vi/CNJf8r_7DlQ/maxresdefault.jpg" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;" alt="에이트 리뷰">
+                    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.25); display: flex; align-items: center; justify-content: center;">
+                        <i class="fa-brands fa-youtube" style="color: #e50914; font-size: 50px; filter: drop-shadow(0 2px 8px rgba(0,0,0,0.4));"></i>
+                    </div>
+                </div>
+                <div style="padding: 16px;">
+                    <div style="font-weight: 900; font-size: 15px; margin-bottom: 6px; color: #1e293b; line-height: 1.4;">로봇청소기, 지금 산다면 이게 정답입니다.</div>
+                    <div style="font-size: 13px; color: #64748b; font-weight: bold;">에이트 A.T</div>
+                </div>
+            </div>
+
+            <!-- 2. 귀곰 -->
+            <div style="cursor: pointer; border-radius: 12px; overflow: hidden; box-shadow: 0 6px 15px rgba(0,0,0,0.08); transition: transform 0.2s, box-shadow 0.2s; background: #fff;" onclick="window.open('https://www.youtube.com/watch?v=x4Wvf-2LCBY&t=31s', '_blank')" onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 12px 20px rgba(0,0,0,0.15)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 15px rgba(0,0,0,0.08)';">
+                <div style="position: relative; width: 100%; padding-top: 56.25%; background: #000;">
+                    <img src="https://img.youtube.com/vi/x4Wvf-2LCBY/maxresdefault.jpg" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;" alt="귀곰 리뷰">
+                    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.25); display: flex; align-items: center; justify-content: center;">
+                        <i class="fa-brands fa-youtube" style="color: #e50914; font-size: 50px; filter: drop-shadow(0 2px 8px rgba(0,0,0,0.4));"></i>
+                    </div>
+                </div>
+                <div style="padding: 16px;">
+                    <div style="font-weight: 900; font-size: 15px; margin-bottom: 6px; color: #1e293b; line-height: 1.4;">LG 로봇청소기 이젠 진짜 사도 될까? 소신발언!</div>
+                    <div style="font-size: 13px; color: #64748b; font-weight: bold;">귀곰</div>
+                </div>
+            </div>
+
+            <!-- 3. 테크몽 -->
+            <div style="cursor: pointer; border-radius: 12px; overflow: hidden; box-shadow: 0 6px 15px rgba(0,0,0,0.08); transition: transform 0.2s, box-shadow 0.2s; background: #fff;" onclick="window.open('https://www.youtube.com/watch?v=cnHsP2P0XSs', '_blank')" onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 12px 20px rgba(0,0,0,0.15)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 15px rgba(0,0,0,0.08)';">
+                <div style="position: relative; width: 100%; padding-top: 56.25%; background: #000;">
+                    <img src="https://img.youtube.com/vi/cnHsP2P0XSs/maxresdefault.jpg" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;" alt="테크몽 리뷰">
+                    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.25); display: flex; align-items: center; justify-content: center;">
+                        <i class="fa-brands fa-youtube" style="color: #e50914; font-size: 50px; filter: drop-shadow(0 2px 8px rgba(0,0,0,0.4));"></i>
+                    </div>
+                </div>
+                <div style="padding: 16px;">
+                    <div style="font-weight: 900; font-size: 15px; margin-bottom: 6px; color: #1e293b; line-height: 1.4;">문 열고 나오는 로봇청소기 등장 [LG 홈봇 AI 로니]</div>
+                    <div style="font-size: 13px; color: #64748b; font-weight: bold;">테크몽 Techmong</div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="security-actions" style="margin-top:25px; text-align: center;">
+            <button type="button" class="btn-security btn-security-primary" style="background:#475569; border:none; color:white; font-size: 14px; padding: 10px 30px; min-width: 120px; border-radius: 6px; cursor: pointer; font-weight: bold; transition: background 0.2s;" onmouseover="this.style.background='#334155'" onmouseout="this.style.background='#475569'" onclick="closeYoutubeReviewModal()">닫기</button>
         </div>
         
     </div>
@@ -2333,6 +2431,16 @@
     function changeCareImage(imageName) {
         // 클릭한 영역에 맞춰 이미지를 즉시 변경합니다.
         document.getElementById('roniCareMainImage').src = imageName;
+    }
+
+    // [유튜브 리뷰 영상 팝업 로직]
+    function openYoutubeReviewModal() {
+        document.getElementById('youtubeReviewOverlay').style.display = 'flex';
+    }
+    
+    function closeYoutubeReviewModal(event) {
+        if (event && event.target !== document.getElementById('youtubeReviewOverlay') && event.target.tagName !== 'BUTTON' && event.type !== 'click') return;
+        document.getElementById('youtubeReviewOverlay').style.display = 'none';
     }
 </script>
 </body>
