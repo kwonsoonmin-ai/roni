@@ -125,6 +125,7 @@
             text-align: right;
             padding-right: 10px;
         }
+
         .paste-area-container {
             background: #eef2f5;
             padding: 15px;
@@ -246,7 +247,7 @@
         .btn-calc:hover { background-color: #004494; }
         .btn-clear { background-color: #6c757d; }
         .btn-clear:hover { background-color: #5a6268; }
-        
+
         .care-summary {
             background-color: #eef2f5;
             padding: 15px 20px;
@@ -519,7 +520,7 @@
         .vg-close-btn-top { position: absolute; top: 15px; right: 15px; background: rgba(0,0,0,0.3); color: #fff; border: none; width: 32px; height: 32px; border-radius: 50%; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10; transition: background 0.2s;}
         .vg-close-btn-top:hover { background: rgba(0,0,0,0.7); }
         
-        /* 추가: 구독 관리 모달용 클릭 존 스타일 */
+        /* 구독 관리 모달용 클릭 존 스타일 */
         .care-click-zone { flex: 1; cursor: pointer; transition: background 0.2s; border-radius: 6px; margin: 2px 0; }
         .care-click-zone:hover { background: rgba(0, 0, 0, 0.04); }
 
@@ -540,6 +541,44 @@
         .win-badge-lg { color: #a50034; font-weight: 900; font-size: 14px; }
         .win-badge-arrow { font-size: 18px; color: #e11d48; font-weight: 900; letter-spacing: -2px; }
         .win-badge-other { color: #94a3b8; font-weight: normal; font-size: 13px; text-decoration: line-through; }
+
+        /* 사전 설치 체크리스트 모달용 추가 스타일 */
+        .checklist-item {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 15px 20px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.2s;
+        }
+        .checklist-item:hover { background: #f1f5f9; }
+        .checklist-q { font-size: 16px; font-weight: bold; color: #1e293b; flex: 1; }
+        .checklist-btn-group { display: flex; gap: 8px; }
+        .chk-btn {
+            padding: 10px 24px;
+            border-radius: 6px;
+            border: 2px solid #cbd5e1;
+            background: white;
+            font-weight: bold;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: #64748b;
+        }
+        .chk-btn:hover { border-color: #94a3b8; }
+        .chk-btn.yes.active { background: #10b981; border-color: #10b981; color: white; }
+        .chk-btn.no.active { background: #ef4444; border-color: #ef4444; color: white; }
+        .checklist-result {
+            margin-top: 20px; padding: 20px; border-radius: 8px; text-align: center; font-weight: bold; font-size: 18px; display: none;
+        }
+        .result-pass { background: #d1fae5; color: #047857; border: 2px solid #10b981; }
+        .result-fail { background: #fee2e2; color: #b91c1c; border: 2px solid #ef4444; }
+
+        .btn-check-install { background-color: #ea580c; } /* 사전 설치 체크 버튼색상 */
+        .btn-check-install:hover { background-color: #c2410c; }
 
         @media (max-width: 768px) { .vg-comparison-grid { grid-template-columns: 1fr; gap: 15px; } .vg-content-body { padding: 25px 20px; } .vg-hero-section { padding: 30px 20px; } .vg-hero-title { font-size: 22px; } }
     </style>
@@ -748,7 +787,7 @@
     </div>
 </div>
 
-<!-- ================= ✨ RONi vs 로보락 vs 삼성 완벽 비교 분석 모달 (업그레이드 됨) ================= -->
+<!-- ================= ✨ RONi vs 로보락 vs 삼성 완벽 비교 분석 모달 ================= -->
 <div class="security-overlay" id="roniFeatureOverlay" style="display:none;" onclick="closeRoniFeatureModal(event)">
     <div class="security-card" style="max-width: 1400px; padding: 30px; max-height: 90vh; overflow-y: auto;" onclick="event.stopPropagation()">
         
@@ -910,6 +949,9 @@
                                 <li style="margin-bottom: 4px;">등반 능력: 2cm</li>
                                 <li>배터리: 비공개</li>
                             </ul>
+                            <div style="background: #dbeafe; border-left: 3px solid #3b82f6; padding: 10px; margin-top: 10px; border-radius: 4px; font-size: 13px; line-height: 1.6;">
+                                🗣️ "고객님, 예전엔 로보락이 길을 잘 찾았죠. 하지만 RONi는 <strong>자율주행 자동차에 들어가는 최고급 센서(dToF)</strong>를 달아서 한국 아파트의 <span style="color: #d32f2f; font-weight: bold;">복잡한 문턱이나 장애물도 기가 막히게 피해 갑니다.</span>"
+                            </div>
                         </td>
                         <td style="background: #fff; border-right: 1px solid #cbd5e1; border-bottom: 1px solid #cbd5e1; padding: 12px;">
                             <ul style="margin:0; padding-left: 15px; color:#475569;">
@@ -938,8 +980,10 @@
                                 <li style="margin-bottom: 4px;"><strong>물리적 도어 가림막 (충전 시 카메라 차단)</strong></li>
                                 <li>LG Shield 글로벌 보안 인증</li>
                             </ul>
-                            <div style="background: #dbeafe; border-left: 3px solid #3b82f6; padding: 8px; margin-top: 8px; border-radius: 4px; font-size: 12px;">
+                            <div style="background: #dbeafe; border-left: 3px solid #3b82f6; padding: 10px; margin-top: 10px; border-radius: 4px; font-size: 13px; line-height: 1.6;">
                                 🗣️ "삼성의 녹스(Knox) 같은 S/W 보안도 좋지만, 가장 확실한 건 아예 <strong>물리적으로 문을 닫아 렌즈를 가려버리는 로니의 도어 가림막</strong>입니다. 물리적 가림막은 절대 해킹당할 수 없습니다."
+                                <br><br>
+                                🗣️ "요즘 로봇청소기 <span style="color: #d32f2f; font-weight: bold;">해킹 범죄(카메라 해킹)</span> 기사가 많아 <strong>여성분들이나 아이를 키우는 집에서는 매우 민감한 문제</strong>입니다. 타사가 아무리 S/W 보안이 좋다고 해도, <span style="color: #d32f2f; font-weight: bold;">'문이 찰칵 닫혀서 렌즈를 아예 가려버린다'</span>는 <strong>물리적 차단만큼 안심되는 것은 없습니다.</strong>"
                             </div>
                         </td>
                         <td style="background: #fff; border-right: 1px solid #cbd5e1; border-bottom: 1px solid #cbd5e1; padding: 12px;">
@@ -1022,11 +1066,98 @@
             
             <button type="button" onclick="window.open('https://www.lge.co.kr/story/user-guide/robot-vacuum-cleaners-install-guide', '_blank')" style="background:#2563eb; border:none; color:#ffffff; font-size: 14px; padding: 10px 30px; display: inline-block; flex: none; min-width: 120px; border-radius: 6px; cursor: pointer; font-weight: bold; transition: background 0.2s;" onmouseover="this.style.background='#1d4ed8'" onmouseout="this.style.background='#2563eb'">🛠️ RONi 설치 가이드</button>
 
+            <button type="button" onclick="openInstallCheckModal()" class="btn-check-install" style="border:none; color:#ffffff; font-size: 14px; padding: 10px 30px; display: inline-block; flex: none; min-width: 120px; border-radius: 6px; cursor: pointer; font-weight: bold; transition: background 0.2s;">📋 사전 설치 체크</button>
+
             <button type="button" onclick="openVisualGuideModal()" style="background:#a50034; border:none; color:#ffffff; font-size: 14px; padding: 10px 30px; display: inline-block; flex: none; min-width: 120px; border-radius: 6px; cursor: pointer; font-weight: bold; transition: background 0.2s;" onmouseover="this.style.background='#820028'" onmouseout="this.style.background='#a50034'">💎 핵심Point</button>
             
             <button type="button" onclick="closeRoniFeatureModal()" style="background:#475569; border:none; color:#ffffff; font-size: 14px; padding: 10px 30px; display: inline-block; flex: none; min-width: 120px; border-radius: 6px; cursor: pointer; font-weight: bold; transition: background 0.2s;" onmouseover="this.style.background='#334155'" onmouseout="this.style.background='#475569'">닫기</button>
         </div>
         
+    </div>
+</div>
+
+<!-- ================= 📋 RONi 사전 설치 체크리스트 모달 ================= -->
+<div class="security-overlay" id="installCheckOverlay" style="display:none;" onclick="closeInstallCheckModal(event)">
+    <div class="security-card vg-container" style="max-width: 800px; padding: 0; max-height: 90vh; overflow-y: auto; position: relative;" onclick="event.stopPropagation()">
+        <button type="button" class="vg-close-btn-top" onclick="closeInstallCheckModal()">✖</button>
+        
+        <div class="vg-hero-section" style="background: linear-gradient(120deg, #ea580c 0%, #c2410c 100%); padding: 30px 20px;">
+            <h1 class="vg-hero-title" style="font-size: 24px; margin-bottom: 5px;">RONi 자동 급배수 <strong>사전 설치 가이드</strong></h1>
+            <p class="vg-hero-subtitle" style="color: #ffedd5;">고객님 댁의 완벽한 설치를 위해 아래 요건을 확인해 주세요.</p>
+        </div>
+
+        <div class="vg-content-body" style="padding: 25px 30px;">
+            
+            <!-- 1. 설치 불가 환경 -->
+            <div style="background: #fff5f5; border: 2px solid #feb2b2; border-radius: 8px; padding: 20px; margin-bottom: 25px;">
+                <h3 style="color: #c53030; margin: 0 0 15px 0; font-size: 18px; display: flex; align-items: center; gap: 8px;">
+                    <i class="fa-solid fa-triangle-exclamation"></i> (1) 자동 급배수 설치가 불가한 경우
+                </h3>
+                <ul style="margin: 0; padding-left: 20px; color: #4a5568; line-height: 1.6; font-weight: bold;">
+                    <li>옥외, 베란다 등 <strong>동파가 발생할 수 있는 환경</strong></li>
+                    <li>수돗물이 아닌 <strong>지하수를 사용하는 환경</strong></li>
+                    <li>공용 하수관(우수관)으로 <strong>배수관 연결이 불가능한 환경</strong></li>
+                    <li>제품과 배수관의 거리가 <strong>6m를 초과하는 환경</strong></li>
+                </ul>
+            </div>
+
+            <!-- 2. 빌트인 규격 -->
+            <div style="background: #f0f9ff; border: 2px solid #bae6fd; border-radius: 8px; padding: 20px; margin-bottom: 25px;">
+                <h3 style="color: #0369a1; margin: 0 0 15px 0; font-size: 18px; display: flex; align-items: center; gap: 8px;">
+                    <i class="fa-solid fa-ruler-combined"></i> (2) 빌트인(장공사) 설치 시 필요 규격
+                </h3>
+                <p style="margin: 0 0 10px 0; color: #334155; font-size: 14px;">싱크대 하부장 등 가구 내부에 설치할 경우, 아래의 <strong>여유 공간</strong>이 반드시 필요합니다.</p>
+                <div style="display: flex; gap: 15px; text-align: center; font-weight: bold; font-size: 15px;">
+                    <div style="flex: 1; background: #fff; padding: 12px; border: 1px solid #e0f2fe; border-radius: 6px;">가로: 420mm 이상</div>
+                    <div style="flex: 1; background: #fff; padding: 12px; border: 1px solid #e0f2fe; border-radius: 6px;">깊이: 480mm 이상</div>
+                    <div style="flex: 1; background: #fff; padding: 12px; border: 1px solid #e0f2fe; border-radius: 6px;">높이: 490mm 이상</div>
+                </div>
+            </div>
+
+            <!-- 3. 핵심 OX 체크 -->
+            <h3 style="color: #1e293b; border-bottom: 2px solid #cbd5e1; padding-bottom: 10px; margin-bottom: 15px;">(3) 설치 환경 OX 체크리스트</h3>
+            
+            <div id="checklistContainer">
+                <div class="checklist-item" id="q1">
+                    <div class="checklist-q">1. 실내(거실/주방 등)에 설치하시나요? <br><span style="font-size:12px; color:#64748b; font-weight:normal;">(동파 위험이 있는 베란다/야외 불가)</span></div>
+                    <div class="checklist-btn-group">
+                        <button class="chk-btn yes" onclick="selectOption(1, true)">🔴✔ 예</button>
+                        <button class="chk-btn no" onclick="selectOption(1, false)">아니오</button>
+                    </div>
+                </div>
+                
+                <div class="checklist-item" id="q2">
+                    <div class="checklist-q">2. 수돗물을 사용하시나요? <br><span style="font-size:12px; color:#64748b; font-weight:normal;">(지하수 사용 불가)</span></div>
+                    <div class="checklist-btn-group">
+                        <button class="chk-btn yes" onclick="selectOption(2, true)">🔴✔ 예</button>
+                        <button class="chk-btn no" onclick="selectOption(2, false)">아니오</button>
+                    </div>
+                </div>
+                
+                <div class="checklist-item" id="q3">
+                    <div class="checklist-q">3. 싱크대/하수관과 6m 이내에 설치하시나요?</div>
+                    <div class="checklist-btn-group">
+                        <button class="chk-btn yes" onclick="selectOption(3, true)">🔴✔ 예</button>
+                        <button class="chk-btn no" onclick="selectOption(3, false)">아니오</button>
+                    </div>
+                </div>
+                
+                <div class="checklist-item" id="q4">
+                    <div class="checklist-q">4. 설치 위치 반경 1m 이내에 콘센트가 있나요?</div>
+                    <div class="checklist-btn-group">
+                        <button class="chk-btn yes" onclick="selectOption(4, true)">🔴✔ 예</button>
+                        <button class="chk-btn no" onclick="selectOption(4, false)">아니오</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="checkResult" class="checklist-result"></div>
+
+            <div style="text-align: center; margin-top: 25px;">
+                <button type="button" onclick="calculateResult()" style="background:#0f766e; border:none; color:white; font-size: 15px; padding: 12px 30px; border-radius: 6px; cursor: pointer; font-weight: bold; margin-right: 10px;">결과 확인하기</button>
+                <button type="button" onclick="resetChecklist()" style="background:#e2e8f0; border:none; color:#475569; font-size: 15px; padding: 12px 30px; border-radius: 6px; cursor: pointer; font-weight: bold;">다시 체크</button>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -1123,22 +1254,16 @@
             <button type="button" onclick="closeRoniCareModal()" style="background: none; border: none; font-size: 24px; cursor: pointer; color: #64748b;">✖</button>
         </div>
 
-        <!-- 상단 1.png (구독 주기 안내) : 깃허브 다이렉트 절대 경로 적용 -->
         <img src="https://raw.githubusercontent.com/kwonsoonmin-ai/roni/main/1.png" alt="로니 구독 케어서비스 주기" style="width: 100%; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
 
-        <!-- 하단 2~6 상세 케어 인터랙티브 영역 (절대 위치 고정값 적용) -->
         <div style="position: relative; width: 100%; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.05); background: #f8f9fa;">
             <img id="roniCareMainImage" src="https://raw.githubusercontent.com/kwonsoonmin-ai/roni/main/2.png" alt="케어 서비스 상세" style="width: 100%; display: block;">
             
             <!-- 글씨가 있는 위치에 정확하게 맞춘 투명 클릭 존 -->
             <div class="care-click-zone" style="position: absolute; top: 11%; right: 2%; width: 30%; height: 9%; z-index: 10; margin: 0;" onclick="changeCareImage('https://raw.githubusercontent.com/kwonsoonmin-ai/roni/main/2.png')" title="위생 케어(스팀)"></div>
-            
             <div class="care-click-zone" style="position: absolute; top: 22%; right: 2%; width: 30%; height: 9%; z-index: 10; margin: 0;" onclick="changeCareImage('https://raw.githubusercontent.com/kwonsoonmin-ai/roni/main/3.png')" title="로봇/오수관 클리닝"></div>
-            
             <div class="care-click-zone" style="position: absolute; top: 32.5%; right: 2%; width: 30%; height: 9%; z-index: 10; margin: 0;" onclick="changeCareImage('https://raw.githubusercontent.com/kwonsoonmin-ai/roni/main/4.png')" title="급배수통 스팀 클리닝"></div>
-            
             <div class="care-click-zone" style="position: absolute; top: 43.5%; right: 2%; width: 30%; height: 9%; z-index: 10; margin: 0;" onclick="changeCareImage('https://raw.githubusercontent.com/kwonsoonmin-ai/roni/main/5.png')" title="소모품7종 교체 및 배터리 교체"></div>
-            
             <div class="care-click-zone" style="position: absolute; top: 54.5%; right: 2%; width: 30%; height: 9%; z-index: 10; margin: 0;" onclick="changeCareImage('https://raw.githubusercontent.com/kwonsoonmin-ai/roni/main/6.png')" title="무상 철거/재설치"></div>
         </div>
 
@@ -1158,13 +1283,10 @@
             <button type="button" onclick="closeYoutubeReviewModal()" style="background: none; border: none; font-size: 24px; cursor: pointer; color: #64748b;">✖</button>
         </div>
 
-        <!-- 3개 썸네일 그리드 배열 -->
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
-            
             <!-- 1. 에이트 -->
             <div style="cursor: pointer; border-radius: 12px; overflow: hidden; box-shadow: 0 6px 15px rgba(0,0,0,0.08); transition: transform 0.2s, box-shadow 0.2s; background: #fff;" onclick="window.open('https://www.youtube.com/watch?v=CNJf8r_7DlQ&t=420s', '_blank')" onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 12px 20px rgba(0,0,0,0.15)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 15px rgba(0,0,0,0.08)';">
                 <div style="position: relative; width: 100%; padding-top: 56.25%; background: #000;">
-                    <!-- 고화질 썸네일 (maxresdefault) -->
                     <img src="https://img.youtube.com/vi/CNJf8r_7DlQ/maxresdefault.jpg" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;" alt="에이트 리뷰">
                     <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.25); display: flex; align-items: center; justify-content: center;">
                         <i class="fa-brands fa-youtube" style="color: #e50914; font-size: 50px; filter: drop-shadow(0 2px 8px rgba(0,0,0,0.4));"></i>
@@ -1203,7 +1325,6 @@
                     <div style="font-size: 13px; color: #64748b; font-weight: bold;">테크몽 Techmong</div>
                 </div>
             </div>
-
         </div>
 
         <div class="security-actions" style="margin-top:25px; text-align: center;">
@@ -1309,8 +1430,8 @@
     function extractTextFromHtml(htmlString) {
         if (!htmlString) return '';
         let processedHtml = String(htmlString)
-            .replace(/<br\s*[\/]?>/gi, '\n')                  
-            .replace(/<\/p>/gi, '\n')                       
+            .replace(/<br\s*[\/]?>/gi, '\n')                 
+            .replace(/<\/p>/gi, '\n')                        
             .replace(/<\/div>/gi, '\n')
             .replace(/<\/li>/gi, '\n')
             .replace(/<li[^>]*>/gi, '\n');                 
@@ -1620,7 +1741,7 @@
             }
 
             const starts2 = [0];
-            for (let i = 1; i < rest.length; i++) {
+            for (let i = 1; i < rest.length - i; i++) {
                 if (starts2.length >= optionCount - 1) break;
                 if (rest[i] === a) starts2.push(i);
             }
@@ -2449,6 +2570,78 @@
     function closeYoutubeReviewModal(event) {
         if (event && event.target !== document.getElementById('youtubeReviewOverlay') && event.target.tagName !== 'BUTTON' && event.type !== 'click') return;
         document.getElementById('youtubeReviewOverlay').style.display = 'none';
+    }
+
+    // [사전 설치 체크리스트 관련 로직]
+    let checklistSelections = {
+        1: null,
+        2: null,
+        3: null,
+        4: null
+    };
+
+    function openInstallCheckModal() {
+        document.getElementById('installCheckOverlay').style.display = 'flex';
+        resetChecklist();
+    }
+
+    function closeInstallCheckModal(event) {
+        if (event && event.target !== document.getElementById('installCheckOverlay') && event.target.tagName !== 'BUTTON' && !event.target.classList.contains('vg-close-btn-top') && event.type !== 'click') return;
+        document.getElementById('installCheckOverlay').style.display = 'none';
+    }
+
+    function selectOption(qNumber, isYes) {
+        checklistSelections[qNumber] = isYes;
+        const qDiv = document.getElementById(`q${qNumber}`);
+        const yesBtn = qDiv.querySelector('.yes');
+        const noBtn = qDiv.querySelector('.no');
+
+        if (isYes) {
+            yesBtn.classList.add('active');
+            noBtn.classList.remove('active');
+        } else {
+            yesBtn.classList.remove('active');
+            noBtn.classList.add('active');
+        }
+    }
+
+    function calculateResult() {
+        let isComplete = true;
+        let isPass = true;
+
+        for (let i = 1; i <= 4; i++) {
+            if (checklistSelections[i] === null) {
+                isComplete = false;
+                break;
+            }
+            // 모든 문항에서 '예(true)'가 나와야 설치 가능
+            if (checklistSelections[i] === false) {
+                isPass = false;
+            }
+        }
+
+        const resultDiv = document.getElementById('checkResult');
+        resultDiv.style.display = 'block';
+
+        if (!isComplete) {
+            resultDiv.className = 'checklist-result result-fail';
+            resultDiv.innerHTML = '⚠️ 모든 항목을 체크해 주세요.';
+            return;
+        }
+
+        if (isPass) {
+            resultDiv.className = 'checklist-result result-pass';
+            resultDiv.innerHTML = '✅ 완벽합니다! <strong>자동 급배수 모델 설치가 가능한 환경</strong>입니다.';
+        } else {
+            resultDiv.className = 'checklist-result result-fail';
+            resultDiv.innerHTML = '❌ <strong>자동 급배수 모델 설치가 어려울 수 있습니다.</strong><br><span style="font-size:14px; font-weight:normal; display:block; margin-top:8px;">(수동 급배수 모델을 권장하시거나, 매니저를 통한 사전 답사를 접수해 주세요.)</span>';
+        }
+    }
+
+    function resetChecklist() {
+        checklistSelections = { 1: null, 2: null, 3: null, 4: null };
+        document.querySelectorAll('.chk-btn').forEach(btn => btn.classList.remove('active'));
+        document.getElementById('checkResult').style.display = 'none';
     }
 </script>
 </body>
