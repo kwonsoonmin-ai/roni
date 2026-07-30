@@ -555,9 +555,9 @@
             <button type="button" class="btn-print" onclick="printEstimate()">비교표 출력</button>
             <button type="button" class="btn-print btn-print-secondary" onclick="printCare()">구독 Care 출력</button>
             <button type="button" class="btn-print btn-print-secondary" onclick="printAllPage()">전체 출력</button>
-            <button type="button" class="btn-print btn-planner" onclick="window.open('https://akohw1003.github.io/kangnam/kyowon3', '_blank')">교원 플래너</button>
+            <!-- 🚨 수정된 부분: 교원 플래너 버튼 클릭 시 새 파일로 이동하도록 링크 변경 🚨 -->
+            <button type="button" class="btn-print btn-planner" onclick="window.open('교원상담대시보드 0730.html', '_blank')">교원 플래너</button>
             <button type="button" class="btn-print btn-youtube" onclick="openYoutubeReviewModal()">📺 RONi 유튜브 리뷰</button>
-            <!-- ✨ RONi vs 로보락 비교 팝업 버튼 -->
             <button type="button" class="btn-print btn-roni" onclick="openRoniFeatureModal()">✨ RONi 타사 비교</button>
         </div>
 
@@ -1233,7 +1233,7 @@
     // =========================================================
     
     const APP_CONFIG = {
-        version: 'v4', 
+        version: 'v2.2', 
         notice: '경남담당 전용플래너'
     };
 
