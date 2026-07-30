@@ -7,6 +7,9 @@
     <!-- FontAwesome 추가 (비주얼 가이드 아이콘용) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* =========================================================
+           💻 화면(스크린) 레이아웃
+           ========================================================= */
         body {
             font-family: 'Malgun Gothic', '맑은 고딕', sans-serif;
             background-color: #f4f7f6;
@@ -51,7 +54,6 @@
             margin-top: 0;
             font-size: 18px;
         }
-        
         table {
             width: 100%;
             border-collapse: collapse;
@@ -123,7 +125,6 @@
             text-align: right;
             padding-right: 10px;
         }
-        
         .paste-area-container {
             background: #eef2f5;
             padding: 15px;
@@ -137,50 +138,70 @@
             color: #0056b3;
             margin-bottom: 10px;
         }
-        .sheet-shell {
+
+        .excel-paste-shell {
             border: 1px solid #c9d3df;
-            border-radius: 8px;
+            border-radius: 6px;
             overflow: hidden;
-            background: #fff;
+            background: #ffffff;
+            height: 260px;
         }
-        .sheet-toolbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 8px;
-            padding: 8px 10px;            
-            background: #f7f9fc;
-            border-bottom: 1px solid #d7dfeb;
+        .excel-paste-header {
+            display: grid;
+            grid-template-columns: 44px repeat(8, 1fr);
+            background: #e9edf3;
+            border-bottom: 1px solid #c9d3df;
             font-size: 12px;
             color: #4b5563;
+            user-select: none;
         }
-        .sheet-scroll {
-            max-height: 260px;
-            overflow: auto;
+        .excel-paste-header div {
+            padding: 6px 0;
+            text-align: center;
+            border-right: 1px solid #d6dee8;
+            font-weight: bold;
+        }
+        .excel-paste-header div:last-child {
+            border-right: none;
+        }
+        .excel-paste-body {
+            display: grid;
+            grid-template-columns: 44px 1fr;
+            height: 224px;
             background: #fff;
         }
-        .sheet-table {
-            border-collapse: collapse;
-            width: max-content;
-            min-width: 100%;
-            table-layout: fixed;
-            font-size: 12px;
+        .excel-row-head {
+            overflow: hidden;
+            background:
+                repeating-linear-gradient(
+                    to bottom,
+                    #eef2f6 0px,
+                    #eef2f6 31px,
+                    #dfe6ee 31px,
+                    #dfe6ee 32px
+                );
+            border-right: 1px solid #c9d3df;
         }
-        .sheet-table th, .sheet-table td { border: 1px solid #d7dfeb; }
-        .sheet-table thead th {
-            position: sticky; top: 0; z-index: 3; background: #eef2f7; color: #334155; font-weight: 700; text-align: center; height: 30px; min-width: 120px;
+        .excel-grid-wrap {
+            position: relative;
+            overflow: auto;
+            background:
+                repeating-linear-gradient(
+                    to right,
+                    rgba(201, 211, 223, 0.9) 0px,
+                    rgba(201, 211, 223, 0.9) 1px,
+                    transparent 1px,
+                    transparent 120px
+                ),
+                repeating-linear-gradient(
+                    to bottom,
+                    rgba(201, 211, 223, 0.9) 0px,
+                    rgba(201, 211, 223, 0.9) 1px,
+                    transparent 1px,
+                    transparent 32px
+                ),
+                #fff;
         }
-        .sheet-table thead th.corner { left: 0; z-index: 4; min-width: 42px; width: 42px; }
-        .sheet-table tbody th {
-            position: sticky; left: 0; z-index: 2; background: #eef2f7; color: #475569; width: 42px; min-width: 42px; text-align: center; font-weight: 700;
-        }
-        .sheet-table td {
-            min-width: 120px; width: 120px; height: 30px; padding: 4px 6px; white-space: pre-wrap; word-break: break-word; vertical-align: top; background: #fff; color: #111827; cursor: text;
-        }
-        .sheet-table td.active-cell {
-            outline: 2px solid #4f8cff; outline-offset: -2px; background: #f8fbff;
-        }
-        .hidden-raw { display: none !important; }
         #rawPasteArea {
             position: relative;
             z-index: 2;
@@ -200,7 +221,11 @@
             overflow: auto;
             white-space: pre;
         }
-        
+        #rawPasteArea:focus {
+            outline: 2px solid #8bb8ff;
+            outline-offset: -2px;
+        }
+
         .btn-row {
             display: flex;
             gap: 10px;
@@ -274,6 +299,7 @@
         .btn-clear-select:hover {
             background-color: #eef5ff;
         }
+        .print-selected-care-wrap { display: none; margin-top: 12px; }
         
         .tab-container {
             margin-bottom: 10px;
@@ -333,9 +359,9 @@
         .btn-print-secondary { background-color: #5f6b77; }
         .btn-planner { background-color: #0f766e; }
         .btn-planner:hover { background-color: #0d5c56; }
-        .btn-roni { background-color: #4338ca; } 
+        .btn-roni { background-color: #4338ca; } /* RONi vs 로보락 버튼색상 */
         .btn-roni:hover { background-color: #3730a3; }
-        .btn-youtube { background-color: #e50914; } 
+        .btn-youtube { background-color: #e50914; } /* 유튜브 버튼색상 */
         .btn-youtube:hover { background-color: #b80710; }
 
         .app-meta {
@@ -345,7 +371,6 @@
             text-align: right;
             font-weight: bold;
         }
-        
         .security-overlay {
             position: fixed;
             inset: 0;
@@ -366,6 +391,8 @@
         .security-card h3 { margin: 0 0 10px 0; font-size: 20px; color: #2c3e50; }
         .security-card p { margin: 0 0 12px 0; color: #555; line-height: 1.5; }
         
+        .print-footer { display: none; }
+        
         .gap-toolbar {
             display: flex;
             align-items: center;
@@ -380,7 +407,78 @@
             font-size: 14px;
             background: #fff;
         }
+    
+        .sheet-shell{
+            border:1px solid #c9d3df;
+            border-radius:8px;
+            overflow:hidden;
+            background:#fff;
+        }
+        .sheet-toolbar{
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            gap:8px;
+            padding:8px 10px;            
+            background:#f7f9fc;
+            border-bottom:1px solid #d7dfeb;
+            font-size:12px;
+            color:#4b5563;
+        }
+        .sheet-scroll{
+            max-height:260px;
+            overflow:auto;
+            background:#fff;
+        }
+        .sheet-table{
+            border-collapse:collapse;
+            width:max-content;
+            min-width:100%;
+            table-layout:fixed;
+            font-size:12px;
+        }
+        .sheet-table th, .sheet-table td{ border:1px solid #d7dfeb; }
+        .sheet-table thead th{
+            position:sticky; top:0; z-index:3; background:#eef2f7; color:#334155; font-weight:700; text-align:center; height:30px; min-width:120px;
+        }
+        .sheet-table thead th.corner{ left:0; z-index:4; min-width:42px; width:42px; }
+        .sheet-table tbody th{
+            position:sticky; left:0; z-index:2; background:#eef2f7; color:#475569; width:42px; min-width:42px; text-align:center; font-weight:700;
+        }
+        .sheet-table td{
+            min-width:120px; width:120px; height:30px; padding:4px 6px; white-space:pre-wrap; word-break:break-word; vertical-align:top; background:#fff; color:#111827; cursor:text;
+        }
+        .sheet-table td.active-cell{
+            outline:2px solid #4f8cff; outline-offset:-2px; background:#f8fbff;
+        }
+        .hidden-raw{ display:none !important; }
+        .print-subscription-notice { display: none; }
 
+        @media print {
+            * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+            .print-toolbar, .paste-area-container, .tab-container, .btn-calc, .btn-clear, .btn-clear-select, #videoPanel, #installGuidePanel, #qrPanel, #cardQrModalOverlay, .security-overlay, .gap-toolbar, .app-meta { display: none !important; }
+            body { padding: 0; margin: 0; padding-bottom: 40px !important; }
+            .container { display: block !important; max-width: none; margin: 0; } 
+            .panel { box-shadow: none; border: none; padding: 0; margin-bottom: 20px; page-break-inside: avoid; }
+            .left-panel, .right-column, .right-panel { position: static !important; overflow: visible !important; width: 100% !important; display: block !important; }
+            .table-scroll, #quoteTableWrap { max-height: none !important; overflow: visible !important; }
+            #quoteTable { min-width: 0 !important; }
+            .care-summary { break-inside: avoid; }
+            .print-selected-care-wrap { display: none !important; }
+            body.print-care .print-selected-care-wrap, body.print-all .print-selected-care-wrap { display: block !important; }
+            body.print-estimate #carePanel, body.print-estimate .right-column { display: none !important; }
+            body.print-care #estimatePanel, body.print-care .right-panel h2, body.print-care .table-scroll, body.print-care .tab-container { display: none !important; }
+            body.print-care .right-column, body.print-care .right-panel { display: block !important; position: static !important; top: auto !important; }
+            body.print-all .tab-container, body.print-all .table-scroll { display: none !important; }
+            body.print-all .right-column { page-break-before: always !important; break-before: page !important; }
+            .print-footer { display: block !important; position: fixed !important; bottom: 0 !important; width: 100% !important; padding-top: 8px; border-top: 1px solid #ddd; font-size: 9pt; color: #333; text-align: right; background: #fff; z-index: 9999; }
+            .print-subscription-notice { display: block !important; margin-top: 20px; margin-bottom: 15px; padding: 12px 15px; border: 1px solid #999; border-radius: 6px; background-color: #f8f9fa !important; page-break-inside: avoid; }
+            .print-subscription-notice h4 { margin: 0 0 6px 0; font-size: 12px; color: #2c3e50 !important; font-weight: bold; }
+            .print-subscription-notice ul { margin: 0; padding-left: 18px; }
+            .print-subscription-notice li { font-size: 11px; color: #444 !important; line-height: 1.4; margin-bottom: 4px; }
+            #quoteTable.hide-model-row tr.model-row { display: none !important; }
+        }
+        
         .result-toolbar { display: flex; justify-content: flex-end; gap: 8px; margin: 8px 0 10px 0; }
         .btn-toggle-model { background: #ffffff; color: #0056b3; border: 1px solid #0056b3; border-radius: 6px; padding: 8px 12px; font-size: 12px; font-weight: bold; cursor: pointer; white-space: nowrap; }
         .btn-toggle-model:hover { background: #eef5ff; }
@@ -392,6 +490,7 @@
         .highlight-yellow td.subscription-dominant-cell { background-color: #d9f0d9 !important; color: #1f6b2a !important; }
         .gap-row td.subscription-dominant-cell { background-color: #eaf7ea !important; color: #1f6b2a !important; }
 
+        /* 프리미엄 비주얼 가이드 모달용 스타일 */
         .vg-container { background-color: #ffffff; width: 100%; border-radius: 12px; box-shadow: 0 15px 35px rgba(0,0,0,0.05); overflow: hidden; position: relative;}
         .vg-hero-section { background: linear-gradient(120deg, #1a1a2e 0%, #16213e 100%); color: #ffffff; padding: 40px 30px; text-align: center; position: relative; }
         .vg-hero-section::after { content: ''; position: absolute; bottom: -1px; left: 0; right: 0; height: 30px; background: white; clip-path: polygon(0 100%, 100% 100%, 100% 0, 50% 100%, 0 0); }
@@ -420,9 +519,11 @@
         .vg-close-btn-top { position: absolute; top: 15px; right: 15px; background: rgba(0,0,0,0.3); color: #fff; border: none; width: 32px; height: 32px; border-radius: 50%; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10; transition: background 0.2s;}
         .vg-close-btn-top:hover { background: rgba(0,0,0,0.7); }
         
+        /* 추가: 구독 관리 모달용 클릭 존 스타일 */
         .care-click-zone { flex: 1; cursor: pointer; transition: background 0.2s; border-radius: 6px; margin: 2px 0; }
         .care-click-zone:hover { background: rgba(0, 0, 0, 0.04); }
 
+        /* 부등호 강조 배지 스타일 */
         .win-badge-container {
             display: flex; 
             align-items: center; 
@@ -440,39 +541,12 @@
         .win-badge-arrow { font-size: 18px; color: #e11d48; font-weight: 900; letter-spacing: -2px; }
         .win-badge-other { color: #94a3b8; font-weight: normal; font-size: 13px; text-decoration: line-through; }
 
-        .print-subscription-notice { display: none; }
-        .print-selected-care-wrap { display: none; margin-top: 12px; }
-        .print-footer { display: none; }
-        @media print {
-            * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
-            .print-toolbar, .paste-area-container, .tab-container, .btn-calc, .btn-clear, .btn-clear-select, #videoPanel, #installGuidePanel, #qrPanel, #cardQrModalOverlay, .security-overlay, .gap-toolbar, .app-meta { display: none !important; }
-            body { padding: 0; margin: 0; padding-bottom: 40px !important; }
-            .container { display: block !important; max-width: none; margin: 0; } 
-            .panel { box-shadow: none; border: none; padding: 0; margin-bottom: 20px; page-break-inside: avoid; }
-            .left-panel, .right-column, .right-panel { position: static !important; overflow: visible !important; width: 100% !important; display: block !important; }
-            .table-scroll, #quoteTableWrap { max-height: none !important; overflow: visible !important; }
-            #quoteTable { min-width: 0 !important; }
-            .care-summary { break-inside: avoid; }
-            .print-selected-care-wrap { display: none !important; }
-            body.print-care .print-selected-care-wrap, body.print-all .print-selected-care-wrap { display: block !important; }
-            body.print-estimate #carePanel, body.print-estimate .right-column { display: none !important; }
-            body.print-care #estimatePanel, body.print-care .right-panel h2, body.print-care .table-scroll, body.print-care .tab-container { display: none !important; }
-            body.print-care .right-column, body.print-care .right-panel { display: block !important; position: static !important; top: auto !important; }
-            body.print-all .tab-container, body.print-all .table-scroll { display: none !important; }
-            body.print-all .right-column { page-break-before: always !important; break-before: page !important; }
-            .print-footer { display: block !important; position: fixed !important; bottom: 0 !important; width: 100% !important; padding-top: 8px; border-top: 1px solid #ddd; font-size: 9pt; color: #333; text-align: right; background: #fff; z-index: 9999; }
-            .print-subscription-notice { display: block !important; margin-top: 20px; margin-bottom: 15px; padding: 12px 15px; border: 1px solid #999; border-radius: 6px; background-color: #f8f9fa !important; page-break-inside: avoid; }
-            .print-subscription-notice h4 { margin: 0 0 6px 0; font-size: 12px; color: #2c3e50 !important; font-weight: bold; }
-            .print-subscription-notice ul { margin: 0; padding-left: 18px; }
-            .print-subscription-notice li { font-size: 11px; color: #444 !important; line-height: 1.4; margin-bottom: 4px; }
-            #quoteTable.hide-model-row tr.model-row { display: none !important; }
-        }
         @media (max-width: 768px) { .vg-comparison-grid { grid-template-columns: 1fr; gap: 15px; } .vg-content-body { padding: 25px 20px; } .vg-hero-section { padding: 30px 20px; } .vg-hero-title { font-size: 22px; } }
     </style>
 </head>
 <body>
 
-<div class="container" id="mainAppContainer" style="display: flex;">
+<div class="container" id="mainAppContainer" style="display: none;">
     <div class="panel left-panel" id="estimatePanel">
         <!-- 메인 타이틀 -->
         <h2>📊 경남담당 고객맞춤 플래너</h2>
@@ -637,7 +711,6 @@
                 <button class="tab-btn" onclick="openCardQrModal('shinhan')">[신한] 더구독케어</button>
                 <button class="tab-btn" onclick="openCardQrModal('woori_plat')">[우리] 플래티넘</button>
                 <button class="tab-btn" onclick="openCardQrModal('woori')">[우리] LG전자</button>
-                <button class="tab-btn" onclick="openCardQrModal('lotte')">[롯데] 구독엔로카</button>
                 <button class="tab-btn" onclick="openCardQrModal('kb')">[KB] LG전자</button>
                 <button class="tab-btn" onclick="openCardQrModal('hyundai')">[현대] LG전자</button>
                 <button class="tab-btn" onclick="openCardQrModal('hana')">[하나] LG전자</button>
@@ -646,6 +719,7 @@
     </div>
 </div>
 
+<!-- ================= 팝업 및 공지 영역 ================= -->
 <div class="print-subscription-notice" id="printSubscriptionNotice">
     <h4>★구독 유의사항★</h4>
     <ul>
@@ -658,6 +732,15 @@
 <div class="app-meta" id="appMeta"></div>
 <div class="print-footer" id="printFooter"></div>
 
+<!-- 보안/기간 만료 안내 오버레이 -->
+<div class="security-overlay" id="securityOverlay" style="display:none;">
+    <div class="security-card" style="text-align: center;">
+        <h3 style="color: #d32f2f;">⏳ 접근 제한</h3>
+        <p style="font-weight: bold; font-size: 16px; margin-bottom: 20px;">7월 정책 기간이 종료되었습니다.<br>8월 정책을 기다려주세요.</p>
+        <p style="font-size: 13px; color: #777;">(관리자 문의 바랍니다)</p>
+    </div>
+</div>
+
 <div class="security-overlay" id="cardQrModalOverlay" style="display:none;" onclick="closeCardQrModal(event)">
     <div class="security-card" style="text-align: center; max-width: 320px;" onclick="event.stopPropagation()">
         <h3 id="cardQrModalTitle" style="margin-bottom: 5px; color: #2c3e50;">카드 발급</h3>
@@ -668,16 +751,17 @@
         
         <p style="font-size: 13px; color: #555; margin-bottom: 5px;">스마트폰 카메라로 스캔하세요.</p>
         <div class="security-actions" style="margin-top:20px;">
-            <button type="button" class="btn-security btn-security-secondary" onclick="closeCardQrModal()">닫기</button>
+            <button type="button" class="btn-security btn-security-secondary" onclick="closeCardQrModal()" style="background:#475569; border:none; color:white; padding:8px 20px; border-radius:4px; font-weight:bold; cursor:pointer;">닫기</button>
         </div>
     </div>
 </div>
 
+<!-- ================= ✨ RONi vs 로보락 vs 삼성 완벽 비교 분석 모달 (업그레이드 됨) ================= -->
 <div class="security-overlay" id="roniFeatureOverlay" style="display:none;" onclick="closeRoniFeatureModal(event)">
     <div class="security-card" style="max-width: 1400px; padding: 30px; max-height: 90vh; overflow-y: auto;" onclick="event.stopPropagation()">
         
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-            <h3 style="margin: 0; font-size: 22px; color: #1e293b; font-weight: bold;">🤖 로봇청소기 비교 (LG RONi vs 로보락 vs 삼성)</h3>
+            <h3 style="margin: 0; font-size: 22px; color: #1e293b; font-weight: bold;">🤖 로봇청소기 끝판왕 3자 비교 (LG RONi vs 로보락 vs 삼성)</h3>
             <button type="button" onclick="closeRoniFeatureModal()" style="background: none; border: none; font-size: 24px; cursor: pointer; color: #64748b;">✖</button>
         </div>
 
@@ -744,7 +828,7 @@
             </div>
         </div>
 
-        <!-- 심층 비교 테이블 영역 (스몰토크 포함) -->
+        <!-- 심층 비교 테이블 영역 (부등호 배지 추가됨) -->
         <div style="overflow-x: auto; border: 1px solid #cbd5e1; border-radius: 8px;">
             <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 13px;">
                 <thead>
@@ -771,7 +855,7 @@
                                 <li style="margin-bottom: 4px;"><strong>걸레 세척/건조:</strong> 100℃ 스팀+온수 세척 / 60℃→40℃ 열풍건조(총 3시간)</li>
                                 <li><strong>유해균 99.99% 완벽 살균!</strong></li>
                             </ul>
-                            <div style="background: #dbeafe; border-left: 3px solid #3b82f6; padding: 8px; margin-top: 8px; border-radius: 4px; font-size: 12px;">
+                            <div style="background: #dbeafe; border-left: 3px solid #3b82f6; padding: 8px; margin-top: 8px; border-radius: 4px; font-size: 12px; line-height:1.5;">
                                 🗣️ "고객님, 타사는 스테이션 안에서만 물을 데웁니다. 바닥을 닦을 때는 결국 식어버린 상온 물걸레예요. 찌든 때와 세균까지 진짜 '바닥 스팀 살균'을 원하신다면 무조건 로니를 선택하셔야 합니다."
                             </div>
                         </td>
@@ -803,11 +887,11 @@
                                 <span class="win-badge-other">단순 스펙(Pa) 경쟁</span>
                             </div>
                             <ul style="margin:0; padding-left: 15px; color:#1e3a8a;">
-                                <li style="margin-bottom: 4px;"><strong>30W 급 강력 모터</strong> </li>
+                                <li style="margin-bottom: 4px;"><strong>30W 급 강력 모터</strong> (30,000Pa 급)</li>
                                 <li style="margin-bottom: 4px;"><strong>듀얼 안티탱글 브러시</strong> (머리카락 엉킴 완벽 방지)</li>
                                 <li><strong>모서리 밀착 청소:</strong> 최대 46mm까지 확장되는 사이드 브러시 & 물걸레</li>
                             </ul>
-                            <div style="background: #dbeafe; border-left: 3px solid #3b82f6; padding: 8px; margin-top: 8px; border-radius: 4px; font-size: 12px;">
+                            <div style="background: #dbeafe; border-left: 3px solid #3b82f6; padding: 8px; margin-top: 8px; border-radius: 4px; font-size: 12px; line-height:1.5;">
                                 🗣️ "숫자만 높은 흡입력보다, 실제 구석구석을 얼마나 잘 파고들고 머리카락이 안 엉키는지가 중요합니다. 로니의 듀얼 브러시와 확장 물걸레가 마루바닥 사각지대를 완벽하게 해결해 줍니다."
                             </div>
                         </td>
@@ -835,7 +919,7 @@
                                 <li>배터리: 비공개</li>
                             </ul>
                             <div style="background: #dbeafe; border-left: 3px solid #3b82f6; padding: 8px; margin-top: 8px; border-radius: 4px; font-size: 13px; line-height: 1.6;">
-                                🗣️ "<span style="color:#d32f2f; font-weight:bold;">고객님, 예전엔 로보락이 길을 잘 찾았죠. 하지만 RONi는 자율주행 자동차에 들어가는 최고급 센서(dToF)를 달아서 한국 아파트의 복잡한 문턱이나 장애물도 기가 막히게 피해 갑니다.</span>"
+                                🗣️ "고객님, 예전엔 로보락이 길을 잘 찾았죠. 하지만 RONi는 <strong>자율주행 자동차에 들어가는 최고급 센서(dToF)</strong>를 달아서 <strong>한국 아파트의 복잡한 문턱이나 장애물도 기가 막히게 피해 갑니다.</strong>"
                             </div>
                         </td>
                         <td style="background: #fff; border-right: 1px solid #cbd5e1; border-bottom: 1px solid #cbd5e1; padding: 12px;">
@@ -866,8 +950,10 @@
                                 <li>LG Shield 글로벌 보안 인증</li>
                             </ul>
                             <div style="background: #dbeafe; border-left: 3px solid #3b82f6; padding: 8px; margin-top: 8px; border-radius: 4px; font-size: 13px; line-height: 1.6;">
-                                🗣️ "삼성의 녹스(Knox) 같은 S/W 보안도 좋지만, 가장 확실한 건 아예 <strong>물리적으로 문을 닫아 렌즈를 가려버리는 로니의 도어 가림막</strong>입니다. 물리적 가림막은 절대 해킹당할 수 없습니다."<br><br>
-                                🗣️ "요즘 <strong><span style="color:#d32f2f;">로봇청소기 해킹 범죄(카메라 해킹)</span></strong> 기사가 많아 <strong>여성분들이나 아이</strong>를 키우는 집에서는 매우 민감한 문제입니다. 타사가 아무리 S/W 보안이 좋다고 해도, <strong><span style="color:#d32f2f;">'문이 찰칵 닫혀서 렌즈를 아예 가려버린다'</span>는 물리적 차단</strong>만큼 안심되는 것은 없습니다."
+                                🗣️ "삼성의 녹스(Knox) 같은 S/W 보안도 좋지만, 가장 확실한 건 아예 <strong>물리적으로 문을 닫아 렌즈를 가려버리는 로니의 도어 가림막</strong>입니다. 물리적 가림막은 절대 해킹당할 수 없습니다."
+                            </div>
+                            <div style="background: #fee2e2; border-left: 3px solid #ef4444; padding: 8px; margin-top: 8px; border-radius: 4px; font-size: 13px; line-height: 1.6;">
+                                🗣️ "요즘 로봇청소기 <strong>해킹 범죄(카메라 해킹)</strong> 기사가 많아 <strong>여성분들이나 아이</strong>를 키우는 집에서는 매우 민감한 문제입니다. 타사가 아무리 S/W 보안이 좋다고 해도, <strong>'문이 찰칵 닫혀서 렌즈를 아예 가려버린다'</strong>는 물리적 차단만큼 안심되는 것은 없습니다."
                             </div>
                         </td>
                         <td style="background: #fff; border-right: 1px solid #cbd5e1; border-bottom: 1px solid #cbd5e1; padding: 12px;">
@@ -925,7 +1011,7 @@
                                 <li style="margin-bottom: 4px;"><strong>전국망 방문 A/S</strong> (스트레스 제로)</li>
                                 <li><strong>매니저 정기 방문 케어 (분해 세척)</strong></li>
                             </ul>
-                            <div style="background: #dbeafe; border-left: 3px solid #3b82f6; padding: 8px; margin-top: 8px; border-radius: 4px; font-size: 12px;">
+                            <div style="background: #dbeafe; border-left: 3px solid #3b82f6; padding: 8px; margin-top: 8px; border-radius: 4px; font-size: 12px; line-height:1.5;">
                                 🗣️ "물과 먼지가 섞이는 기계는 반드시 부패하고 냄새가 납니다. 스테이션 내부의 찌든 때를 분해 세척해 주는 건 오직 LG 매니저의 '정기 방문 케어'뿐입니다."
                             </div>
                         </td>
@@ -958,6 +1044,7 @@
     </div>
 </div>
 
+<!-- ================= 💎 프리미엄 비주얼 세일즈 가이드 모달 ================= -->
 <div class="security-overlay" id="visualGuideOverlay" style="display:none;" onclick="closeVisualGuideModal(event)">
     <div class="security-card vg-container" style="max-width: 900px; padding: 0; max-height: 90vh; overflow-y: auto; position: relative;" onclick="event.stopPropagation()">
         <button type="button" class="vg-close-btn-top btn-close-visual" onclick="closeVisualGuideModal()">✖</button>
@@ -1041,6 +1128,7 @@
     </div>
 </div>
 
+<!-- ================= 🛡️ RONi 구독 관리 탭 (인터랙티브 이미지 모달) ================= -->
 <div class="security-overlay" id="roniCareOverlay" style="display:none;" onclick="closeRoniCareModal(event)">
     <div class="security-card vg-container" style="max-width: 1000px; padding: 30px; max-height: 90vh; overflow-y: auto; position: relative;" onclick="event.stopPropagation()">
         
@@ -1049,15 +1137,22 @@
             <button type="button" onclick="closeRoniCareModal()" style="background: none; border: none; font-size: 24px; cursor: pointer; color: #64748b;">✖</button>
         </div>
 
+        <!-- 상단 1.png (구독 주기 안내) : 깃허브 다이렉트 절대 경로 적용 -->
         <img src="https://raw.githubusercontent.com/kwonsoonmin-ai/roni/main/1.png" alt="로니 구독 케어서비스 주기" style="width: 100%; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
 
+        <!-- 하단 2~6 상세 케어 인터랙티브 영역 (절대 위치 고정값 적용) -->
         <div style="position: relative; width: 100%; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.05); background: #f8f9fa;">
             <img id="roniCareMainImage" src="https://raw.githubusercontent.com/kwonsoonmin-ai/roni/main/2.png" alt="케어 서비스 상세" style="width: 100%; display: block;">
             
+            <!-- 글씨가 있는 위치에 정확하게 맞춘 투명 클릭 존 -->
             <div class="care-click-zone" style="position: absolute; top: 11%; right: 2%; width: 30%; height: 9%; z-index: 10; margin: 0;" onclick="changeCareImage('https://raw.githubusercontent.com/kwonsoonmin-ai/roni/main/2.png')" title="위생 케어(스팀)"></div>
+            
             <div class="care-click-zone" style="position: absolute; top: 22%; right: 2%; width: 30%; height: 9%; z-index: 10; margin: 0;" onclick="changeCareImage('https://raw.githubusercontent.com/kwonsoonmin-ai/roni/main/3.png')" title="로봇/오수관 클리닝"></div>
+            
             <div class="care-click-zone" style="position: absolute; top: 32.5%; right: 2%; width: 30%; height: 9%; z-index: 10; margin: 0;" onclick="changeCareImage('https://raw.githubusercontent.com/kwonsoonmin-ai/roni/main/4.png')" title="급배수통 스팀 클리닝"></div>
+            
             <div class="care-click-zone" style="position: absolute; top: 43.5%; right: 2%; width: 30%; height: 9%; z-index: 10; margin: 0;" onclick="changeCareImage('https://raw.githubusercontent.com/kwonsoonmin-ai/roni/main/5.png')" title="소모품7종 교체 및 배터리 교체"></div>
+            
             <div class="care-click-zone" style="position: absolute; top: 54.5%; right: 2%; width: 30%; height: 9%; z-index: 10; margin: 0;" onclick="changeCareImage('https://raw.githubusercontent.com/kwonsoonmin-ai/roni/main/6.png')" title="무상 철거/재설치"></div>
         </div>
 
@@ -1068,6 +1163,7 @@
     </div>
 </div>
 
+<!-- ================= 📺 RONi 유튜브 리뷰 탭 (3개 영상 모달) ================= -->
 <div class="security-overlay" id="youtubeReviewOverlay" style="display:none;" onclick="closeYoutubeReviewModal(event)">
     <div class="security-card vg-container" style="max-width: 1000px; padding: 30px; max-height: 90vh; overflow-y: auto; position: relative;" onclick="event.stopPropagation()">
         
@@ -1076,11 +1172,13 @@
             <button type="button" onclick="closeYoutubeReviewModal()" style="background: none; border: none; font-size: 24px; cursor: pointer; color: #64748b;">✖</button>
         </div>
 
+        <!-- 3개 썸네일 그리드 배열 -->
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
             
-            <!-- 1. 에이트 -->
+            <!-- 1. 에이트 (처음부터 재생) -->
             <div style="cursor: pointer; border-radius: 12px; overflow: hidden; box-shadow: 0 6px 15px rgba(0,0,0,0.08); transition: transform 0.2s, box-shadow 0.2s; background: #fff;" onclick="window.open('https://www.youtube.com/watch?v=CNJf8r_7DlQ', '_blank')" onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 12px 20px rgba(0,0,0,0.15)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 15px rgba(0,0,0,0.08)';">
                 <div style="position: relative; width: 100%; padding-top: 56.25%; background: #000;">
+                    <!-- 고화질 썸네일 (maxresdefault) -->
                     <img src="https://img.youtube.com/vi/CNJf8r_7DlQ/maxresdefault.jpg" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;" alt="에이트 리뷰">
                     <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.25); display: flex; align-items: center; justify-content: center;">
                         <i class="fa-brands fa-youtube" style="color: #e50914; font-size: 50px; filter: drop-shadow(0 2px 8px rgba(0,0,0,0.4));"></i>
@@ -1092,7 +1190,7 @@
                 </div>
             </div>
 
-            <!-- 2. 귀곰 -->
+            <!-- 2. 귀곰 (처음부터 재생) -->
             <div style="cursor: pointer; border-radius: 12px; overflow: hidden; box-shadow: 0 6px 15px rgba(0,0,0,0.08); transition: transform 0.2s, box-shadow 0.2s; background: #fff;" onclick="window.open('https://www.youtube.com/watch?v=x4Wvf-2LCBY', '_blank')" onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 12px 20px rgba(0,0,0,0.15)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 15px rgba(0,0,0,0.08)';">
                 <div style="position: relative; width: 100%; padding-top: 56.25%; background: #000;">
                     <img src="https://img.youtube.com/vi/x4Wvf-2LCBY/maxresdefault.jpg" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;" alt="귀곰 리뷰">
@@ -1106,7 +1204,7 @@
                 </div>
             </div>
 
-            <!-- 3. 테크몽 -->
+            <!-- 3. 테크몽 (처음부터 재생) -->
             <div style="cursor: pointer; border-radius: 12px; overflow: hidden; box-shadow: 0 6px 15px rgba(0,0,0,0.08); transition: transform 0.2s, box-shadow 0.2s; background: #fff;" onclick="window.open('https://www.youtube.com/watch?v=cnHsP2P0XSs', '_blank')" onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 12px 20px rgba(0,0,0,0.15)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 15px rgba(0,0,0,0.08)';">
                 <div style="position: relative; width: 100%; padding-top: 56.25%; background: #000;">
                     <img src="https://img.youtube.com/vi/cnHsP2P0XSs/maxresdefault.jpg" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;" alt="테크몽 리뷰">
@@ -1130,8 +1228,12 @@
 </div>
 
 <script>
+    // =========================================================
+    // 🚨 자바스크립트 스크립트 시작
+    // =========================================================
+    
     const APP_CONFIG = {
-        version: 'v2.1', 
+        version: 'v2.2', 
         notice: '경남담당 전용플래너'
     };
 
@@ -1155,34 +1257,21 @@
         if (footer) footer.innerText = printText;
     }
 
-    // 🚨 7월 27일 밤 12시 만료 설정 기능
     function initSecurity() {
-        // 만료 일자 설정: 2026년 8월 4일 밤 12시 (23시 59분 59초 = 5일 00시)
-        const expireDate = new Date('2026-08-05T00:00:00+09:00').getTime();
-        const now = new Date().getTime();
+        // [업데이트] 8월 4일 밤 12시 (8월 5일 00:00:00) 만료 설정
+        const expiryDate = new Date('2026-08-05T00:00:00');
+        const now = new Date();
 
-        if (now >= expireDate) {
-            // 만료 시 메인 화면 숨기고 만료 안내창 띄우기
+        if (now >= expiryDate) {
+            // 만료일 지났을 때: 대시보드를 숨기고 안내창 띄움
             document.getElementById('mainAppContainer').style.display = 'none';
-
-            const expireOverlay = document.createElement('div');
-            expireOverlay.style.cssText = 'position: fixed; inset: 0; background: #f4f7f6; display: flex; align-items: center; justify-content: center; z-index: 99999;';
-            expireOverlay.innerHTML = `
-                <div style="background: #fff; padding: 40px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); text-align: center; max-width: 400px; border-top: 5px solid #d32f2f;">
-                    <h2 style="color: #d32f2f; margin-top: 0; font-size: 24px;">⏳ 접근 제한</h2>
-                    <p style="font-size: 16px; color: #475569; line-height: 1.6; margin-bottom: 0;">
-                        <b>7월 프로모션 적용 기간이 종료되었습니다.</b><br><br>
-                        새로운 8월 정책이 업데이트될 때까지<br>플래너 이용이 임시 제한됩니다.
-                    </p>
-                </div>
-            `;
-            document.body.appendChild(expireOverlay);
-            return;
+            document.getElementById('securityOverlay').style.display = 'flex';
+        } else {
+            // 만료일 이전: 대시보드 정상 오픈
+            document.getElementById('mainAppContainer').style.display = 'flex';
+            document.getElementById('securityOverlay').style.display = 'none';
+            updateAppMeta();
         }
-
-        // 기간 내일 경우 정상적으로 대시보드 화면을 보이게 함
-        document.getElementById('mainAppContainer').style.display = 'flex'; 
-        updateAppMeta();
     }
 
     function fn(num) {
@@ -1245,8 +1334,8 @@
     function extractTextFromHtml(htmlString) {
         if (!htmlString) return '';
         let processedHtml = String(htmlString)
-            .replace(/<br\s*[\/]?>/gi, '\n')                  
-            .replace(/<\/p>/gi, '\n')                        
+            .replace(/<br\s*[\/]?>/gi, '\n')                 
+            .replace(/<\/p>/gi, '\n')                       
             .replace(/<\/div>/gi, '\n')
             .replace(/<\/li>/gi, '\n')
             .replace(/<li[^>]*>/gi, '\n');                 
@@ -1453,6 +1542,7 @@
     let gapBaseIndex = 0;
     let latestResults = [];
 
+    // [캐시백 오류 해결] 선납 캐시백 우선 적용 및 정확한 1:1 매칭
     function getKnownKey(text) {
         const norm = String(text).replace(/\s+/g, '');
         if (!norm) return null;
@@ -1463,6 +1553,7 @@
         if (norm.includes('결합할인')) return '결합할인(월)';
         if (norm.includes('선납할인')) return '선납할인(월)';
         
+        // 선납시카드혜택을 무조건 먼저 캐치
         if (norm === '선납캐시백' || norm.includes('선납시카드') || norm.includes('선납카드')) return '선납시카드혜택';
         if (norm === '캐시백' || norm === '캐쉬백' || norm.includes('현금지원')) return '캐시백';
         
@@ -1734,6 +1825,7 @@
                 nums = extracted.map(v => cleanNumber(v)).slice(0, optionCount);
             }
             
+            // 덮어쓰기(=)가 아닌 누적 합산(+ / +=) 적용
             if (parsedData[identifiedKey]) {
                 nums.forEach((num, idx) => {
                     parsedData[identifiedKey][idx] = (parsedData[identifiedKey][idx] || 0) + num;
@@ -2266,12 +2358,7 @@
             url: 'https://m.wooricard.com/dcmw/yh1/crd/crd01/M1CRD101S02.do?recomNo=102535',
             benefits: '30만 ↑ 1.8만<br>70만 ↑ 2.2만<br>120만 ↑ 2.4만'
         },
-        'lotte': { 
-            title: '[롯데] 구독엔로카', 
-            phone: '1577-9469', 
-            url: 'https://m.lottecard.co.kr/spa/card/booth?bId=96417&vtCdKndC=P15666-A15666',
-            benefits: '40만 ↑ 2.0만<br>80만 ↑ 2.3만<br>160만 ↑ 2.6만'
-        },
+        // 🚨 롯데 구독엔로카 프로모션 중단으로 제거됨
         'kb': { 
             title: '[KB국민] LG전자 KB국민', 
             phone: '1644-8639', 
@@ -2317,7 +2404,7 @@
     window.onload = function() {
         const firstBtn = document.querySelector('.tab-btn');
         changeTab('tvCare', 'TV 케어', firstBtn);
-        initSecurity(); // 보안 로직 (만료일자 체크) 초기화 시작
+        initSecurity(); // 접속 제한 등 초기화 로직 실행
     };
 
     let modelRowVisible = true;
