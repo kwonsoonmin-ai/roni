@@ -618,10 +618,17 @@
                 <button class="tab-btn" onclick="changeTab('airConditioner', '에어컨', this)">에어컨</button>
                 <button class="tab-btn" onclick="changeTab('stickVacuum', '스틱청소기', this)">스틱청소기</button>
                 <button class="tab-btn" onclick="changeTab('robotVacuum', '로봇청소기', this)">로봇청소기</button>
+                <button class="tab-btn" onclick="changeTab('roni', 'RONi', this)">RONi</button>
                 <button class="tab-btn" onclick="changeTab('airPurifier', '공기청정기', this)">공기청정기</button>
                 <button class="tab-btn" onclick="changeTab('bathAir', '바스에어', this)">바스에어</button>
                 <button class="tab-btn" onclick="changeTab('styler', '스타일러', this)">스타일러</button>
                 <button class="tab-btn" onclick="changeTab('massageChair', '안마의자', this)">안마의자</button>
+            </div>
+            
+            <!-- RONi 히든/오브제 서브 탭 -->
+            <div id="roniSubTabContainer" style="display: none; margin-bottom: 15px; gap: 8px;">
+                <button class="btn-security btn-security-primary" id="btnRoniHidden" onclick="changeRoniSubTab('hidden')" style="background:#0f766e; border:none; color:#fff; padding:6px 14px; border-radius:4px; cursor:pointer; font-weight:bold; font-size:13px; transition: 0.2s;">히든 모델</button>
+                <button class="btn-security btn-security-secondary" id="btnRoniObjet" onclick="changeRoniSubTab('objet')" style="background:#475569; border:none; color:#fff; padding:6px 14px; border-radius:4px; cursor:pointer; font-weight:bold; font-size:13px; transition: 0.2s;">오브제 모델</button>
             </div>
 
             <div class="table-scroll">
@@ -1541,6 +1548,7 @@
     let optionLabels = [];
     let gapBaseIndex = 0;
     let latestResults = [];
+    let currentRoniMode = 'hidden';
 
     // [캐시백 오류 해결] 선납 캐시백 우선 적용 및 정확한 1:1 매칭
     function getKnownKey(text) {
@@ -2100,6 +2108,34 @@
             { id: 'r3', name: '무상 A/S 제공', period: '계약 기간', price: 91300, desc: '청소기 평균 수리 비용 기준' },
             { id: 'rx', name: '위생 관리, 시간 절약 등', period: '-', price: 0, desc: '기회비용 (최저시급 x 케어 시간)' }
         ],
+        roniHidden: [
+            { id: 'rh1', name: '배터리', period: '72개월 / 1회', price: 139000, desc: '배터리 금액' },
+            { id: 'rh2', name: '엉킴 방지 브러쉬', period: '12개월 / 6회', price: 264000, desc: '엉킴 방지 브러쉬 X 6EA' },
+            { id: 'rh3', name: '롤러', period: '12개월 / 6회', price: 42000, desc: '롤러 X 6EA' },
+            { id: 'rh4', name: '측면 회전솔', period: '12개월 / 6회', price: 39000, desc: '측면회전솔 X 6EA' },
+            { id: 'rh5', name: '먼지통 필터', period: '12개월 / 6회', price: 84000, desc: '먼지통 필터 X 6EA' },
+            { id: 'rh6', name: '관리제 1EA', period: '12개월 / 6회', price: 358800, desc: '' },
+            { id: 'rh7', name: '먼지봉투 1개', period: '12개월 / 6회', price: 558000, desc: '먼지봉투 X 6EA (오브제: 396,000원)' },
+            { id: 'rh8', name: '물걸레 2개입', period: '12개월 / 6회', price: 120000, desc: '물걸레 X 6EA' },
+            { id: 'rh9', name: '무상 재설치', period: '72개월 / 1회', price: 177000, desc: '기간 內 1회 (오브제: 119,000원)' },
+            { id: 'rh10', name: '웰컴서비스(관리제1EA)', period: '1회', price: 29900, desc: '' },
+            { id: 'rh11', name: '웰컴키트(관리제1EA, 먼지봉투 5EA, 물걸레 2EA)', period: '1회', price: 117400, desc: '(오브제: 94,900원)' },
+            { id: 'rhx', name: '위생 관리, 시간 절약 등', period: '-', price: 0, desc: '기회비용 (최저시급 x 케어 시간)' }
+        ],
+        roniObjet: [
+            { id: 'ro1', name: '배터리', period: '72개월 / 1회', price: 139000, desc: '배터리 금액' },
+            { id: 'ro2', name: '엉킴 방지 브러쉬', period: '12개월 / 6회', price: 264000, desc: '엉킴 방지 브러쉬 X 6EA' },
+            { id: 'ro3', name: '롤러', period: '12개월 / 6회', price: 42000, desc: '롤러 X 6EA' },
+            { id: 'ro4', name: '측면 회전솔', period: '12개월 / 6회', price: 39000, desc: '측면회전솔 X 6EA' },
+            { id: 'ro5', name: '먼지통 필터', period: '12개월 / 6회', price: 84000, desc: '먼지통 필터 X 6EA' },
+            { id: 'ro6', name: '관리제 1EA', period: '12개월 / 6회', price: 358800, desc: '' },
+            { id: 'ro7', name: '먼지봉투 1개', period: '12개월 / 6회', price: 396000, desc: '먼지봉투 X 6EA' },
+            { id: 'ro8', name: '물걸레 2개입', period: '12개월 / 6회', price: 120000, desc: '물걸레 X 6EA' },
+            { id: 'ro9', name: '무상 재설치', period: '72개월 / 1회', price: 119000, desc: '기간 內 1회' },
+            { id: 'ro10', name: '웰컴서비스(관리제1EA)', period: '1회', price: 29900, desc: '' },
+            { id: 'ro11', name: '웰컴키트(관리제1EA, 먼지봉투 5EA, 물걸레 2EA)', period: '1회', price: 94900, desc: '' },
+            { id: 'rox', name: '위생 관리, 시간 절약 등', period: '-', price: 0, desc: '기회비용 (최저시급 x 케어 시간)' }
+        ],
         airConditioner: [
             { id: 'a1', name: '완전분해 케어 서비스(프리미엄)', period: '36개월 / 2회', price: 610000, desc: '회당 305,000원 x 2회' },
             { id: 'a1_2', name: '부분분해 케어 서비스(라이트)', period: '36개월 / 2회', price: 80000, desc: '회당 40,000원 x 2회, 타 가전 부분분해세척 비용기준 참고 추정비용' },
@@ -2250,26 +2286,58 @@
         document.querySelectorAll('.tab-btn:not(.video-btn)').forEach(b => b.classList.remove('active'));
         if (btn) btn.classList.add('active');
 
+        // RONi 서브탭 노출 로직
+        const roniSubTab = document.getElementById('roniSubTabContainer');
+        let actualCategory = category;
+        if (category === 'roni') {
+            if(roniSubTab) roniSubTab.style.display = 'flex';
+            actualCategory = currentRoniMode === 'hidden' ? 'roniHidden' : 'roniObjet';
+            titleName = currentRoniMode === 'hidden' ? 'RONi (히든)' : 'RONi (오브제)';
+        } else {
+            if(roniSubTab) roniSubTab.style.display = 'none';
+        }
+
         currentCareTitle = titleName;
         document.getElementById('dashboardTitle').innerText = '✨ 구독 Care 비용';
 
         const tbody = document.getElementById('careTableBody');
         tbody.innerHTML = '';
 
-        careData[category].forEach(item => {
-            const isChecked = !!(checkedState[item.id] && checkedState[item.id].checked);
-            const tr = document.createElement('tr');
-            if (!isChecked) tr.classList.add('disabled-row');
+        if(careData[actualCategory]) {
+            careData[actualCategory].forEach(item => {
+                const isChecked = !!(checkedState[item.id] && checkedState[item.id].checked);
+                const tr = document.createElement('tr');
+                if (!isChecked) tr.classList.add('disabled-row');
 
-            const safeName = String(item.name).replace(/'/g, "\'");
-            const safeTitle = String(titleName).replace(/'/g, "\'");
-            const safePeriod = String(item.period).replace(/'/g, "\\'");
-            const safeDesc = String(item.desc).replace(/'/g, "\\'");
-            tr.innerHTML = `<td class="checkbox-cell"><input type="checkbox" style="width:18px;height:18px; cursor:pointer;" onchange="toggleCheck('${item.id}', ${item.price}, '${safeName}', '${safeTitle}', '${safePeriod}', '${safeDesc}', this, this.parentElement.parentElement)" ${isChecked ? 'checked' : ''}></td>
-                <td class="text-left" style="color:#0056b3; font-weight:bold;">${item.name}</td><td>${item.period}</td>
-                <td class="text-right" style="font-weight:bold;">${item.price === 0 ? "별도 산정" : fn(item.price) + "원"}</td><td class="text-left" style="font-size:11px; color:#555;">${item.desc}</td>`;
-            tbody.appendChild(tr);
-        });
+                const safeName = String(item.name).replace(/'/g, "\\'");
+                const safeTitle = String(titleName).replace(/'/g, "\\'");
+                const safePeriod = String(item.period).replace(/'/g, "\\'");
+                const safeDesc = String(item.desc).replace(/'/g, "\\'");
+                tr.innerHTML = `<td class="checkbox-cell"><input type="checkbox" style="width:18px;height:18px; cursor:pointer;" onchange="toggleCheck('${item.id}', ${item.price}, '${safeName}', '${safeTitle}', '${safePeriod}', '${safeDesc}', this, this.parentElement.parentElement)" ${isChecked ? 'checked' : ''}></td>
+                    <td class="text-left" style="color:#0056b3; font-weight:bold;">${item.name}</td><td>${item.period}</td>
+                    <td class="text-right" style="font-weight:bold;">${item.price === 0 ? "별도 산정" : fn(item.price) + "원"}</td><td class="text-left" style="font-size:11px; color:#555;">${item.desc}</td>`;
+                tbody.appendChild(tr);
+            });
+        }
+    }
+
+    function changeRoniSubTab(mode) {
+        currentRoniMode = mode;
+        const btnHidden = document.getElementById('btnRoniHidden');
+        const btnObjet = document.getElementById('btnRoniObjet');
+        
+        if(mode === 'hidden') {
+            btnHidden.style.background = '#0f766e';
+            btnObjet.style.background = '#475569';
+        } else {
+            btnHidden.style.background = '#475569';
+            btnObjet.style.background = '#0f766e';
+        }
+        
+        const activeBtn = document.querySelector('.tab-btn.active');
+        if(activeBtn && activeBtn.innerText === 'RONi') {
+            changeTab('roni', 'RONi', activeBtn);
+        }
     }
 
     function resetPrintModes() {
