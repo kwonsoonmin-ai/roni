@@ -359,10 +359,12 @@
         .btn-print-secondary { background-color: #5f6b77; }
         .btn-planner { background-color: #0f766e; }
         .btn-planner:hover { background-color: #0d5c56; }
-        .btn-roni { background-color: #4338ca; } /* RONi vs 로보락 버튼색상 */
+        .btn-roni { background-color: #4338ca; } 
         .btn-roni:hover { background-color: #3730a3; }
-        .btn-youtube { background-color: #e50914; } /* 유튜브 버튼색상 */
+        .btn-youtube { background-color: #e50914; } 
         .btn-youtube:hover { background-color: #b80710; }
+        .btn-bathair { background-color: #0284c7; } /* 바스에어 전용 버튼 색상 추가 */
+        .btn-bathair:hover { background-color: #0369a1; }
 
         .app-meta {
             margin-top: 10px;
@@ -555,10 +557,12 @@
             <button type="button" class="btn-print" onclick="printEstimate()">비교표 출력</button>
             <button type="button" class="btn-print btn-print-secondary" onclick="printCare()">구독 Care 출력</button>
             <button type="button" class="btn-print btn-print-secondary" onclick="printAllPage()">전체 출력</button>
-            <!-- 🚨 수정된 부분: 교원 플래너 버튼 클릭 시 새 파일로 이동하도록 링크 변경 🚨 -->
-            <button type="button" class="btn-print btn-planner" onclick="window.open('교원플래너 0730.html', '_blank')">교원 플래너</button>
+            <!-- 교원 플래너 버튼 -->
+            <button type="button" class="btn-print btn-planner" onclick="window.open('교원플래너%200730.html', '_blank')">교원 플래너</button>
             <button type="button" class="btn-print btn-youtube" onclick="openYoutubeReviewModal()">📺 RONi 유튜브 리뷰</button>
             <button type="button" class="btn-print btn-roni" onclick="openRoniFeatureModal()">✨ RONi 타사 비교</button>
+            <!-- 🚨 새로 추가된 바스에어 생활씬 버튼 -->
+            <button type="button" class="btn-print btn-bathair" onclick="openBathAirVideoModal()">🚿 바스에어 생활씬</button>
         </div>
 
         <div class="gap-toolbar">
@@ -763,7 +767,7 @@
     </div>
 </div>
 
-<!-- ================= ✨ RONi vs 로보락 vs 삼성 완벽 비교 분석 모달 (업그레이드 됨) ================= -->
+<!-- ================= ✨ RONi vs 로보락 vs 삼성 완벽 비교 분석 모달 ================= -->
 <div class="security-overlay" id="roniFeatureOverlay" style="display:none;" onclick="closeRoniFeatureModal(event)">
     <div class="security-card" style="max-width: 1400px; padding: 30px; max-height: 90vh; overflow-y: auto;" onclick="event.stopPropagation()">
         
@@ -1234,6 +1238,111 @@
     </div>
 </div>
 
+<!-- ================= 🚿 바스에어 생활씬 영상 탭 (6개 영상 모달) ================= -->
+<div class="security-overlay" id="bathAirVideoOverlay" style="display:none;" onclick="closeBathAirVideoModal(event)">
+    <div class="security-card vg-container" style="max-width: 1000px; padding: 30px; max-height: 90vh; overflow-y: auto; position: relative;" onclick="event.stopPropagation()">
+        
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+            <h3 style="margin: 0; font-size: 22px; color: #1e293b; font-weight: bold;">🚿 바스에어 생활씬 영상</h3>
+            <button type="button" onclick="closeBathAirVideoModal()" style="background: none; border: none; font-size: 24px; cursor: pointer; color: #64748b;">✖</button>
+        </div>
+
+        <!-- 6개 썸네일 그리드 배열 -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
+            
+            <!-- 1. 온풍/송풍편 -->
+            <div style="cursor: pointer; border-radius: 12px; overflow: hidden; box-shadow: 0 6px 15px rgba(0,0,0,0.08); transition: transform 0.2s, box-shadow 0.2s; background: #fff;" onclick="window.open('https://www.youtube.com/watch?v=gZfi4BnEE4E', '_blank')" onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 12px 20px rgba(0,0,0,0.15)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 15px rgba(0,0,0,0.08)';">
+                <div style="position: relative; width: 100%; padding-top: 56.25%; background: #000;">
+                    <img src="https://img.youtube.com/vi/gZfi4BnEE4E/maxresdefault.jpg" onerror="this.src='https://img.youtube.com/vi/gZfi4BnEE4E/hqdefault.jpg'" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;" alt="온풍/송풍편">
+                    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.25); display: flex; align-items: center; justify-content: center;">
+                        <i class="fa-brands fa-youtube" style="color: #e50914; font-size: 50px; filter: drop-shadow(0 2px 8px rgba(0,0,0,0.4));"></i>
+                    </div>
+                </div>
+                <div style="padding: 16px;">
+                    <div style="font-weight: 900; font-size: 15px; margin-bottom: 6px; color: #1e293b; line-height: 1.4;">겨울에는 온풍으로, 여름에는 송풍으로 [온풍·송풍] 편</div>
+                    <div style="font-size: 13px; color: #64748b; font-weight: bold;">LG전자</div>
+                </div>
+            </div>
+
+            <!-- 2. 신혼부부편 -->
+            <div style="cursor: pointer; border-radius: 12px; overflow: hidden; box-shadow: 0 6px 15px rgba(0,0,0,0.08); transition: transform 0.2s, box-shadow 0.2s; background: #fff;" onclick="window.open('https://www.youtube.com/watch?v=1TRWLhLOdK0', '_blank')" onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 12px 20px rgba(0,0,0,0.15)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 15px rgba(0,0,0,0.08)';">
+                <div style="position: relative; width: 100%; padding-top: 56.25%; background: #000;">
+                    <img src="https://img.youtube.com/vi/1TRWLhLOdK0/maxresdefault.jpg" onerror="this.src='https://img.youtube.com/vi/1TRWLhLOdK0/hqdefault.jpg'" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;" alt="신혼부부편">
+                    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.25); display: flex; align-items: center; justify-content: center;">
+                        <i class="fa-brands fa-youtube" style="color: #e50914; font-size: 50px; filter: drop-shadow(0 2px 8px rgba(0,0,0,0.4));"></i>
+                    </div>
+                </div>
+                <div style="padding: 16px;">
+                    <div style="font-weight: 900; font-size: 15px; margin-bottom: 6px; color: #1e293b; line-height: 1.4;">머물고 싶은 프리미엄 [신혼부부편]</div>
+                    <div style="font-size: 13px; color: #64748b; font-weight: bold;">LG전자</div>
+                </div>
+            </div>
+
+            <!-- 3. 공간케어편 -->
+            <div style="cursor: pointer; border-radius: 12px; overflow: hidden; box-shadow: 0 6px 15px rgba(0,0,0,0.08); transition: transform 0.2s, box-shadow 0.2s; background: #fff;" onclick="window.open('https://www.youtube.com/watch?v=IpnFm8aHuiA', '_blank')" onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 12px 20px rgba(0,0,0,0.15)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 15px rgba(0,0,0,0.08)';">
+                <div style="position: relative; width: 100%; padding-top: 56.25%; background: #000;">
+                    <img src="https://img.youtube.com/vi/IpnFm8aHuiA/maxresdefault.jpg" onerror="this.src='https://img.youtube.com/vi/IpnFm8aHuiA/hqdefault.jpg'" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;" alt="공간케어편">
+                    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.25); display: flex; align-items: center; justify-content: center;">
+                        <i class="fa-brands fa-youtube" style="color: #e50914; font-size: 50px; filter: drop-shadow(0 2px 8px rgba(0,0,0,0.4));"></i>
+                    </div>
+                </div>
+                <div style="padding: 16px;">
+                    <div style="font-weight: 900; font-size: 15px; margin-bottom: 6px; color: #1e293b; line-height: 1.4;">최적의 온·습도 관리로 욕실을 늘 쾌적하게 [공간케어] 편</div>
+                    <div style="font-size: 13px; color: #64748b; font-weight: bold;">LG전자</div>
+                </div>
+            </div>
+
+            <!-- 4. 클린케어편 -->
+            <div style="cursor: pointer; border-radius: 12px; overflow: hidden; box-shadow: 0 6px 15px rgba(0,0,0,0.08); transition: transform 0.2s, box-shadow 0.2s; background: #fff;" onclick="window.open('https://www.youtube.com/watch?v=03xzWauJ2UQ', '_blank')" onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 12px 20px rgba(0,0,0,0.15)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 15px rgba(0,0,0,0.08)';">
+                <div style="position: relative; width: 100%; padding-top: 56.25%; background: #000;">
+                    <img src="https://img.youtube.com/vi/03xzWauJ2UQ/maxresdefault.jpg" onerror="this.src='https://img.youtube.com/vi/03xzWauJ2UQ/hqdefault.jpg'" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;" alt="클린케어편">
+                    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.25); display: flex; align-items: center; justify-content: center;">
+                        <i class="fa-brands fa-youtube" style="color: #e50914; font-size: 50px; filter: drop-shadow(0 2px 8px rgba(0,0,0,0.4));"></i>
+                    </div>
+                </div>
+                <div style="padding: 16px;">
+                    <div style="font-weight: 900; font-size: 15px; margin-bottom: 6px; color: #1e293b; line-height: 1.4;">눈에 안 보이는 세균까지 깨끗하게 [클린케어] 편</div>
+                    <div style="font-size: 13px; color: #64748b; font-weight: bold;">LG전자</div>
+                </div>
+            </div>
+
+            <!-- 5. 육아맘편 -->
+            <div style="cursor: pointer; border-radius: 12px; overflow: hidden; box-shadow: 0 6px 15px rgba(0,0,0,0.08); transition: transform 0.2s, box-shadow 0.2s; background: #fff;" onclick="window.open('https://www.youtube.com/watch?v=6oxiqdCPO8E', '_blank')" onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 12px 20px rgba(0,0,0,0.15)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 15px rgba(0,0,0,0.08)';">
+                <div style="position: relative; width: 100%; padding-top: 56.25%; background: #000;">
+                    <img src="https://img.youtube.com/vi/6oxiqdCPO8E/maxresdefault.jpg" onerror="this.src='https://img.youtube.com/vi/6oxiqdCPO8E/hqdefault.jpg'" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;" alt="육아맘편">
+                    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.25); display: flex; align-items: center; justify-content: center;">
+                        <i class="fa-brands fa-youtube" style="color: #e50914; font-size: 50px; filter: drop-shadow(0 2px 8px rgba(0,0,0,0.4));"></i>
+                    </div>
+                </div>
+                <div style="padding: 16px;">
+                    <div style="font-weight: 900; font-size: 15px; margin-bottom: 6px; color: #1e293b; line-height: 1.4;">머물고 싶은 프리미엄 [육아맘편]</div>
+                    <div style="font-size: 13px; color: #64748b; font-weight: bold;">LG전자</div>
+                </div>
+            </div>
+
+            <!-- 6. 새로운 기준편 -->
+            <div style="cursor: pointer; border-radius: 12px; overflow: hidden; box-shadow: 0 6px 15px rgba(0,0,0,0.08); transition: transform 0.2s, box-shadow 0.2s; background: #fff;" onclick="window.open('https://www.youtube.com/watch?v=-1FfAA1fN-4&list=PL1w6LtN-WorsPG5zeR0T7QXx5yBJJ4Rz1', '_blank')" onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 12px 20px rgba(0,0,0,0.15)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 15px rgba(0,0,0,0.08)';">
+                <div style="position: relative; width: 100%; padding-top: 56.25%; background: #000;">
+                    <img src="https://img.youtube.com/vi/-1FfAA1fN-4/maxresdefault.jpg" onerror="this.src='https://img.youtube.com/vi/-1FfAA1fN-4/hqdefault.jpg'" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;" alt="새로운 기준편">
+                    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.25); display: flex; align-items: center; justify-content: center;">
+                        <i class="fa-brands fa-youtube" style="color: #e50914; font-size: 50px; filter: drop-shadow(0 2px 8px rgba(0,0,0,0.4));"></i>
+                    </div>
+                </div>
+                <div style="padding: 16px;">
+                    <div style="font-weight: 900; font-size: 15px; margin-bottom: 6px; color: #1e293b; line-height: 1.4;">머물고 싶은 프리미엄 [온풍편]</div>
+                    <div style="font-size: 13px; color: #64748b; font-weight: bold;">LG전자</div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="security-actions" style="margin-top:25px; text-align: center;">
+            <button type="button" class="btn-security btn-security-primary" style="background:#475569; border:none; color:white; font-size: 14px; padding: 10px 30px; min-width: 120px; border-radius: 6px; cursor: pointer; font-weight: bold; transition: background 0.2s;" onmouseover="this.style.background='#334155'" onmouseout="this.style.background='#475569'" onclick="closeBathAirVideoModal()">닫기</button>
+        </div>
+        
+    </div>
+</div>
+
 <script>
     // =========================================================
     // 🚨 자바스크립트 스크립트 시작
@@ -1265,8 +1374,8 @@
     }
 
     function initSecurity() {
-        // [업데이트] 8월 19일 밤 12시 (8월 19일 00:00:00) 만료 설정
-        const expiryDate = new Date('2026-08-19T00:00:00');
+        // [업데이트] 8월 19일 밤 12시 (8월 20일 00:00:00) 만료 설정
+        const expiryDate = new Date('2026-08-20T00:00:00');
         const now = new Date();
 
         if (now >= expiryDate) {
@@ -2534,6 +2643,16 @@
     function closeYoutubeReviewModal(event) {
         if (event && event.target !== document.getElementById('youtubeReviewOverlay') && event.target.tagName !== 'BUTTON' && event.type !== 'click') return;
         document.getElementById('youtubeReviewOverlay').style.display = 'none';
+    }
+
+    // [바스에어 생활씬 영상 팝업 로직]
+    function openBathAirVideoModal() {
+        document.getElementById('bathAirVideoOverlay').style.display = 'flex';
+    }
+    
+    function closeBathAirVideoModal(event) {
+        if (event && event.target !== document.getElementById('bathAirVideoOverlay') && event.target.tagName !== 'BUTTON' && event.type !== 'click') return;
+        document.getElementById('bathAirVideoOverlay').style.display = 'none';
     }
 </script>
 </body>
