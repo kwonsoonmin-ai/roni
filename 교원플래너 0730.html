@@ -916,6 +916,14 @@ function renderUnifiedResult() {
 function openKyowonPopup(){ document.getElementById("kyowonPopup").classList.add("show"); document.body.style.overflow="hidden"; }
 function closeKyowonPopup(){ document.getElementById("kyowonPopup").classList.remove("show"); document.body.style.overflow=""; }
 
+function switchIframe(index) {
+    document.getElementById("kyowonIframe").src = kyowonUrls[index];
+    document.getElementById("kyowonLink").href = kyowonUrls[index];
+    const tabs = document.querySelectorAll(".modalTab .tabBtn");
+    tabs.forEach(t => t.classList.remove("active"));
+    tabs[index].classList.add("active");
+}
+
 resetEntireConsultation();
 </script>
 </body>
