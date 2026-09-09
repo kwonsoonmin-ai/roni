@@ -4,8 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>경남담당 고객맞춤플래너 통합 대시보드</title>
+    <!-- FontAwesome 추가 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* ================= 화면 레이아웃 ================= */
         body { font-family: 'Malgun Gothic', '맑은 고딕', sans-serif; background-color: #f4f7f6; margin: 0; padding: 20px; color: #333; font-size: 14px; }
         .container { display: flex; gap: 20px; max-width: 1900px; margin: 0 auto; align-items: flex-start; }
         .right-column { flex: 1; display: flex; flex-direction: column; gap: 20px; position: sticky; top: 20px; }
@@ -27,6 +29,7 @@
         .model-cell { white-space: pre; word-break: normal; text-align: left; padding-left: 15px; font-size: 12px; line-height: 1.6; color: #0056b3; font-weight: bold; vertical-align: middle; }
         .number-cell { text-align: right; padding-right: 10px; }
         
+        /* 엑셀 붙여넣기 영역 */
         .paste-area-container { background: #eef2f5; padding: 15px; border-radius: 5px; border: 1px dashed #0056b3; margin-bottom: 20px; }
         .paste-area-container p { margin-top: 0; font-weight: bold; color: #0056b3; margin-bottom: 10px; }
         .sheet-shell { border: 1px solid #c9d3df; border-radius: 8px; overflow: hidden; background: #fff; }
@@ -41,13 +44,33 @@
         .sheet-table td.active-cell { outline: 2px solid #4f8cff; outline-offset: -2px; background: #f8fbff; }
         .hidden-raw { display: none !important; }
 
+        /* 버튼 및 툴바 */
         .btn-row { display: flex; gap: 10px; margin-top: 10px; }
         .btn-calc, .btn-clear { color: white; border: none; padding: 12px 20px; cursor: pointer; border-radius: 4px; font-weight: bold; width: 100%; font-size: 15px; transition: 0.2s; }
         .btn-calc { background-color: #0056b3; }
         .btn-calc:hover { background-color: #004494; }
         .btn-clear { background-color: #6c757d; }
         .btn-clear:hover { background-color: #5a6268; }
-        
+        .print-toolbar { display: flex; gap: 6px; margin-bottom: 12px; width: 100%; }
+        .btn-print { flex: 1; background-color: #2c3e50; color: #fff; border: none; padding: 8px 4px; border-radius: 4px; font-weight: bold; cursor: pointer; font-size: 12.5px; line-height: 1.35; letter-spacing: -0.3px; transition: 0.2s; text-align: center; }
+        .btn-print-secondary { background-color: #5f6b77; }
+        .btn-planner { background-color: #0f766e; }
+        .btn-planner:hover { background-color: #0d5c56; }
+        .btn-roni { background-color: #4338ca; } 
+        .btn-roni:hover { background-color: #3730a3; }
+        .btn-youtube { background-color: #e50914; } 
+        .btn-youtube:hover { background-color: #b80710; }
+        .btn-bathair { background-color: #0284c7; } 
+        .btn-bathair:hover { background-color: #0369a1; }
+        .btn-washtower { background-color: #8b5cf6; } 
+        .btn-washtower:hover { background-color: #7c3aed; }
+        .gap-toolbar { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+        .gap-select { min-width: 120px; padding: 8px 10px; border: 1px solid #cfd8dc; border-radius: 4px; font-size: 14px; background: #fff; }
+        .result-toolbar { display: flex; justify-content: flex-end; gap: 8px; margin: 8px 0 10px 0; }
+        .btn-toggle-model { background: #ffffff; color: #0056b3; border: 1px solid #0056b3; border-radius: 6px; padding: 8px 12px; font-size: 12px; font-weight: bold; cursor: pointer; white-space: nowrap; }
+        .btn-toggle-model:hover { background: #eef5ff; }
+
+        /* Care 패널 영역 */
         .care-summary { background-color: #eef2f5; padding: 15px 20px; border-radius: 6px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; border: 1px solid #dce3e9; }
         .care-summary-left { flex: 1; min-width: 0; }
         .summary-title { font-size: 16px; font-weight: bold; color: #2c3e50; margin-bottom: 8px; }
@@ -62,7 +85,6 @@
         .tab-btn { flex: 1 1 calc(16% - 4px); min-width: 95px; padding: 8px 4px; cursor: pointer; border: 1px solid #0056b3; background: #fff; color: #0056b3; border-radius: 4px; font-weight: bold; font-size: 11px; transition: 0.2s; text-align: center; }
         .tab-btn.active { background: #0056b3; color: #fff; }
         .video-btn:hover { background-color: #eef5ff; }
-
         .care-table th { background-color: #eef2f5; }
         .checkbox-cell { text-align: center; }
         .text-left { text-align: left; }
@@ -72,43 +94,13 @@
         #quoteTableWrap { overflow-x: auto; }
         #quoteTable { min-width: 900px; }
 
-        @media (max-width: 1200px) { .container { flex-direction: column; } .right-column { position: static; } }
-        
-        .print-toolbar { display: flex; gap: 6px; margin-bottom: 12px; width: 100%; }
-        .btn-print { flex: 1; background-color: #2c3e50; color: #fff; border: none; padding: 8px 4px; border-radius: 4px; font-weight: bold; cursor: pointer; font-size: 12.5px; line-height: 1.35; letter-spacing: -0.3px; transition: 0.2s; text-align: center; }
-        .btn-print-secondary { background-color: #5f6b77; }
-        .btn-planner { background-color: #0f766e; }
-        .btn-planner:hover { background-color: #0d5c56; }
-        .btn-roni { background-color: #4338ca; } 
-        .btn-roni:hover { background-color: #3730a3; }
-        .btn-youtube { background-color: #e50914; } 
-        .btn-youtube:hover { background-color: #b80710; }
-        .btn-bathair { background-color: #0284c7; } 
-        .btn-bathair:hover { background-color: #0369a1; }
-        .btn-washtower { background-color: #8b5cf6; } 
-        .btn-washtower:hover { background-color: #7c3aed; }
-
-        .app-meta { margin-top: 10px; font-size: 12px; color: #111827; text-align: right; font-weight: bold; }
-        .security-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85); display: none; align-items: center; justify-content: center; z-index: 9999; }
-        .security-card { width: 100%; max-width: 420px; background: #fff; border-radius: 10px; padding: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
-        .security-card h3 { margin: 0 0 10px 0; font-size: 20px; color: #2c3e50; }
-        .security-card p { margin: 0 0 12px 0; color: #555; line-height: 1.5; }
-        .print-footer { display: none; }
-        .gap-toolbar { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
-        .gap-select { min-width: 120px; padding: 8px 10px; border: 1px solid #cfd8dc; border-radius: 4px; font-size: 14px; background: #fff; }
-        .result-toolbar { display: flex; justify-content: flex-end; gap: 8px; margin: 8px 0 10px 0; }
-        .btn-toggle-model { background: #ffffff; color: #0056b3; border: 1px solid #0056b3; border-radius: 6px; padding: 8px 12px; font-size: 12px; font-weight: bold; cursor: pointer; white-space: nowrap; }
-        .btn-toggle-model:hover { background: #eef5ff; }
-
-        /* 패키지 관련 스타일 */
-        .pkg-section-title { font-size: 18px; color: #fff; background: #2c3e50; padding: 12px 20px; border-radius: 6px; margin: 0 0 15px 0; font-weight: bold; display: flex; align-items: center; gap: 8px;}
+        /* 패키지 모달 스타일 */
         .pkg-table { width: 100%; border-collapse: collapse; margin-bottom: 25px; font-size: 14px; text-align: center; }
         .pkg-table th, .pkg-table td { border: 1px solid #dce3e9; padding: 10px 8px; white-space: nowrap; word-break: keep-all; }
         .pkg-table th { background-color: #eef2f5; font-weight: bold; color: #334155; }
         .pkg-table .row-group { background-color: #f8fafc; font-weight: bold; color: #475569; }
         .pkg-table .highlight-cool td { background-color: #f0f8ff; color: #0056b3; font-weight: bold;}
         .pkg-dot { color: #0284c7; font-size: 14px; font-weight: 900; }
-        
         .plan-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin-bottom: 25px; align-items: stretch;}
         .plan-card { border: 1px solid #c9d3df; border-radius: 8px; overflow: hidden; background: #fff; box-shadow: 0 4px 6px rgba(0,0,0,0.02); display: flex; flex-direction: column;}
         .plan-header { padding: 10px 8px; color: #fff; font-weight: bold; font-size: 15.5px; text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center; height: 60px; box-sizing: border-box; line-height: 1.3; }
@@ -133,7 +125,11 @@
         .top5-table tr.highlight-row td, .top5-table td.highlight-bg { background-color: #ffedd5 !important; font-weight: bold; color: #9a3412;} 
         .top5-title { font-weight: bold; font-size: 15px; color: #1e293b; margin-bottom: 10px; border-bottom: 2px solid #cbd5e1; padding-bottom: 5px; display: inline-block; }
 
-        /* 비주얼 가이드 모달 */
+        /* 모달 및 공통 시스템 UI */
+        .security-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85); display: none; align-items: center; justify-content: center; z-index: 9999; }
+        .security-card { width: 100%; max-width: 420px; background: #fff; border-radius: 10px; padding: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .security-card h3 { margin: 0 0 10px 0; font-size: 20px; color: #2c3e50; }
+        .security-card p { margin: 0 0 12px 0; color: #555; line-height: 1.5; }
         .vg-container { background-color: #ffffff; width: 100%; border-radius: 12px; box-shadow: 0 15px 35px rgba(0,0,0,0.05); overflow: hidden; position: relative;}
         .vg-hero-section { background: linear-gradient(120deg, #1a1a2e 0%, #16213e 100%); color: #ffffff; padding: 40px 30px; text-align: center; position: relative; }
         .vg-hero-section::after { content: ''; position: absolute; bottom: -1px; left: 0; right: 0; height: 30px; background: white; clip-path: polygon(0 100%, 100% 100%, 100% 0, 50% 100%, 0 0); }
@@ -168,15 +164,13 @@
         .win-badge-arrow { font-size: 18px; color: #e11d48; font-weight: 900; letter-spacing: -2px; }
         .win-badge-other { color: #94a3b8; font-weight: normal; font-size: 13px; text-decoration: line-through; }
 
+        .app-meta { margin-top: 10px; font-size: 12px; color: #111827; text-align: right; font-weight: bold; }
+        .print-footer { display: none; }
+        .print-subscription-notice { display: none; }
+
+        @media (max-width: 1200px) { .container { flex-direction: column; } .right-column { position: static; } }
         @media (max-width: 768px) { .vg-comparison-grid { grid-template-columns: 1fr; gap: 15px; } .vg-content-body { padding: 25px 20px; } .vg-hero-section { padding: 30px 20px; } .vg-hero-title { font-size: 22px; } .top5-grid { grid-template-columns: 1fr; } }
         
-        #quoteTable.hide-model-row tr.model-row { display: none !important; }
-        .subscription-dominant-header { background-color: #dff3df !important; color: #1f6b2a !important; font-weight: 700 !important; }
-        .subscription-dominant-cell { background-color: #eaf7ea !important; }
-        .highlight-dark td.subscription-dominant-cell { background-color: #2f6f3b !important; color: #ffffff !important; }
-        .highlight-yellow td.subscription-dominant-cell { background-color: #d9f0d9 !important; color: #1f6b2a !important; }
-        .gap-row td.subscription-dominant-cell { background-color: #eaf7ea !important; color: #1f6b2a !important; }
-
         @media print {
             * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
             .print-toolbar, .paste-area-container, .tab-container, .btn-calc, .btn-clear, .btn-clear-select, #videoPanel, #installGuidePanel, #lifeStylePanel, #qrPanel, #cardQrModalOverlay, .security-overlay, .gap-toolbar, .app-meta { display: none !important; }
@@ -201,7 +195,16 @@
             .print-subscription-notice li { font-size: 11px; color: #444 !important; line-height: 1.4; margin-bottom: 4px; }
             #quoteTable.hide-model-row tr.model-row { display: none !important; }
             #lifeStylePanel { display: block !important; page-break-before: always; }
+            #lsSubPkg, #lsWedPkg { display: block !important; }
+            .ls-tabs { display: none !important; } 
         }
+
+        #quoteTable.hide-model-row tr.model-row { display: none !important; }
+        .subscription-dominant-header { background-color: #dff3df !important; color: #1f6b2a !important; font-weight: 700 !important; }
+        .subscription-dominant-cell { background-color: #eaf7ea !important; }
+        .highlight-dark td.subscription-dominant-cell { background-color: #2f6f3b !important; color: #ffffff !important; }
+        .highlight-yellow td.subscription-dominant-cell { background-color: #d9f0d9 !important; color: #1f6b2a !important; }
+        .gap-row td.subscription-dominant-cell { background-color: #eaf7ea !important; color: #1f6b2a !important; }
     </style>
 </head>
 <body>
@@ -214,7 +217,7 @@
             <button type="button" class="btn-print" onclick="printEstimate()">비교표<br>출력</button>
             <button type="button" class="btn-print btn-print-secondary" onclick="printCare()">구독 Care<br>출력</button>
             <button type="button" class="btn-print btn-print-secondary" onclick="printAllPage()">전체<br>출력</button>
-            <button type="button" class="btn-print btn-planner" onclick="window.open('교원플래너%0730.html', '_blank')">교원<br>플래너</button>
+            <button type="button" class="btn-print btn-planner" onclick="window.open('교원플래너%200730.html', '_blank')">교원<br>플래너</button>
             <button type="button" class="btn-print btn-youtube" onclick="openYoutubeReviewModal()">📺 RONi<br>유튜브 리뷰</button>
             <button type="button" class="btn-print btn-roni" onclick="openRoniFeatureModal()">✨ RONi<br>타사 비교</button>
             <button type="button" class="btn-print btn-bathair" onclick="openBathAirVideoModal()">🚿 바스에어<br>생활씬</button>
@@ -578,7 +581,7 @@
                                 <li>배터리: 비공개</li>
                             </ul>
                             <div style="background: #dbeafe; border-left: 3px solid #3b82f6; padding: 8px; margin-top: 8px; border-radius: 4px; font-size: 13px; line-height: 1.6;">
-                                🗣️ "고객님, 예전엔 로보락이 길을 잘 찾았죠. 하지만 RONi는 <strong>자율주행 자동차에 들어가는 최고급 센서(dToF)</strong>를 달아서 <strong>한국 아파트의 복잡한 문턱이나 장애물도 기가 막히게 피해 갑니다.</strong>"
+                                🗣️ "고객님, 예전엔 로보락이 길을 초기에 잘 찾았죠. 하지만 RONi는 <strong>자율주행 자동차에 들어가는 최고급 센서(dToF)</strong>를 달아서 <strong>한국 아파트의 복잡한 문턱이나 장애물도 기가 막히게 피해 갑니다.</strong>"
                             </div>
                         </td>
                         <td style="background: #fff; border-right: 1px solid #cbd5e1; border-bottom: 1px solid #cbd5e1; padding: 12px;">
@@ -1227,7 +1230,7 @@
 
 <script>
     const APP_CONFIG = {
-        version: 'v9', 
+        version: 'v12', 
         notice: '경남담당 전용플래너'
     };
 
