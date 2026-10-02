@@ -28,7 +28,6 @@
         .number-cell { text-align: right; padding-right: 10px; }
         .paste-area-container { background: #eef2f5; padding: 15px; border-radius: 5px; border: 1px dashed #0056b3; margin-bottom: 20px; }
         .paste-area-container p { margin-top: 0; font-weight: bold; color: #0056b3; margin-bottom: 10px; }
-        
         .excel-paste-shell { border: 1px solid #c9d3df; border-radius: 6px; overflow: hidden; background: #ffffff; height: 260px; }
         .excel-paste-header { display: grid; grid-template-columns: 44px repeat(8, 1fr); background: #e9edf3; border-bottom: 1px solid #c9d3df; font-size: 12px; color: #4b5563; user-select: none; }
         .excel-paste-header div { padding: 6px 0; text-align: center; border-right: 1px solid #d6dee8; font-weight: bold; }
@@ -38,7 +37,6 @@
         .excel-grid-wrap { position: relative; overflow: auto; background: repeating-linear-gradient(to right, rgba(201, 211, 223, 0.9) 0px, rgba(201, 211, 223, 0.9) 1px, transparent 1px, transparent 120px), repeating-linear-gradient(to bottom, rgba(201, 211, 223, 0.9) 0px, rgba(201, 211, 223, 0.9) 1px, transparent 1px, transparent 32px), #fff; }
         #rawPasteArea { position: relative; z-index: 2; width: 1400px; min-width: 100%; height: 100%; min-height: 224px; padding: 10px 12px; border: none; border-radius: 0; font-family: 'Malgun Gothic', '맑은 고딕', sans-serif; font-size: 12px; resize: none; box-sizing: border-box; background: transparent; line-height: 20px; overflow: auto; white-space: pre; }
         #rawPasteArea:focus { outline: 2px solid #8bb8ff; outline-offset: -2px; }
-        
         .btn-row { display: flex; gap: 10px; margin-top: 10px; }
         .btn-calc, .btn-clear { color: white; border: none; padding: 12px 20px; cursor: pointer; border-radius: 4px; font-weight: bold; width: 100%; font-size: 15px; transition: 0.2s; }
         .btn-calc { background-color: #0056b3; }
@@ -60,7 +58,6 @@
         .tab-btn { flex: 1 1 calc(16% - 4px); min-width: 95px; padding: 8px 4px; cursor: pointer; border: 1px solid #0056b3; background: #fff; color: #0056b3; border-radius: 4px; font-weight: bold; font-size: 11px; transition: 0.2s; text-align: center; }
         .tab-btn.active { background: #0056b3; color: #fff; }
         .video-btn:hover { background-color: #eef5ff; }
-
         .care-table th { background-color: #eef2f5; }
         .checkbox-cell { text-align: center; }
         .text-left { text-align: left; }
@@ -94,7 +91,6 @@
         .print-footer { display: none; }
         .gap-toolbar { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
         .gap-select { min-width: 120px; padding: 8px 10px; border: 1px solid #cfd8dc; border-radius: 4px; font-size: 14px; background: #fff; }
-    
         .sheet-shell{ border:1px solid #c9d3df; border-radius:8px; overflow:hidden; background:#fff; }
         .sheet-toolbar{ display:flex; justify-content:space-between; align-items:center; gap:8px; padding:8px 10px; background:#f7f9fc; border-bottom:1px solid #d7dfeb; font-size:12px; color:#4b5563; }
         .sheet-scroll{ max-height:260px; overflow:auto; background:#fff; }
@@ -139,7 +135,7 @@
         .top5-table { width: 100%; border-collapse: collapse; font-size: 13px; text-align: center; }
         .top5-table th, .top5-table td { border: 1px solid #dce3e9; padding: 8px; white-space: normal; word-break: keep-all;} 
         .top5-table th { background-color: #e2e8f0; color: #334155; }
-        .top5-table tr.highlight-row td, .top5-table td.highlight-bg { background-color: #ffedd5 !important; font-weight: bold; color: #9a3412;} 
+        .top5-table td.highlight-bg { background-color: #ffedd5 !important; font-weight: bold; color: #9a3412;} 
         .top5-title { font-weight: bold; font-size: 15px; color: #1e293b; margin-bottom: 10px; border-bottom: 2px solid #cbd5e1; padding-bottom: 5px; display: inline-block; }
 
         .ls-tab-btn { flex: 1; padding: 10px; cursor: pointer; border: 1px solid #0056b3; background: #fff; color: #0056b3; border-radius: 4px; font-weight: bold; font-size: 14px; transition: 0.2s; text-align: center; }
@@ -170,7 +166,7 @@
             #quoteTable.hide-model-row tr.model-row { display: none !important; }
             #lifeStylePanel { display: block !important; page-break-before: always; }
             #lsSubPkg, #lsWedPkg { display: block !important; }
-            .ls-tabs { display: none !important; }
+            .ls-tabs { display: none !important; } 
         }
         
         .result-toolbar { display: flex; justify-content: flex-end; gap: 8px; margin: 8px 0 10px 0; }
@@ -225,7 +221,7 @@
 </head>
 <body>
 
-<div class="container" id="mainAppContainer" style="display: none;">
+<div class="container" id="mainAppContainer">
     <div class="panel left-panel" id="estimatePanel">
         <h2>📊 경남담당 고객맞춤 플래너</h2>
         
@@ -1358,11 +1354,11 @@
                         <thead><tr><th>순위</th><th>모델명</th><th>제품군</th></tr></thead>
                         <tbody>
                             <tr><td>1</td><td><u>OLED77C6Q*</u></td><td>OLED</td></tr>
-                            <tr class="highlight-row"><td>2</td><td><u>75MRGB86B*</u></td><td>MRGB</td></tr>
+                            <tr><td>2</td><td><u>75MRGB86B*</u></td><td class="highlight-bg">MRGB</td></tr>
                             <tr><td>3</td><td><u>OLED83C6Q*</u></td><td>OLED</td></tr>
-                            <tr class="highlight-row"><td>4</td><td><u>86MRGB86B*</u></td><td>MRGB</td></tr>
+                            <tr><td>4</td><td><u>86MRGB86B*</u></td><td class="highlight-bg">MRGB</td></tr>
                             <tr><td>5</td><td><u>OLED65C6S*</u></td><td>OLED</td></tr>
-                            <tr class="highlight-row"><td>6</td><td><u>32LX6BPGA</u></td><td>스바미2 Max</td></tr>
+                            <tr><td>6</td><td><u>32LX6BPGA</u></td><td class="highlight-bg">스바미2 Max</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -1377,7 +1373,7 @@
                             <tr><td>3</td><td><u>H876GBB111</u></td><td>800L Non-STEM</td></tr>
                             <tr><td>4</td><td><u>G646GBB091</u></td><td>Fit&Max STEM베이직</td></tr>
                             <tr><td>5</td><td><u>M876GBB181</u></td><td>800L STEM베이직</td></tr>
-                            <tr class="highlight-row"><td>6</td><td><u>D646GBB091</u></td><td>STEM베이직 드로워</td></tr>
+                            <tr><td>6</td><td><u>D646GBB091</u></td><td class="highlight-bg">STEM베이직 드로워</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -1388,20 +1384,19 @@
                         <thead><tr><th>순위</th><th>모델명</th><th>제품군</th></tr></thead>
                         <tbody>
                             <tr><td>1</td><td><u>WA2525TAP6Z</u></td><td>워시타워 신모델</td></tr>
-                            <tr class="highlight-row"><td>2</td><td><u>WA2525TTP6Z</u></td><td>워시타워 신모델</td></tr>
-                            <tr class="highlight-row"><td>3</td><td><u>WA2525YMP6G</u></td><td>워시타워 신모델</td></tr>
+                            <tr><td>2</td><td><u>WA2525TTP6Z</u></td><td class="highlight-bg">워시타워 신모델</td></tr>
+                            <tr><td>3</td><td><u>WA2525YMP6G</u></td><td class="highlight-bg">워시타워 신모델</td></tr>
                             <tr><td>4</td><td><u>FC2521UX6C</u></td><td>워시콤보 신모델</td></tr>
                             <tr><td>5</td><td><u>FC2521TX6C</u></td><td>워시콤보 신모델</td></tr>
-                            <tr><td></td><td></td><td></td></tr>
+                            <tr><td></td><td></td><td></td></tr> <!-- 줄 맞춤용 빈 칸 -->
                         </tbody>
                     </table>
+                    <div style="font-size:11px; color:#666; margin-top:5px; line-height:1.4;">
+                        * TV SET 모델 모두 해당패키지 내 추가하여 운영 (ex TV+사운드바, ...)<br>
+                        * 구모델(5모델) 단종(예정) → 8월부 미운영<br>
+                        * 워시콤보 SET 모델 모두 해당패키지 내 추가하여 운영 (ex 워시콤보+미니워시 SET...)
+                    </div>
                 </div>
-            </div>
-            <!-- 안내사항 3줄 추가 -->
-            <div style="font-size:12.5px; color:#444; margin-top:10px; line-height:1.6; font-weight: bold;">
-                * TV SET 모델 모두 해당패키지 내 추가하여 운영 (ex TV+사운드바, ...)<br>
-                * 구모델(5모델) 단종(예정) → 8월부 미운영<br>
-                * 워시콤보 SET 모델 모두 해당패키지 내 추가하여 운영 (ex 워시콤보+미니워시 SET...)
             </div>
         </div>
 
@@ -1417,7 +1412,7 @@
     // =========================================================
     
     const APP_CONFIG = {
-        version: 'v10', 
+        version: 'v9', 
         notice: '경남담당 전용플래너'
     };
 
@@ -1443,14 +1438,16 @@
 
     function initSecurity() {
         try {
-            // [업데이트] 만료일 2026년 11월 1일 연장
+            // [업데이트] 만료일 안전하게 2026년 11월 1일 연장 처리
             const expiryDate = new Date(2026, 10, 31); 
             const now = new Date();
 
             if (now >= expiryDate) {
+                // 만료일 지났을 때: 대시보드를 숨기고 안내창 띄움
                 document.getElementById('mainAppContainer').style.display = 'none';
                 document.getElementById('securityOverlay').style.display = 'flex';
             } else {
+                // 만료일 이전: 대시보드 정상 오픈
                 document.getElementById('mainAppContainer').style.display = 'flex';
                 document.getElementById('securityOverlay').style.display = 'none';
                 updateAppMeta();
@@ -1482,6 +1479,7 @@
 
         for (let i = 0; i < text.length; i++) {
             let char = text[i];
+
             if (inQuotes) {
                 if (char === '"' && text[i + 1] === '"') {
                     currentCell += '"';
@@ -1508,10 +1506,12 @@
                 }
             }
         }
+
         if (currentCell || currentRow.length > 0) {
             currentRow.push(currentCell.trim());
             rows.push(currentRow);
         }
+
         return rows;
     }
 
@@ -1727,6 +1727,7 @@
     let latestResults = [];
     let currentRoniMode = 'hidden';
 
+    // [캐시백 오류 해결] 선납 캐시백 우선 적용 및 정확한 1:1 매칭
     function getKnownKey(text) {
         const norm = String(text).replace(/\s+/g, '');
         if (!norm) return null;
@@ -1737,6 +1738,7 @@
         if (norm.includes('결합할인')) return '결합할인(월)';
         if (norm.includes('선납할인')) return '선납할인(월)';
         
+        // 선납시카드혜택을 무조건 먼저 캐치
         if (norm === '선납캐시백' || norm.includes('선납시카드') || norm.includes('선납카드')) return '선납시카드혜택';
         if (norm === '캐시백' || norm === '캐쉬백' || norm.includes('현금지원')) return '캐시백';
         
@@ -2008,6 +2010,7 @@
                 nums = extracted.map(v => cleanNumber(v)).slice(0, optionCount);
             }
             
+            // 덮어쓰기(=)가 아닌 누적 합산(+ / +=) 적용
             if (parsedData[identifiedKey]) {
                 nums.forEach((num, idx) => {
                     parsedData[identifiedKey][idx] = (parsedData[identifiedKey][idx] || 0) + num;
@@ -2394,94 +2397,169 @@
         ]
     };
 
-    let checkedState = {};
-    let currentCareTitle = '';
-
-    function renderPrintSelectedCareTable() {
-        const tbody = document.getElementById('printSelectedCareBody');
-        const selectedItems = [];
-
-        for (const key in checkedState) {
-            const item = checkedState[key];
-            if (item && item.checked) selectedItems.push(item);
+    const cardData = {
+        'shinhan': { 
+            title: '[신한] 더구독케어', 
+            phone: '080-850-0117', 
+            url: 'https://www.shinhancard.com/pconts/html/card/apply/credit/1234346_2207.html?EntryLoc2=4441&btnApp=dp1',
+            benefits: '30만 ↑ 1.7만<br>70만 ↑ 2.7만<br>130만 ↑ 3.0만<br><span style="font-size:11px; color:#888;">*70만/130만 혜택은 7만원 이상 자동이체시 적용</span>'
+        },
+        'woori_plat': { 
+            title: '[우리] 플래티넘', 
+            phone: '1800-0864', 
+            url: 'https://m.wooricard.com/dcmw/yh1/crd/crd01/M1CRD101S02.do?recomNo=104169',
+            benefits: '100만 ↑ 3.5만<br>150만 ↑ 3.9만<br>200만 ↑ 4.2만'
+        },
+        'woori': { 
+            title: '[우리] LG전자', 
+            phone: '1800-4137', 
+            url: 'https://m.wooricard.com/dcmw/yh1/crd/crd01/M1CRD101S02.do?recomNo=102535',
+            benefits: '30만 ↑ 1.8만<br>70만 ↑ 2.2만<br>120만 ↑ 2.4만'
+        },
+        'kb': { 
+            title: '[KB국민] LG전자 KB국민', 
+            phone: '1644-8639', 
+            url: 'https://m.kbcard.com/CRD/DVIEW/MCAMCXHIACRC0002?mainCC=b&allianceCode=04425',
+            benefits: '<b>[프로모션 운영 / 36개월간]</b><br>30만 ↑ 2.0만<br>80만 ↑ 2.5만<br><span style="font-size:11px; color:#888;">* 37회차부터는 기본 혜택(1.0만/1.5만)만 적용</span>'
+        },
+        'hyundai': { 
+            title: '[현대] LG전자 현대', 
+            phone: '1670-0442', 
+            url: 'https://www.hyundaicard.com/cpc/cr/CPCCR0201_01.hc?cardWcd=LGEHC&eventCode=LGR03#cardDetailHash',
+            benefits: '<b>[프로모션 운영 / 60개월간]</b><br>40만 ↑ 0.8만<br>80만 ↑ 1.2만<br>120만 ↑ 1.6만'
+        },
+        'hana': { 
+            title: '[하나] LG전자', 
+            phone: '1800-1264', 
+            url: 'https://m.hanacard.co.kr/MKCDCM1010M.web?CD_PD_SEQ=16959',
+            benefits: '30만 ↑ 1.3만<br>70만 ↑ 1.7만<br>100만 ↑ 2.0만'
+        },
+        'lotte': { 
+            title: '[롯데] 구독앤로카', 
+            phone: '1899-3965', 
+            url: 'https://www.lottecard.co.kr/', 
+            benefits: '40만 ↑ 2.0만<br>80만 ↑ 2.3만<br>160만 ↑ 2.6만'
         }
+    };
 
-        if (!selectedItems.length) {
-            tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;">선택된 항목 없음</td></tr>';
+    function openCardQrModal(cardKey) {
+        const data = cardData[cardKey];
+        if(!data) return;
+        
+        document.getElementById('cardQrModalTitle').innerText = data.title;
+        document.getElementById('cardQrModalPhone').innerText = '발급 전화: ' + data.phone;
+        document.getElementById('cardQrModalBenefits').innerHTML = data.benefits;
+        
+        const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=160x160&margin=0&data=${encodeURIComponent(data.url)}`;
+        document.getElementById('cardQrImage').src = qrUrl;
+        
+        document.getElementById('cardQrModalOverlay').style.display = 'flex';
+    }
+
+    function closeCardQrModal(event) {
+        if (event && event.target !== document.getElementById('cardQrModalOverlay') && event.target.tagName !== 'BUTTON') {
             return;
         }
-
-        tbody.innerHTML = selectedItems.map(item => `
-            <tr>
-                <td class="text-left">${item.category ? item.category + ' : ' : ''}${item.name}</td>
-                <td>${item.period || '-'}</td>
-                <td class="text-right">${item.price === 0 ? '별도 산정' : fn(item.price) + '원'}</td>
-                <td class="text-left">${item.desc || '-'}</td>
-            </tr>
-        `).join('');
+        document.getElementById('cardQrModalOverlay').style.display = 'none';
+        document.getElementById('cardQrImage').src = ''; 
     }
 
-    function calculateCareTotal() {
-        let totalVal = 0;
-        const selectedLines = [];
+    window.onload = function() {
+        const firstBtn = document.querySelector('.tab-btn');
+        changeTab('tvCare', 'TV 케어', firstBtn);
+        initSecurity(); 
+    };
 
-        for (const key in checkedState) {
-            const item = checkedState[key];
-            if (item && item.checked) {
-                totalVal += item.price;
-                const prefix = item.category ? `${item.category} : ` : '';
-                selectedLines.push(`• ${prefix}${item.name} ${item.price === 0 ? '(별도 산정)' : '(' + fn(item.price) + '원)'}`);
-            }
-        }
-
-        document.getElementById('selectedItemsList').innerText = selectedLines.length ? selectedLines.join('\n') : '선택된 항목 없음';
-        document.getElementById('totalValue').innerText = fn(totalVal);
-        renderPrintSelectedCareTable();
-    }
-
-    function toggleCheck(id, price, name, category, period, desc, cb, row) {
-        checkedState[id] = cb.checked ? { checked: true, price: price, name: name, category: category, period: period, desc: desc } : false;
-        if (cb.checked) row.classList.remove('disabled-row');
-        else row.classList.add('disabled-row');
-        calculateCareTotal();
-    }
-
-    function clearSelectedItems() {
-        checkedState = {};
-        document.querySelectorAll('#careTableBody input[type="checkbox"]').forEach(cb => {
-            cb.checked = false;
-            const row = cb.closest('tr');
-            if (row) row.classList.add('disabled-row');
-        });
-        calculateCareTotal();
-    }
-
-    function changeTab(category, titleName, btn) {
-        document.querySelectorAll('.tab-btn:not(.video-btn)').forEach(b => b.classList.remove('active'));
-        if (btn) btn.classList.add('active');
-
-        const roniSubTab = document.getElementById('roniSubTabContainer');
-        let actualCategory = category;
-        if (category === 'roni') {
-            if(roniSubTab) roniSubTab.style.display = 'flex';
-            actualCategory = currentRoniMode === 'hidden' ? 'roniHidden' : 'roniObjet';
-            titleName = currentRoniMode === 'hidden' ? 'RONi (히든)' : 'RONi (오브제)';
+    let modelRowVisible = true;
+    function applyModelRowVisibility() {
+        const table = document.getElementById('quoteTable');
+        const btn = document.getElementById('toggleModelBtn');
+        if (!table || !btn) return;
+        if (modelRowVisible) {
+            table.classList.remove('hide-model-row');
+            btn.textContent = '모델명 숨기기';
         } else {
-            if(roniSubTab) roniSubTab.style.display = 'none';
+            table.classList.add('hide-model-row');
+            btn.textContent = '모델명 보이기';
         }
+    }
+    function toggleModelRowVisibility() {
+        modelRowVisible = !modelRowVisible;
+        applyModelRowVisibility();
+    }
 
-        currentCareTitle = titleName;
-        document.getElementById('dashboardTitle').innerText = '✨ 구독 Care 비용';
+    function openRoniFeatureModal() {
+        document.getElementById('roniFeatureOverlay').style.display = 'flex';
+    }
+    function closeRoniFeatureModal(event) {
+        if (event && event.target !== document.getElementById('roniFeatureOverlay') && event.target.tagName !== 'BUTTON' && event.type !== 'click') return;
+        document.getElementById('roniFeatureOverlay').style.display = 'none';
+    }
 
-        const tbody = document.getElementById('careTableBody');
-        tbody.innerHTML = '';
+    function openVisualGuideModal() {
+        document.getElementById('visualGuideOverlay').style.display = 'flex';
+    }
+    function closeVisualGuideModal(event) {
+        if (event && event.target !== document.getElementById('visualGuideOverlay') && event.target.tagName !== 'BUTTON' && !event.target.classList.contains('btn-close-visual') && event.type !== 'click') return;
+        document.getElementById('visualGuideOverlay').style.display = 'none';
+    }
 
-        if(careData[actualCategory]) {
-            careData[actualCategory].forEach(item => {
-                const isChecked = !!(checkedState[item.id] && checkedState[item.id].checked);
-                const tr = document.createElement('tr');
-                if (!isChecked) tr.classList.add('disabled-row');
+    function openRoniCareModal() {
+        document.getElementById('roniCareOverlay').style.display = 'flex';
+        document.getElementById('roniCareMainImage').src = 'https://raw.githubusercontent.com/kwonsoonmin-ai/roni/main/2.png';
+    }
+    
+    function closeRoniCareModal(event) {
+        if (event && event.target !== document.getElementById('roniCareOverlay') && event.target.tagName !== 'BUTTON' && event.type !== 'click') return;
+        document.getElementById('roniCareOverlay').style.display = 'none';
+    }
+    
+    function changeCareImage(imageName) {
+        document.getElementById('roniCareMainImage').src = imageName;
+    }
 
-                const safeName = String(item.name).replace(/'/g, "\\'");
-                const safeTitle = String(titleName).replace(/'/g, "\\'");
-                const safePeriod = String(item.period).replace저는 언어 모델입니다. 그것은 제가 할 수 있는 범위를 넘어서는 것이라 할 수 없어요.
+    function openYoutubeReviewModal() {
+        document.getElementById('youtubeReviewOverlay').style.display = 'flex';
+    }
+    
+    function closeYoutubeReviewModal(event) {
+        if (event && event.target !== document.getElementById('youtubeReviewOverlay') && event.target.tagName !== 'BUTTON' && event.type !== 'click') return;
+        document.getElementById('youtubeReviewOverlay').style.display = 'none';
+    }
+
+    function openBathAirVideoModal() {
+        document.getElementById('bathAirVideoOverlay').style.display = 'flex';
+    }
+    
+    function closeBathAirVideoModal(event) {
+        if (event && event.target !== document.getElementById('bathAirVideoOverlay') && event.target.tagName !== 'BUTTON' && event.type !== 'click') return;
+        document.getElementById('bathAirVideoOverlay').style.display = 'none';
+    }
+
+    function openWashTowerModal() {
+        document.getElementById('washTowerVideoOverlay').style.display = 'flex';
+    }
+    
+    function closeWashTowerModal(event) {
+        if (event && event.target !== document.getElementById('washTowerVideoOverlay') && event.target.tagName !== 'BUTTON' && event.type !== 'click') return;
+        document.getElementById('washTowerVideoOverlay').style.display = 'none';
+    }
+
+    function openLsSubPkgModal() {
+        document.getElementById('lsSubPkgModalOverlay').style.display = 'flex';
+    }
+    function closeLsSubPkgModal(event) {
+        if (event && event.target !== document.getElementById('lsSubPkgModalOverlay') && event.target.tagName !== 'BUTTON' && event.type !== 'click') return;
+        document.getElementById('lsSubPkgModalOverlay').style.display = 'none';
+    }
+
+    function openLsWedPkgModal() {
+        document.getElementById('lsWedPkgModalOverlay').style.display = 'flex';
+    }
+    function closeLsWedPkgModal(event) {
+        if (event && event.target !== document.getElementById('lsWedPkgModalOverlay') && event.target.tagName !== 'BUTTON' && event.type !== 'click') return;
+        document.getElementById('lsWedPkgModalOverlay').style.display = 'none';
+    }
+</script>
+</body>
+</html>
